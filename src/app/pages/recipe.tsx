@@ -6,6 +6,7 @@ import { RiTimerFill } from "react-icons/ri";
 import { BiDish } from "react-icons/bi";
 import { PiBowlFoodFill } from "react-icons/pi";
 import { IoTimer } from "react-icons/io5";
+import Email from "./components/email";
 export default function recipe() {
   return (
     <>
@@ -167,28 +168,7 @@ export default function recipe() {
           </p>
         </div>{" "}
       </div>
-      <div className=" flex bg-white justify-center items-center py-5 lg:px-20 lg:py-32">
-        <div className="bg-sky-100 p-10 w-full mx-3 justify-center items-center lg:py-20 xl:py32 flex-col gap-5 flex rounded-3xl ">
-          <p className="text-lg font-bold py-2 md:text-3xl lg:text-4xl">
-            Deliciousness to your inbox
-          </p>
-          <p className="text-xs md:text-lg xl:px-64  text-center">
-            {" "}
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-            posuere lorem nec facilisis hendrerit.
-          </p>
-          <div className="flex relative justify-center items-center md:w-1/2 lg:w-2/5">
-            <input
-              type="text"
-              placeholder="Email"
-              className=" bg-white rounded-lg p-3 md:p-5 md:w-full "
-            />
-            <button className="bg-black rounded-xl text-white p-2 md:p-3 absolute right-1">
-              Subscribe
-            </button>
-          </div>
-        </div>
-      </div>
+      <Email />
       {/* more recopre */}
       <div className="bg-white p-3 flex flex-col md:gap-4 ">
         <p className=" text-lg text-center font-bold md:text-2xl">
