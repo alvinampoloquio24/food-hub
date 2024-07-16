@@ -9,10 +9,13 @@ import { FaInstagram } from "react-icons/fa6";
 import { FaTwitter } from "react-icons/fa";
 import Recipe from "./pages/recipe";
 import Contact from "./pages/contact";
+import Home from "./pages/home";
+import Blog from "./pages/blog";
+import About from "./pages/about";
 
 export default function Nav() {
   const [menuBtn, setMenuBtn] = useState(false);
-  const [prevScrollPos, setPrevScrollPos] = useState(window.pageYOffset);
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [menuClicked, setMenuClicked] = useState(false);
 
@@ -26,10 +29,13 @@ export default function Nav() {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    if (typeof window !== "undefined") {
+      setPrevScrollPos(window.pageYOffset);
+      window.addEventListener("scroll", handleScroll);
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
   }, [prevScrollPos, menuClicked]);
 
   const toggleMenuVisibility = () => {
@@ -114,8 +120,12 @@ export default function Nav() {
           </div>
         )}
       </nav>
+
+      <Home />
+      <Blog />
       <Recipe />
       <Contact />
+      <About />
       <footer className="flex flex-col items-center md:flex-row border-t-2 md:px-4 xl:px-16">
         <div className="bg-white py-6 px-3 w-full items-center md:items-start flex flex-col flex-1">
           <p className=" text-lg font-bold md:text-2xl">LOGO</p>
