@@ -6,8 +6,8 @@ import { RiTimerFill } from "react-icons/ri";
 import { BiDish } from "react-icons/bi";
 import { PiBowlFoodFill } from "react-icons/pi";
 import { IoTimer } from "react-icons/io5";
-import Email from "../components/email";
-import MoreRecipe from "../components/more-recipe";
+import Email from "../../components/email";
+import MoreRecipe from "../../components/more-recipe";
 export default function recipe() {
   return (
     <>

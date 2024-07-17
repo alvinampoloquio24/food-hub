@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
-import MoreRecipe from "./components/more-recipe";
+import MoreRecipe from "../../components/more-recipe";
 
 export default function contact() {
   return (

@@ -581,7 +581,7 @@ export default function Home() {
           <FaInstagram className="text-white text-xl" />
         </button>
       </div>
-      <div className=" flex flex-col p-4 md:justify-center md:gap-5">
+      <div className=" flex flex-col p-4 md:justify-center md:gap-5 bg-white">
         <div className="lg:px-16 lg:grid lg:grid-cols-2 lg:items-center xl:py-7">
           <p className="text-md font-bold p-4 md:py-6 md:text-3xl lg:text-3xl ">
             Try this delecious recipe to make your day
