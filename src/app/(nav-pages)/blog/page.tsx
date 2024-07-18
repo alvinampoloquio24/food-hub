@@ -5,7 +5,7 @@ import Email from "../../props/email";
 export default function blog() {
   return (
     <>
-      <div className="bg-white p-3 py-10 flex items-center justify-center flex-col gap-3 md:gap-5">
+      <div className="bg-white text-black p-3 py-10 flex items-center justify-center flex-col gap-3 md:gap-5">
         <p className="text-xl font-bold text-center py-3 md:text-2xl">
           Blog & Article
         </p>

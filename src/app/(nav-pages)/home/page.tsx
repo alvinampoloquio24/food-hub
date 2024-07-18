@@ -32,7 +32,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="h-screen bg-white flex flex-col ">
+      <main className="h-screen text-black bg-white flex flex-col ">
         <div className="grid  lg:grid-cols-2 h-full lg:m-7">
           <div className="flex flex-col justify-center lg:h-full  bg-sky-100 lg:rounded-l-3xl ">
             <div className="flex flex-col h-full lg:justify-around md:justify-around justify-around  gap-4 rounded-l-lg mx-6 py-6 ">

@@ -5,7 +5,7 @@ import MoreRecipe from "../../props/more-recipe";
 export default function contact() {
   return (
     <>
-      <div className="bg-white w-full h-5/6 flex p-3 pb-96 flex-col items-center gap-4 md:gap-8 md:py-8 lg:px-24  md:h-screen lg:py-28">
+      <div className="bg-white text-black w-full h-5/6 flex p-3 pb-96 flex-col items-center gap-4 md:gap-8 md:py-8 lg:px-24  md:h-screen lg:py-28">
         <p className="text-xl font-bold text bg-center md:text-4xl lg:text-6xl">
           Contact us
         </p>

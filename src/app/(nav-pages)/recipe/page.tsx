@@ -11,7 +11,7 @@ import MoreRecipe from "../../props/more-recipe";
 export default function recipe() {
   return (
     <>
-      <div className="px-5 md:px-6 md:py-10 xl:pb-20 lg:px-20 lg:gap-7 flex flex-col md:h-screen bg-white">
+      <div className="px-5 text-black md:px-6 md:py-10 xl:pb-20 lg:px-20 lg:gap-7 flex flex-col md:h-screen bg-white">
         <div className="flex flex-col lg:flex-row lg:justify-between">
           {/* Grid Line  */}
           <div className=" lg:flex lg:flex-col  py-3 ">
