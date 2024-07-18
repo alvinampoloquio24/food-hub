@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
-import Email from "../../components/email";
+import Email from "../../props/email";
 
 export default function blog() {
   return (
