@@ -76,7 +76,7 @@ export default function contact() {
               ullamcorper.
             </p>
           </div>
-          <div className="p-8 bg-sky-100 ">
+          <div className="p-8 bg-base ">
             <p className="md:text-2xl lg:text-3xl">
               “A recipe has no soul. You, as the cook, must bring soul to the
               recipe.” – Thomas Keller

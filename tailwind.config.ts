@@ -13,8 +13,22 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        base: "#EEEEEE",
+        "base-dark": "#DC5F00",
+        "text-color": "#06283D",
+        "base-mid": "#EEEEEE",
+      },
+      height: {
+        "90p": "91%",
+      },
+      fontFamily: {
+        diphylleia: ["var(--font-diphylleia)"],
+        "montserrat-alternates": ["var(--font-montserrat-alternates)"],
+      },
     },
   },
+
   plugins: [],
 };
 export default config;

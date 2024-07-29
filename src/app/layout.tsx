@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "swiper/css"; // Import Swiper styles
 import Navagation from "./components/Navagation";
 import Footer from "./components/Footer";
+import { diphylleia, montserratAlternates } from "./font";
+import { SkeletonTheme } from "react-loading-skeleton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,11 +20,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} text-black`}>
+    <html
+      lang="en"
+      className={`${diphylleia.variable} ${montserratAlternates.variable}`}
+    >
+      <body
+        className={`${inter.className} text-black font-montserrat-alternates`}
+      >
         <Navagation />
-        {children}
-        <Footer />
+        <SkeletonTheme baseColor="#EEEEEE" highlightColor="#FFCC99">
+          {children}
+        </SkeletonTheme>
+        {/* <Footer /> */}
       </body>
     </html>
   );
