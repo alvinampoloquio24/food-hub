@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Poster from "@/api/poster";
 import { HashLoader } from "react-spinners";
 import Lottie from "react-lottie";
@@ -10,6 +10,21 @@ import Error from "@/lottie/error.json";
 import Link from "next/link";
 
 export default function VerifyEmail() {
+  return (
+    <Suspense
+      fallback={
+        <div className="h-screen bg-white flex items-center gap-3 justify-center">
+          <HashLoader color="#ff6b00" />
+          <p>Loading...</p>
+        </div>
+      }
+    >
+      <VerifyEmailContent />
+    </Suspense>
+  );
+}
+
+function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const [success, setSuccess] = useState(false);
   const [isVerifying, setIsVerifying] = useState(true);
