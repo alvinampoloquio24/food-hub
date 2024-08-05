@@ -25,6 +25,7 @@ import Poster from "../../../api/poster";
 import HotRecipe from "./swipper";
 import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
+import Navagation from "@/app/components/Navagation";
 
 export default function Home() {
   interface Poster {

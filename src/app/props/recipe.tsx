@@ -27,7 +27,7 @@ export default function RecipeProps({ recipe }: RecipeProps) {
     <>
       <div className="lg:h-screen bg-white">
         <div className="lg:flex lg:flex-row flex flex-col-reverse lg:h-full md:flex-col-reverse ">
-          <div className="bg-base-mid lg:basis-1/3 md:p-10 p-6 md:h-90p    overflow-y-auto  ">
+          <div className="bg-base-mid lg:basis-1/3 md:p-10 p-6 md:h-screen    overflow-y-auto  ">
             <p className="md:text-3xl text-2xl font-semi-bold">
               Ingredients ({recipe.ingredients.length})
             </p>
@@ -43,7 +43,7 @@ export default function RecipeProps({ recipe }: RecipeProps) {
               </div>
             ))}
           </div>
-          <div className="lg:basis-4/6 grid grid-rows-12 md:h-90p h-screen relative">
+          <div className="lg:basis-4/6 grid grid-rows-12  h-screen relative">
             <div className="bg-base-dark md:p-4 p-2 absolute bottom-0 left-0 z-10 flex items-center justify-center gap-3  shadow-lg text-white">
               <a
                 href="#directions"

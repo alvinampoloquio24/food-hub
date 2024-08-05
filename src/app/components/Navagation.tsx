@@ -86,8 +86,11 @@ export default function Nav() {
             </Link>
           </li>
           <li>
-            <Link href="/contact" className={getLinkClassName("/contact")}>
-              Contact
+            <Link
+              href="/spoonacular"
+              className={getLinkClassName("/spoonacular")}
+            >
+              Spoonacular
             </Link>
           </li>
           <li>
@@ -148,8 +151,11 @@ export default function Nav() {
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className={getLinkClassName("/contact")}>
-                  Contact
+                <Link
+                  href="/spoonacular"
+                  className={getLinkClassName("/spoonacular")}
+                >
+                  Spoonacular
                 </Link>
               </li>
               <li>
