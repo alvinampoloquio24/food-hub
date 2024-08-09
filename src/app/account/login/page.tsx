@@ -11,6 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
 import { PropagateLoader } from "react-spinners";
+import { useUserStore } from "@/zustand/user";
 
 interface SocialButtonProps {
   icon: ReactElement;
@@ -26,6 +27,7 @@ function SocialButton({ icon }: SocialButtonProps) {
 
 export default function LoginPage() {
   const router = useRouter();
+  const { user, setUser } = useUserStore();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -54,6 +56,7 @@ export default function LoginPage() {
       if (user.response.error) {
         return toast.error(user.response.message);
       } else {
+        setUser(user.response.user);
         return router.push("/");
       }
     } catch (error) {

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useState } from "react";
@@ -8,6 +9,7 @@ import { FaInstagram } from "react-icons/fa6";
 import { FaTwitter } from "react-icons/fa";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useUserStore } from "@/zustand/user";
 
 export default function Nav() {
   const [menuBtn, setMenuBtn] = useState(false);
@@ -15,6 +17,8 @@ export default function Nav() {
   const [visible, setVisible] = useState(true);
   const [menuClicked, setMenuClicked] = useState(false);
   const pathname = usePathname();
+  const { user } = useUserStore();
+  const [isClient, setIsClient] = useState(false);
 
   const getLinkClassName = (path: string) => {
     const baseClasses = "hover:text-blue-500 transition-colors duration-200";
@@ -41,9 +45,11 @@ export default function Nav() {
   };
 
   useEffect(() => {
+    setIsClient(true);
     if (typeof window !== "undefined") {
       setPrevScrollPos(window.pageYOffset);
       window.addEventListener("scroll", handleScroll);
+
       return () => {
         window.removeEventListener("scroll", handleScroll);
       };
@@ -61,7 +67,7 @@ export default function Nav() {
       <nav
         className={`bg-white text-black sm:flex sticky top-0 z-50 transition-transform duration-300 ${
           !menuBtn ? `justify-between p-3` : `justify-center`
-        } flex sm:p-5 content-center border-b-2 ${
+        } flex sm:p-4 content-center border-b-2 ${
           visible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
@@ -99,17 +105,28 @@ export default function Nav() {
             </Link>
           </li>
         </ul>
-        <ul className="sm:flex space-x-5 text-md hidden justify-center items-center">
-          <li>
-            <FaFacebookF />
-          </li>
-          <li>
-            <FaInstagram />
-          </li>
-          <li>
-            <FaTwitter />
-          </li>
-        </ul>
+        {isClient && (
+          <div>
+            {!user ? (
+              <div className="sm:flex space-x-2 text-md hidden justify-center items-center">
+                <div className="rounded  bg-base-dark text-white px-3 p-1">
+                  Login
+                </div>
+                <div className="  bg-gray-300 rouded px-3 p-1">Register</div>
+              </div>
+            ) : (
+              <div className="sm:flex space-x-3 text-md hidden justify-center items-center">
+                <img
+                  src={user.profile}
+                  alt=""
+                  className="object-cover h-8 w-8 rounded-full"
+                />
+                <p>{user.name}</p>
+              </div>
+            )}
+          </div>
+        )}
+
         {!menuBtn && (
           <button
             onClick={toggleMenuVisibility}

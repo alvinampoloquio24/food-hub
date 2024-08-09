@@ -1,0 +1,35 @@
+const uploadRecipe = async () => {
+  try {
+    setShowModal(false);
+    const toastId = toast.loading("Posting...");
+
+    const body = {
+      ...formData,
+      ingredients,
+      image: selectedImage,
+      directions,
+    };
+    const recipe = await Poster.uploadRecipe(body);
+    if (recipe.error) {
+      toast.update(toastId, {
+        render: "Failed to post.",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
+    } else {
+      toast.update(toastId, {
+        render: "Posted successfully!",
+        type: "success",
+        isLoading: false,
+        autoClose: 5000,
+      });
+      // Call getPoster() here, after a successful post
+      await getPoster();
+    }
+  } catch (error) {
+    toast.error("Something went wrong!");
+  } finally {
+    setLoading(false);
+  }
+};

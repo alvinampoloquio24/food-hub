@@ -1,11 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
 import React from "react";
 import { FaSquareFacebook } from "react-icons/fa6";
 import { FaTwitter } from "react-icons/fa";
 import Navagation from "@/app/components/Navagation";
+import { useUserStore } from "@/zustand/user";
 
 import { FaSquareInstagram } from "react-icons/fa6";
-export default function contact() {
+export default function Contact() {
+  const { user } = useUserStore();
+
   return (
     <>
       <Navagation />

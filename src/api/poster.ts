@@ -249,6 +249,59 @@ const getPoster = {
       };
     }
   },
+  uploadRecipe: async (formData: Record<string, any>) => {
+    try {
+      const createAccountApi = `${api}/addPoster`;
+
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("description", formData.description);
+      data.append("calories", formData.calories);
+      data.append("type", formData.type);
+      data.append("time", formData.time);
+
+      formData.ingredients.forEach((ingredient: any, index: any) => {
+        data.append(`ingredients[${index}][name]`, ingredient.name);
+        data.append(`ingredients[${index}][quantity]`, ingredient.quantity);
+        data.append(`ingredients[${index}][unit]`, ingredient.unit);
+      });
+
+      formData.directions.forEach((direction: any, index: any) => {
+        data.append(`directions[${index}][title]`, direction.title);
+        data.append(`directions[${index}][description]`, direction.description);
+      });
+
+      if (formData.selectedImage) {
+        data.append("image", formData.selectedImage);
+      }
+
+      const response = await fetch(createAccountApi, {
+        method: "POST",
+        // Remove the Content-Type header, let the browser set it
+        body: data,
+      });
+
+      let responseData = await response.json();
+      if (!response.ok) {
+        responseData.error = true;
+      }
+
+      console.log(responseData);
+
+      return {
+        response: responseData,
+        status: true,
+      };
+    } catch (error) {
+      console.error("Error creating account:", error);
+      return {
+        response: null,
+        status: false,
+        error:
+          error instanceof Error ? error.message : "An unknown error occurred",
+      };
+    }
+  },
 };
 
 export default getPoster;
