@@ -106,9 +106,6 @@ const getPoster = {
   },
   getGeneratedRecipe: async (data: string) => {
     try {
-      const api = "http://localhost:3001";
-      // const api = "https://food-hub-backend-gzga.onrender.com";
-
       const response = await fetch(`${api}/getGeneratedRecipe`, {
         method: "POST", // Changed from GET to POST
         headers: {
