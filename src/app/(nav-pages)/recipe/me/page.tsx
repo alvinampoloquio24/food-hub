@@ -11,7 +11,7 @@ import { BiLogoBlogger } from "react-icons/bi";
 import { RiContactsBook3Fill } from "react-icons/ri";
 import { TbInfoSquareRoundedFilled } from "react-icons/tb";
 import { FaRegFilePdf } from "react-icons/fa6";
-import Poster from "../../../api/poster";
+import Poster from "@/api/poster";
 import { CiShare1 } from "react-icons/ci";
 import Link from "next/link";
 import generatePDF from "@/utils/generatePDF";
@@ -622,40 +622,15 @@ export default function recipe() {
                 </>
               ) : null}
             </div>
-
-            {isclient && (
-              <>
-                {user ? (
-                  <div
-                    onClick={() => {
-                      setShowModal(true);
-                    }}
-                    className="bg-base-mid h-10 w-10 lg:hidden flex items-center flex-col justify-center rounded"
-                  >
-                    {" "}
-                    <BsFillCloudUploadFill className="text-lg text-blue-600" />
-                  </div>
-                ) : null}
-              </>
-            )}
-            {isclient && (
-              <>
-                {user ? (
-                  <div className="lg:flex lg:flex-col gap-4 hidden w-full  lg:mt-5 flex-row text-lg lg:items-start items-center justify-between p-1 ">
-                    <p>Upload your own recipe</p>
-                    <button
-                      onClick={() => {
-                        setShowModal(true);
-                      }}
-                      className=" lg:shadow lg:p-6 md:p-3 flex gap-4 lg:w-full border border-gray-400  justify-center items-center transition duration-200 ease-in-out hover:bg-orange-50 "
-                    >
-                      <FaUpload className="lg:text-xl" />
-                      <p>Upload recipe</p>
-                    </button>
-                  </div>
-                ) : null}
-              </>
-            )}
+            <div
+              onClick={() => {
+                setShowModal(true);
+              }}
+              className="bg-base-mid h-10 w-10 lg:hidden flex items-center flex-col justify-center rounded"
+            >
+              {" "}
+              <BsFillCloudUploadFill className="text-lg text-blue-600" />
+            </div>
             <div className=" w-full lg:flex hidden flex-wrap gap-2 ">
               <button
                 onClick={() => {

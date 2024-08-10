@@ -1,5 +1,5 @@
-import verifyEmail from "@/app/account/verify-email/page";
 import * as dotenv from "dotenv";
+
 dotenv.config();
 const api = process.env.NEXT_PUBLIC_LOCALHOST;
 const getPoster = {
@@ -231,7 +231,7 @@ const getPoster = {
       }
 
       console.log(responseData, "respose dattttta");
-
+      localStorage.setItem("authToken", responseData.token);
       return {
         response: responseData,
         status: true,
@@ -272,9 +272,13 @@ const getPoster = {
         data.append("image", formData.selectedImage);
       }
 
+      const token = localStorage.getItem("authToken"); // or wherever you store your token
+
       const response = await fetch(createAccountApi, {
         method: "POST",
-        // Remove the Content-Type header, let the browser set it
+        headers: {
+          Authorization: `Bearer ${token}`, // Add this line
+        },
         body: data,
       });
 

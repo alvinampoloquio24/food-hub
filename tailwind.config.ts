@@ -26,6 +26,9 @@ const config: Config = {
         diphylleia: ["var(--font-diphylleia)"],
         "montserrat-alternates": ["var(--font-montserrat-alternates)"],
       },
+      fontSize: {
+        xxs: "0.50rem", // This is equivalent to 10px
+      },
     },
   },
 

@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <>
       <HotRecipe />
-      <div className=" bg-white flex flex-col  p-6 py-12 xl:p-24 lg:p-16 gap-8 md:pt-24 lg:mt-0 ">
+      <div className=" bg-white flex flex-col  p-6 py-12 xl:p-24 lg:p-16 gap-8 lg:mt-0 ">
         <div className=" flex gap-4 md:gap-6  flex-col mb-10 ">
           {" "}
           <p className=" text-3xl font-bold md:text-5xl text-base-dark lg:text-6xl">
@@ -180,7 +180,7 @@ export default function Home() {
                   )}
                   <div className="md:h-24 h-16 w-full px-4  flex flex-col justify-between">
                     {poster.name ? (
-                      <p className=" text-xs md:text-lg px-1 lg:max-h-20  line-clamp-2  font-bold lg:px-6">
+                      <p className="  md:text-lg px-1 lg:max-h-20  line-clamp-2  font-bold lg:px-6">
                         {poster.name}
                       </p>
                     ) : (

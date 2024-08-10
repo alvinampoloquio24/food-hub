@@ -10,6 +10,7 @@ import { FaTwitter } from "react-icons/fa";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUserStore } from "@/zustand/user";
+import { useRouter } from "next/navigation";
 
 export default function Nav() {
   const [menuBtn, setMenuBtn] = useState(false);
@@ -19,6 +20,7 @@ export default function Nav() {
   const pathname = usePathname();
   const { user } = useUserStore();
   const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
 
   const getLinkClassName = (path: string) => {
     const baseClasses = "hover:text-blue-500 transition-colors duration-200";
@@ -109,10 +111,18 @@ export default function Nav() {
           <div>
             {!user ? (
               <div className="sm:flex space-x-2 text-md hidden justify-center items-center">
-                <div className="rounded  bg-base-dark text-white px-3 p-1">
+                <button
+                  onClick={() => router.push("account/login")}
+                  className="rounded  bg-base-dark text-white px-3 p-1 cursor-pointer"
+                >
                   Login
-                </div>
-                <div className="  bg-gray-300 rouded px-3 p-1">Register</div>
+                </button>
+                <button
+                  onClick={() => router.push("account/create-account")}
+                  className="  bg-gray-300 rouded px-3 p-1 cursor-pointer"
+                >
+                  Register
+                </button>
               </div>
             ) : (
               <div className="sm:flex space-x-3 text-md hidden justify-center items-center">

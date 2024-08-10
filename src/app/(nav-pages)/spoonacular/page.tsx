@@ -167,8 +167,8 @@ export default function GenerateRecipe() {
           {/* Main content */}
           <div className="lg:col-span-9 w-full md:p-16 lg:p-8 p-4 py-6 ">
             {generatedRecipe.length === 0 ? (
-              <div className="h-screen flex flex-col items-center p-16">
-                <p className="text-xl lg:text-3xl font-bold text-center">
+              <div className="h-screen flex flex-col items-center md:p-16 p-4">
+                <p className="text-sm lg:text-3xl font-bold text-center">
                   "Explore a vast database of recipes from around the world
                   tailored to your personal preferences."
                 </p>
