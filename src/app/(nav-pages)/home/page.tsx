@@ -178,9 +178,9 @@ export default function Home() {
                   ) : (
                     <div className="h-32 md:h-48 lg:h-60 w-full bg-orange-100 animate-pulse rounded-2xl "></div>
                   )}
-                  <div className="md:h-24 h-16 w-full px-4  flex flex-col justify-between">
+                  <div className="md:h-32 h-16 w-full px-4  flex flex-col justify-between">
                     {poster.name ? (
-                      <p className="  md:text-lg px-1 lg:max-h-20  line-clamp-2  font-bold lg:px-6">
+                      <p className="  md:text-lg text-xs px-1 lg:max-h-20  line-clamp-2  font-bold lg:px-6">
                         {poster.name}
                       </p>
                     ) : (

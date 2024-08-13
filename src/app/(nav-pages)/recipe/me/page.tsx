@@ -3,92 +3,44 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { RiContactsBookUploadFill, RiTimerFill } from "react-icons/ri";
+import { RiTimerFill } from "react-icons/ri";
 import { BiDish } from "react-icons/bi";
-import { GoHomeFill } from "react-icons/go";
-import { MdMenuBook } from "react-icons/md";
-import { BiLogoBlogger } from "react-icons/bi";
-import { RiContactsBook3Fill } from "react-icons/ri";
-import { TbInfoSquareRoundedFilled } from "react-icons/tb";
 import { FaRegFilePdf } from "react-icons/fa6";
 import Poster from "@/api/poster";
 import { CiShare1 } from "react-icons/ci";
 import Link from "next/link";
 import generatePDF from "@/utils/generatePDF";
 import { TiArrowUpThick } from "react-icons/ti";
-import { DiVim } from "react-icons/di";
-import { ClimbingBoxLoader, HashLoader, MoonLoader } from "react-spinners";
 import Lottie from "react-lottie";
-import animationData from "@/lottie/noResult.json"; // Your Lottie JSON file
+import animationData from "@/lottie/share.json"; // Your Lottie JSON file
 import Loading from "@/lottie/loading.json";
 import { MdClear } from "react-icons/md";
 import Navagation from "@/app/components/Navagation";
 import { FaUpload } from "react-icons/fa6";
 import { useUserStore } from "@/zustand/user";
 import Modal from "@/app/props/modalUploadRecipe";
-import { MdOutlineNavigateNext } from "react-icons/md";
 import { GrCaretNext, GrCaretPrevious } from "react-icons/gr";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BsFillCloudUploadFill } from "react-icons/bs";
+import AuthProvider from "@/hoc/authProvider";
+import { useRouter } from "next/navigation";
 
-// Utility to handle form data change
-const handleInputChange =
-  (
-    setState: React.Dispatch<React.SetStateAction<any>>,
-    isArray: boolean = false
-  ) =>
-  (
-    index: number | null,
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = event.target;
-
-    if (isArray && typeof index === "number") {
-      setState((prevState: any) => {
-        const newState = { ...prevState };
-        newState[name][index] = { ...newState[name][index], [name]: value };
-        return newState;
-      });
-    } else {
-      setState((prevState: any) => ({
-        ...prevState,
-        [name]: value,
-      }));
-    }
-  };
-
-// Utility to handle add/remove items in an array
-const handleArrayChange = (
-  setState: React.Dispatch<React.SetStateAction<any>>,
-  action: "add" | "remove",
-  field: string,
-  emptyItem: object,
-  index?: number
-) => {
-  setState((prevState: any) => {
-    const newState = { ...prevState };
-    if (action === "add") {
-      newState[field] = [...newState[field], emptyItem];
-    } else {
-      newState[field] = newState[field].filter(
-        (_: any, i: number) => i !== index
-      );
-    }
-    return newState;
-  });
-};
-export default function recipe() {
+export default AuthProvider(recipe);
+function recipe() {
   interface Poster {
     name: string;
     _id: string;
     description: string;
     time: string;
-    direction: any;
+    directions: any;
     dishType: any;
     img: string;
-    recipe: {
-      ingredients: Array<{ name: string; quantity: string }>;
+    ingredients: Array<{ name: string; quantity: string }>;
+    user: {
+      name: string;
+      profile: string;
+      _id: string;
     };
   }
   type Ingredient = {
@@ -106,6 +58,7 @@ export default function recipe() {
     currentSlide: number;
     totalSlides: number;
   }
+  const router = useRouter();
   const [poster, setPoster] = React.useState<Poster[] | null>([]);
   const [isGenerating, setIsGenerating] = React.useState(false);
   const [search, setSearch] = React.useState("");
@@ -264,8 +217,8 @@ export default function recipe() {
   const getPoster = async () => {
     try {
       setLoading(true);
-      const data = await Poster.get();
-      setPoster(data.response);
+      const data = await Poster.getSelf();
+      setPoster(data?.response);
     } catch (error) {
       throw error;
     } finally {
@@ -275,6 +228,8 @@ export default function recipe() {
   //genrate Pdf
   const handleDownload = async (recipe: any, title: string, img: string) => {
     setIsGenerating(true);
+    console.log(recipe);
+
     const doc = await generatePDF(recipe, title, img);
     doc.save(`${title}.pdf`);
     setIsGenerating(false);
@@ -334,7 +289,7 @@ export default function recipe() {
         });
       } else {
         toast.update(toastId, {
-          render: "Posted successfully!",
+          render: "Post successfully",
           type: "success",
           isLoading: false,
           autoClose: 5000,
@@ -622,59 +577,28 @@ export default function recipe() {
                 </>
               ) : null}
             </div>
-            <div
-              onClick={() => {
-                setShowModal(true);
-              }}
-              className="bg-base-mid h-10 w-10 lg:hidden flex items-center flex-col justify-center rounded"
-            >
-              {" "}
-              <BsFillCloudUploadFill className="text-lg text-blue-600" />
-            </div>
-            <div className=" w-full lg:flex hidden flex-wrap gap-2 ">
-              <button
-                onClick={() => {
-                  handleSeach("burger");
-                  setSearch("burger");
-                }}
-                className="p-1 bg-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
-              >
-                <p>burger</p>
-              </button>
-              <button
-                onClick={() => {
-                  handleSeach("pancake");
-                  setSearch("pancake");
-                }}
-                className="p-1 bg-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
-              >
-                <p>pancake</p>
-              </button>
-              <button
-                onClick={() => {
-                  handleSeach("Nashville Hot");
-                  setSearch("Nashville Hot");
-                }}
-                className="p-1 bg-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
-              >
-                <p>Nashville Hot</p>
-              </button>
-              <button
-                onClick={() => {
-                  handleSeach("dessert");
-                  setSearch("dessert");
-                }}
-                className="p-1 bg-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
-              >
-                <p>dessert</p>
-              </button>
-            </div>
+
+            {isclient && (
+              <>
+                {user ? (
+                  <div
+                    onClick={() => {
+                      setShowModal(true);
+                    }}
+                    className="bg-base-mid h-10 w-10 lg:hidden flex items-center flex-col justify-center rounded"
+                  >
+                    {" "}
+                    <BsFillCloudUploadFill className="text-lg text-blue-600" />
+                  </div>
+                ) : null}
+              </>
+            )}
 
             {isclient && (
               <>
                 {user ? (
                   <div className="lg:flex lg:flex-col gap-4 hidden w-full  lg:mt-5 flex-row text-lg lg:items-start items-center justify-between p-1 ">
-                    <p>Upload your own recipe</p>
+                    <p>Post new recipe</p>
                     <button
                       onClick={() => {
                         setShowModal(true);
@@ -682,7 +606,7 @@ export default function recipe() {
                       className=" lg:shadow lg:p-6 md:p-3 flex gap-4 lg:w-full border border-gray-400  justify-center items-center transition duration-200 ease-in-out hover:bg-orange-50 "
                     >
                       <FaUpload className="lg:text-xl" />
-                      <p>Upload recipe</p>
+                      <p>Upload</p>
                     </button>
                   </div>
                 ) : null}
@@ -704,7 +628,10 @@ export default function recipe() {
                     />
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center">
+                  <div className="flex flex-col items-center justify-center h-screen  gap-4">
+                    <p className="text-center text-2xl font-bold ">
+                      No posts yet.
+                    </p>
                     <Lottie options={defaultOptions} height={200} width={200} />
                   </div>
                 )}
@@ -728,12 +655,14 @@ export default function recipe() {
                             <div className="grid grid-cols-3 lg:grid-cols-4 gap-3 justify-between w-full py-2">
                               <div className="flex gap-1 lg:gap-3 items-center justify-center ">
                                 <img
-                                  src="https://assets.mycast.io/actor_images/actor-johnny-sins-75125_large.jpg?1586055334"
+                                  src={poster.user.profile}
                                   alt=""
                                   className="rounded-full object-cover md:h-8 md:w-8 h-6 w-6 "
                                 />
                                 <div className="flex flex-col text-xs items-center justify-center">
-                                  <p className=" font-bold">Jonny Sins</p>
+                                  <p className=" font-bold">
+                                    {poster.user.name}
+                                  </p>
                                   <p>Jan 2 2024</p>
                                 </div>
                               </div>
@@ -773,7 +702,10 @@ export default function recipe() {
                               className="hover:text-blue-500 underline"
                               onClick={() => {
                                 handleDownload(
-                                  poster.recipe,
+                                  {
+                                    ingredients: poster.ingredients,
+                                    directions: poster.directions,
+                                  },
                                   poster.name,
                                   poster.img
                                 );
@@ -803,11 +735,11 @@ export default function recipe() {
                         />
                         <div className="bg-base-mid col-span-5 h-96  p-4 md:flex hidden flex-col">
                           <p className="text-xl font-bold mb-4">
-                            Ingredients({poster.recipe.ingredients.length})
+                            Ingredients({poster.ingredients.length})
                           </p>
                           <div className="flex-grow overflow-y-auto ">
                             <div className="">
-                              {poster.recipe.ingredients.map((data, index) => (
+                              {poster.ingredients.map((data, index) => (
                                 <div
                                   key={index}
                                   className="flex items-center p-2 border-b-2"

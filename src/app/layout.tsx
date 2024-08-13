@@ -25,7 +25,7 @@ export default function RootLayout({
       className={`${diphylleia.variable} ${montserratAlternates.variable}`}
     >
       <body
-        className={`${inter.className} text-black font-montserrat-alternates`}
+        className={`${inter.className} text-black font-montserrat-alternates bg-white`}
       >
         <SkeletonTheme baseColor="#EEEEEE" highlightColor="#FFCC99">
           {children}

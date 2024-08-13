@@ -1,16 +1,14 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import * as dotenv from "dotenv";
 
 dotenv.config();
 const api = process.env.NEXT_PUBLIC_LOCALHOST;
+
 const getPoster = {
   get: async () => {
     try {
-      // const api = "http://localhost:3001";
-      // const api = " https://food-hub-backend-gzga.onrender.com";
-
-      console.log(api, "assda");
       const response = await fetch(
-        `${api}/getPosters`,
+        `${api}/getRecipes`,
 
         {
           method: "GET",
@@ -32,12 +30,42 @@ const getPoster = {
       throw error;
     }
   },
+  getSelf: async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        `${api}/getSelfRecipes`,
+
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      let sendTo;
+      if (response.ok) {
+        const responseData = await response.json();
+        sendTo = {
+          response: responseData,
+          status: true,
+        };
+        return sendTo;
+      } else {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user-storage");
+        return (sendTo = {
+          error: true,
+        });
+      }
+    } catch (error) {
+      throw error;
+    }
+  },
   getRecipe: async (id: string) => {
     try {
-      // const api = "http://localhost:3001";
-      // const api = " https://food-hub-backend-gzga.onrender.com";
-
-      const response = await fetch(`${api}/findRecipeByDishId/${id}`, {
+      const response = await fetch(`${api}/findRecipeId/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -82,8 +110,7 @@ const getPoster = {
   },
   searchRecipe: async (params: string) => {
     try {
-      // const api = `http://localhost:3001/searhRecipe?name=${params}`;
-      const getAPi = `${api}/searhRecipe?name=${params}`;
+      const getAPi = `${api}/getRecipeByName?name=${params}`;
       const response = await fetch(getAPi, {
         method: "GET",
         headers: {
@@ -231,7 +258,7 @@ const getPoster = {
       }
 
       console.log(responseData, "respose dattttta");
-      localStorage.setItem("authToken", responseData.token);
+      localStorage.setItem("token", responseData.token);
       return {
         response: responseData,
         status: true,
@@ -248,7 +275,7 @@ const getPoster = {
   },
   uploadRecipe: async (formData: Record<string, any>) => {
     try {
-      const createAccountApi = `${api}/addPoster`;
+      const createAccountApi = `${api}/postRecipe`;
 
       const data = new FormData();
       data.append("name", formData.name);
@@ -272,7 +299,7 @@ const getPoster = {
         data.append("image", formData.selectedImage);
       }
 
-      const token = localStorage.getItem("authToken"); // or wherever you store your token
+      const token = localStorage.getItem("token"); // or wherever you store your token
 
       const response = await fetch(createAccountApi, {
         method: "POST",

@@ -2,18 +2,38 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useState } from "react";
-import { CiMenuKebab } from "react-icons/ci";
-import { IoCloseSharp } from "react-icons/io5";
-import { FaFacebookF } from "react-icons/fa";
-import { FaInstagram } from "react-icons/fa6";
-import { FaTwitter } from "react-icons/fa";
+import {
+  CiCircleInfo,
+  CiForkAndKnife,
+  CiMenuBurger,
+  CiSun,
+} from "react-icons/ci";
+import { IoArrowBack, IoSettingsOutline } from "react-icons/io5";
+import { FaEdit } from "react-icons/fa";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUserStore } from "@/zustand/user";
 import { useRouter } from "next/navigation";
+import { GoHome } from "react-icons/go";
+import {
+  PiBookOpen,
+  PiBookOpenUserLight,
+  PiBowlFoodFill,
+  PiBowlFoodLight,
+  PiNotePencilLight,
+} from "react-icons/pi";
+import { LiaEditSolid, LiaUtensilSpoonSolid } from "react-icons/lia";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { BiLogOut } from "react-icons/bi";
+import { HashLoader } from "react-spinners";
+import { MdManageAccounts } from "react-icons/md";
+import { TfiBook } from "react-icons/tfi";
+import { RiUserSettingsLine } from "react-icons/ri";
+import { SlLogout } from "react-icons/sl";
+import { AiOutlineSetting } from "react-icons/ai";
 
 export default function Nav() {
-  const [menuBtn, setMenuBtn] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [menuClicked, setMenuClicked] = useState(false);
@@ -23,26 +43,43 @@ export default function Nav() {
   const router = useRouter();
 
   const getLinkClassName = (path: string) => {
-    const baseClasses = "hover:text-blue-500 transition-colors duration-200";
+    const baseClasses =
+      "hover:text-orange-600 transition-colors duration-200 md:p-4 py-3 w-full flex-1  flex items-center justify-center";
     if (path === "/") {
       return pathname === path
-        ? `${baseClasses} text-base-dark font-bold`
+        ? `${baseClasses}  text-base-dark font-bold border-b-2 border-base-dark `
         : baseClasses;
     }
     return pathname.startsWith(path)
-      ? `${baseClasses} text-base-dark font-bold`
+      ? `${baseClasses} text-base-dark font-bold border-b-2 border-base-dark  `
       : baseClasses;
+  };
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleContainer = () => {
+    setIsOpen(!isOpen);
+    setVisible(!visible);
   };
 
   const handleScroll = () => {
     if (!menuClicked) {
       const currentScrollPos = window.pageYOffset;
       const isScrollingUp = prevScrollPos > currentScrollPos;
-      if (isScrollingUp) {
-        setMenuBtn(false);
-      }
+
       setVisible(isScrollingUp);
       setPrevScrollPos(currentScrollPos);
+    }
+  };
+  const logout = () => {
+    setLoading(true);
+    try {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user-storage");
+      router.push("/account/login");
+    } catch (error) {
+      return error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,75 +94,91 @@ export default function Nav() {
       };
     }
   }, [prevScrollPos, menuClicked]);
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
 
-  const toggleMenuVisibility = () => {
-    setMenuBtn((prevMenuBtn) => !prevMenuBtn);
-    setMenuClicked(true);
-    setTimeout(() => setMenuClicked(false), 300); // Adjust the timeout duration as needed
-  };
-
+    // Clean up by removing the class when the component unmounts
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [isOpen]);
   return (
     <>
       <nav
-        className={`bg-white text-black sm:flex sticky top-0 z-50 transition-transform duration-300 ${
-          !menuBtn ? `justify-between p-3` : `justify-center`
-        } flex sm:p-4 content-center border-b-2 ${
+        className={`bg-white text-black sm:flex sticky items-center justify-between md:px-4   top-0 z-50 transition-transform duration-300 ${
           visible ? "translate-y-0" : "-translate-y-full"
-        }`}
+        } justify-between flex  content-center shadow`}
       >
-        <ul className="flex items-center justify-center">
-          {!menuBtn && <li className="font-bold text-lg">LOGO</li>}
+        <ul className="md:flex items-center justify-center hidden">
+          <li className="font-bold text-lg">Food-Hub</li>
         </ul>
 
-        <ul className="space-x-8 text-lg hidden sm:flex">
-          <li>
-            <Link href="/" className={getLinkClassName("/")}>
-              Home
+        <ul className="md:space-x-8 text-lg flex items-center w-screen md:w-auto">
+          <li className={getLinkClassName("/")}>
+            <Link href="/">
+              <p className="hidden md:flex">Home</p>
+              <GoHome className="flex md:hidden text-2xl" />
             </Link>
           </li>
-          <li>
-            <Link href="/recipe" className={getLinkClassName("/recipe")}>
-              Recipe
+          <li className={getLinkClassName("/recipe")}>
+            <Link href="/recipe">
+              <p className="hidden md:flex">Recipe</p>
+              <PiBowlFoodLight className="flex md:hidden text-2xl" />
             </Link>
           </li>
-          <li>
-            <Link href="/blog" className={getLinkClassName("/blog")}>
-              Blog
+          <li className={getLinkClassName("/blog")}>
+            <Link href="/blog">
+              <p className="hidden md:flex">Blog</p>
+              <PiBookOpenUserLight className="flex md:hidden text-2xl" />
             </Link>
           </li>
-          <li>
-            <Link
-              href="/spoonacular"
-              className={getLinkClassName("/spoonacular")}
-            >
-              Spoonacular
+          <li className={getLinkClassName("/spoonacular")}>
+            <Link href="/spoonacular">
+              <p className="hidden md:flex">Spoonacular</p>
+              <CiForkAndKnife className="flex md:hidden text-2xl" />
             </Link>
           </li>
-          <li>
-            <Link href="/about" className={getLinkClassName("/about")}>
-              About
+          <li className={getLinkClassName("/about")}>
+            <Link href="/about">
+              <p className="hidden md:flex">About</p>
+              <CiCircleInfo className="flex md:hidden text-2xl" />
             </Link>
+          </li>
+
+          <li
+            className="hover:text-orange-600 md:hidden transition-colors duration-200 md:p-4 py-3 w-full flex-1 flex items-center justify-center"
+            onClick={toggleContainer} // Toggle the container on click
+          >
+            <CiMenuBurger className="flex md:hidden text-2xl" />
           </li>
         </ul>
+
         {isClient && (
-          <div>
+          <div className="hidden sm:block">
             {!user ? (
-              <div className="sm:flex space-x-2 text-md hidden justify-center items-center">
+              <div className="flex space-x-2 text-md justify-center items-center">
                 <button
                   onClick={() => router.push("account/login")}
-                  className="rounded  bg-base-dark text-white px-3 p-1 cursor-pointer"
+                  className="rounded bg-base-dark text-white px-3 p-1 cursor-pointer"
                 >
                   Login
                 </button>
                 <button
                   onClick={() => router.push("account/create-account")}
-                  className="  bg-gray-300 rouded px-3 p-1 cursor-pointer"
+                  className="rounded bg-gray-300 rouded px-3 p-1 cursor-pointer"
                 >
                   Register
                 </button>
               </div>
             ) : (
-              <div className="sm:flex space-x-3 text-md hidden justify-center items-center">
+              <div
+                onClick={toggleContainer}
+                className="flex space-x-3 text-md justify-center items-center"
+              >
                 <img
                   src={user.profile}
                   alt=""
@@ -136,75 +189,79 @@ export default function Nav() {
             )}
           </div>
         )}
-
-        {!menuBtn && (
-          <button
-            onClick={toggleMenuVisibility}
-            className="flex sm:hidden text-lg p-1"
-          >
-            <CiMenuKebab />
-          </button>
-        )}
-        {menuBtn && (
-          <div
-            className={`bg-white flex flex-col h-72 w-full justify-between sm:hidden transform transition-transform duration-300 ${
-              menuBtn ? "translate-y-0" : "-translate-y-full"
-            }`}
-          >
-            <div className="flex justify-between items-center p-3">
-              <div className="font-bold text-lg">LOGO</div>
-              <button
-                onClick={toggleMenuVisibility}
-                className="flex sm:hidden text-lg p-1"
-              >
-                <IoCloseSharp />
-              </button>
-            </div>
-
-            <ul className="flex justify-center items-center text-lg flex-col ">
-              <li>
-                <Link href="/" className={getLinkClassName("/")}>
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/recipe" className={getLinkClassName("/recipe")}>
-                  Recipe
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className={getLinkClassName("/blog")}>
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/spoonacular"
-                  className={getLinkClassName("/spoonacular")}
-                >
-                  Spoonacular
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className={getLinkClassName("/about")}>
-                  About
-                </Link>
-              </li>
-            </ul>
-            <ul className="flex justify-center gap-6 text-lg mb-4">
-              <li>
-                <FaFacebookF />
-              </li>
-              <li>
-                <FaInstagram />
-              </li>
-              <li>
-                <FaTwitter />
-              </li>
-            </ul>
-          </div>
-        )}
       </nav>
+      <div>
+        {/* Background overlay */}
+        <div
+          className={`fixed inset-0 bg-black bg-opacity-5 backdrop-blur-sm transition-opacity duration-300 ${
+            isOpen ? "opacity-100 z-40" : "opacity-0 pointer-events-none"
+          }`}
+          onClick={toggleContainer} // Close the container when clicking outside
+        ></div>
+
+        {/* Sliding container */}
+        <div
+          className={`fixed inset-y-0 right-0 bg-white shadow-lg transform transition-transform duration-300 ${
+            isOpen
+              ? "translate-x-0 w-1/2 md:w-1/6"
+              : "translate-x-full w-1/2 md:w-1/6"
+          } z-50`}
+        >
+          <div className="md:p-4 p-2 flex justify-between items-center ">
+            <IoArrowBack
+              onClick={toggleContainer}
+              className="text-xl font-semibold"
+            />
+            <p className="text-center font-bold md:text-2xl text-lg">
+              Food-Hub
+            </p>
+            <p></p>
+          </div>
+          <div className="text-xs md:text-sm">
+            {isClient && user && (
+              <div
+                onClick={toggleContainer}
+                className="flex space-x-3 text-md  p-3 items-center"
+              >
+                <img
+                  src={user.profile}
+                  alt=""
+                  className="object-cover h-8 w-8 rounded-full"
+                />
+                <p className="font-semibold">{user.name}</p>
+              </div>
+            )}
+            <div className="md:p-4 p-3 flex gap-2  md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
+              <LiaEditSolid className="text-2xl items-center" />
+              Edit Profile
+            </div>
+            <div className="md:p-4 p-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
+              <PiBowlFoodLight className="text-2xl items-center" />
+              My Recipe
+            </div>
+            <div className="md:p-4 p-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
+              <AiOutlineSetting className="text-2xl items-center" />
+              Manage Account
+            </div>
+            <div
+              onClick={() => {
+                logout();
+              }}
+              className="md:p-4 p-3  border-t  mt-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer"
+            >
+              <SlLogout className="text-lg items-center" />
+              Logout
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {loading && (
+        <div className="fixed inset-0 gap-3 flex items-center justify-center bg-white bg-opacity-70 backdrop-blur-lg z-50">
+          <HashLoader color="#fc8000" />
+          <p>Loging out...</p>
+        </div>
+      )}
     </>
   );
 }

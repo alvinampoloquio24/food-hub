@@ -40,14 +40,8 @@ export default function Page({
 
   const getRecomendedRecipe = async () => {
     try {
-      const response = await fetch(
-        "https://food-hub-backend-gzga.onrender.com/getPosters"
-      );
-      if (!response.ok) {
-        throw { message: "Unable to fetch!" };
-      }
-      const recipe = await response.json();
-      setRecRecipe(recipe);
+      const recipe = await Poster.get();
+      setRecRecipe(recipe.response);
     } catch (error) {
       throw error;
     }
@@ -57,8 +51,8 @@ export default function Page({
     const getRecipe = async () => {
       try {
         const recipe = await Poster.getRecipe(params.recipeId);
-
-        setRecipe(recipe.response.recipe);
+        console.log("Fetched recipe:", recipe); // Debugging line
+        setRecipe(recipe.response);
       } catch (error) {
         console.log("error", error);
       }

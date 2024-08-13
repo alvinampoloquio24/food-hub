@@ -91,12 +91,11 @@ export default function GenerateRecipe() {
   }, [search, recipes, setRecipes]);
   return (
     <>
-      <Navagation />
-
       <div className="bg-white">
+        <Navagation />
         <div className="flex flex-col lg:grid lg:grid-cols-12">
           {/* Left sidebar */}
-          <div className="w-full lg:col-span-3 lg:h-screen lg:sticky lg:top-0 lg:bg-base-mid  md:bg-white border md:p-4 lg:p-8 md:px-16 px-4 pt-1">
+          <div className="w-full lg:col-span-3 lg:h-screen lg:sticky lg:top-0 lg:bg-base-mid lg:overflow-y-auto md:bg-white border md:p-4 lg:p-8 md:px-16 px-4 pt-1">
             <div className="flex flex-col gap-6 lg:gap-10">
               <div className="hidden lg:flex flex-col">
                 <p className="text-xs">powered by</p>
