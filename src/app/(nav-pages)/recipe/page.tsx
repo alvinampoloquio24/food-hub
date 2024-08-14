@@ -71,7 +71,7 @@ export default function recipe() {
   const [showModal, setShowModal] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const { user } = useUserStore();
-  const [isLoading, setIsLoading] = useState(false);
+
   const [formData, setFormData] = useState<{
     name: string;
     description: string;

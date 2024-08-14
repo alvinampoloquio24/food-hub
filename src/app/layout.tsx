@@ -6,6 +6,7 @@ import "swiper/css"; // Import Swiper styles
 import Footer from "./components/Footer";
 import { diphylleia, montserratAlternates } from "./font";
 import { SkeletonTheme } from "react-loading-skeleton";
+import { AuthProvider } from "@/context/authProvider"; // Import AuthProvider
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,9 +28,13 @@ export default function RootLayout({
       <body
         className={`${inter.className} text-black font-montserrat-alternates bg-white`}
       >
-        <SkeletonTheme baseColor="#EEEEEE" highlightColor="#FFCC99">
-          {children}
-        </SkeletonTheme>
+        <AuthProvider>
+          {" "}
+          {/* Add AuthProvider here */}
+          <SkeletonTheme baseColor="#EEEEEE" highlightColor="#FFCC99">
+            {children}
+          </SkeletonTheme>
+        </AuthProvider>
         {/* <Footer /> */}
       </body>
     </html>

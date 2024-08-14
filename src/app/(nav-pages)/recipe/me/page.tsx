@@ -23,11 +23,12 @@ import { GrCaretNext, GrCaretPrevious } from "react-icons/gr";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BsFillCloudUploadFill } from "react-icons/bs";
-import AuthProvider from "@/hoc/authProvider";
+import withAuth from "@/hoc/checkeLogin";
 import { useRouter } from "next/navigation";
+import type { NextPage } from "next";
+import { useAuth } from "@/context/authProvider";
 
-export default AuthProvider(recipe);
-function recipe() {
+function Recipe() {
   interface Poster {
     name: string;
     _id: string;
@@ -67,7 +68,7 @@ function recipe() {
   const [showModal, setShowModal] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const { user } = useUserStore();
-  const [isLoading, setIsLoading] = useState(false);
+
   const [formData, setFormData] = useState<{
     name: string;
     description: string;
@@ -87,6 +88,7 @@ function recipe() {
     directions: [{ title: "", description: "" }],
     selectedImage: null,
   });
+  const { isLoggedIn } = useAuth();
 
   const handleFormInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -307,8 +309,9 @@ function recipe() {
   useEffect(() => {
     setIsClient(true);
     handleSeach(search);
+    console.log(isLoggedIn, "---");
     getPoster();
-  }, [search]);
+  }, [search, isLoggedIn]);
 
   const slides = [
     // Slide 1: Basic Info
@@ -823,3 +826,4 @@ function recipe() {
     </>
   );
 }
+export default withAuth(Recipe);

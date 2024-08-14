@@ -330,6 +330,32 @@ const getPoster = {
       };
     }
   },
+  getUser: async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        `${api}/getUser`,
+
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // Add this line
+          },
+        }
+      );
+      if (response.ok) {
+        const responseData = await response.json();
+        const sendTo = {
+          response: responseData,
+          status: true,
+        };
+        return sendTo;
+      }
+      throw new Error("Something went Wrong! ");
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default getPoster;
