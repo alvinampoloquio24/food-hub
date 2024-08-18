@@ -5,15 +5,18 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const api = process.env.NEXT_PUBLIC_LOCALHOST;
 
 interface User {
-  id: string;
+  _id: string;
+  name: string;
   email: string;
-  // Add other user properties as needed
+  coverPhoto: any;
+  profile: any;
 }
 
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
   loading: boolean;
+  refreshUser: () => Promise<void>;
   checkLoginStatus: () => Promise<void>;
 }
 
@@ -33,49 +36,48 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (!token) {
         setIsLoggedIn(false);
         setUser(null);
-        return;
-      }
-
-      const response = await fetch(`${api}/getUser`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const userData = await response.json();
-        console.log("User data:", userData);
-        setUser(userData);
-        setIsLoggedIn(true);
-        console.log("isLoggedIn after setting to true:", true);
-      } else {
-        console.log("Error: response not ok");
-        setIsLoggedIn(false);
-        setUser(null);
         localStorage.removeItem("token");
+      } else {
+        const response = await fetch(`${api}/getUser`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData); // Successfully fetched user data
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+          setUser(null);
+          localStorage.removeItem("token"); // Clear token on failure
+        }
       }
     } catch (error) {
       console.error("Failed to check login status:", error);
       setIsLoggedIn(false);
       setUser(null);
+      localStorage.removeItem("token");
     } finally {
-      setLoading(false);
+      setLoading(false); // Ensure loading is set to false after all cases
     }
   };
 
-  useEffect(() => {
-    checkLoginStatus();
-  }, []);
+  const refreshUser = async () => {
+    await checkLoginStatus(); // Re-fetch user data when needed
+  };
 
   useEffect(() => {
-    console.log("isLoggedIn updated:", isLoggedIn);
-  }, [isLoggedIn]);
+    checkLoginStatus(); // Run once on mount to fetch initial user data
+  }, []);
 
   const value = {
     user,
     isLoggedIn,
     loading,
+    refreshUser,
     checkLoginStatus,
   };
 

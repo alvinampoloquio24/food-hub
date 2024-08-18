@@ -432,7 +432,7 @@ export default function Home() {
         </div>
       </div>
       <div className=" flex bg-white justify-center items-center py-5 lg:px-20 lg:py-32">
-        <div className="bg-base p-10 w-full mx-3 justify-center items-center lg:py-20 xl:py32 flex-col gap-5 flex rounded-3xl ">
+        <div className="bg-base p-10 w-full bg-base-mid shadow mx-3 justify-center items-center lg:py-20 xl:py32 flex-col gap-5 flex rounded-3xl ">
           <p className="text-lg font-bold text-base-dark py-2 md:text-3xl lg:text-4xl">
             Deliciousness to your inbox
           </p>

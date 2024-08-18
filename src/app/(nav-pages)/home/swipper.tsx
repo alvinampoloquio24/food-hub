@@ -109,7 +109,7 @@ const HotRecipe: React.FC = () => {
                     <img
                       src={poster.img}
                       alt=""
-                      className="object-cover md:h-96 h-80 w-screen overflow-hidden lg:hidden flex"
+                      className="object-cover md:h-96  h-60 w-screen overflow-hidden lg:hidden flex"
                     />
 
                     <div className=" flex gap-5">
@@ -139,13 +139,13 @@ const HotRecipe: React.FC = () => {
                         className=" rounded-full  sm:h-12 h-10"
                       />
                       <div>
-                        <p className="text-xs">Jonny Sins</p>
+                        <p className="text-xs"></p>
                         <p className="text-xs">March 2 2024</p>
                       </div>
                     </div>
                     <div>
                       <Link href={`/recipe/${poster._id}`}>
-                        <div className=" bg-base-dark flex items-center md:p-5 p-4 sm:gap-4 gap-1 justify-between rounded-2xl cursor-pointer">
+                        <div className=" bg-base-dark flex items-center md:p-5 p-3 sm:gap-4 gap-1 justify-between rounded-2xl cursor-pointer">
                           <p className="text-white ml-3 text-xs ">
                             View Recipe
                           </p>

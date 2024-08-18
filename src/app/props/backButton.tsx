@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation";
+import { IoArrowBack } from "react-icons/io5";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 
 const BackButton: React.FC = () => {
@@ -10,11 +11,10 @@ const BackButton: React.FC = () => {
 
   return (
     <div
-      className="flex gap-1 items-center py-8 cursor-pointer"
       onClick={handleBack}
+      className=" absolute hover:underline hover:text-base-dark   p-4 text-2xl top-0"
     >
-      <MdOutlineKeyboardBackspace />
-      <p className="text-xl hover:underline hover:text-blue-600">Back</p>
+      <IoArrowBack className="text-2xl" />
     </div>
   );
 };

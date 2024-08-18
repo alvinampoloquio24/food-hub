@@ -31,15 +31,9 @@ export default function EditProfile() {
       _id: string;
     };
   }
-  interface EditUser {
-    _id: string | undefined;
-    name: string | null | undefined;
-    coverPhoto: any;
-    profile: any;
-  }
-  const { user, refreshUser } = useAuth();
+
+  const { user } = useAuth();
   const [poster, setPoster] = React.useState<Poster[] | null>([]);
-  const [showEditModal, setShowEditModal] = useState(false);
   const getPoster = async () => {
     try {
       const data = await Poster.get();
@@ -49,54 +43,14 @@ export default function EditProfile() {
     } finally {
     }
   };
-  const editedUser: EditUser = {
-    _id: user?._id,
-    name: user?.name,
-    coverPhoto: user?.coverPhoto,
-    profile: user?.profile,
-  };
-  const EditProfile = async (formData: EditUser) => {
-    try {
-      setShowEditModal(false);
 
-      const toastId = toast.loading("Updating...");
-
-      const user = await Poster.editUser(formData);
-      if (!user.status) {
-        toast.update(toastId, {
-          render: ` Failed to Edit ${user.response.message}`,
-          type: "error",
-          isLoading: false,
-          autoClose: 5000,
-        });
-      } else {
-        toast.update(toastId, {
-          render: "Edit successfully",
-          type: "success",
-          isLoading: false,
-          autoClose: 5000,
-        });
-      }
-      await refreshUser();
-    } catch (error) {
-      toast.error("Something went wrong!");
-    }
-  };
-  const handleSubmitEditProfile = (formData: EditUser) => {
-    EditProfile(formData);
-  };
   useEffect(() => {
     getPoster();
   }, []);
   return (
     <>
       <ToastContainer />
-      <EditProfileModal
-        user={editedUser}
-        isOpen={showEditModal}
-        onClose={() => setShowEditModal(false)}
-        onSubmit={handleSubmitEditProfile}
-      />
+
       <div className="h-screen grid grid-cols-12">
         <ProfileNav />
         {/* Fixed ProfileNav */}
@@ -123,22 +77,6 @@ export default function EditProfile() {
                 <p>{user?.email}</p>
               </div>
             </div>
-            <div className="flex gap-4">
-              {" "}
-              <button className=" bg-base-mid px-4 py-3 shadow text-gray-700 rounded flex gap-2 items-center transition-all duration-300 hover:bg-slate-200  cursor-pointer">
-                <IoIosAddCircle />
-                <p>Add post</p>
-              </button>
-              <button
-                onClick={() => {
-                  setShowEditModal(true);
-                }}
-                className=" bg-blue-400 px-4 py-3 shadow text-white rounded flex gap-2 items-center transition-all duration-300 hover:bg-blue-600 cursor-pointer"
-              >
-                <MdEditSquare />
-                <p> Edit Profile</p>
-              </button>
-            </div>
           </div>
 
           <div className="px-16 text-md p-6 flex gap-2 flex-col">
@@ -149,28 +87,8 @@ export default function EditProfile() {
                 number of <span className="font-semibold"> post 12</span>
               </p>
             </div>
-            <div className="flex gap-2 items-center">
-              <FiRss className="text-2xl" />
-              <p>
-                followed by <span className="font-semibold">3 people</span>
-              </p>
-            </div>
           </div>
           <div className=" px-10 flex flex-col gap-5">
-            <div className="bg-base-mid flex flex-col gap-6 p-10 rounded shadow">
-              <p className="text-2xl font-semibold">Complete your profile</p>
-              <p className="text-md">
-                Complete your profile to get the most out of your experience! By
-                sharing more about yourself, you'll unlock personalized
-                recommendations, tailored content, and a smoother interaction
-                with our platform. Let us know your preferences, update your
-                details, and make the platform truly yours!
-              </p>
-              <button className="p-3 w-36 rounded flex items-center shadow justify-center gap-2 bg-slate-50 transition-all duration-300 hover:bg-slate-200 cursor-pointer ">
-                Continue
-              </button>
-            </div>
-
             <div className="bg-base-mid flex flex-col gap-1 rounded shadow">
               {poster?.length === 0 ? (
                 <div className="h-90p bg-white flex justify-center items-center">

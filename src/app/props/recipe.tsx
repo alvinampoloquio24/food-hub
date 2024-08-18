@@ -1,13 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
-import { IoTimer } from "react-icons/io5";
-import { BiSolidDish } from "react-icons/bi";
-import { IoMdNutrition } from "react-icons/io";
+
 import { TbRosetteDiscountCheckFilled } from "react-icons/tb";
-import { CgDetailsLess } from "react-icons/cg";
-import { AiOutlineQq } from "react-icons/ai";
 import { RiFireFill } from "react-icons/ri";
 import { IoIosArrowDown } from "react-icons/io";
+import { IoArrowBack } from "react-icons/io5";
+import BackButton from "@/app/props/backButton";
 
 interface Irecipe {
   name: string;
@@ -25,16 +23,17 @@ interface RecipeProps {
 export default function RecipeProps({ recipe }: RecipeProps) {
   return (
     <>
-      <div className="lg:h-screen bg-white">
+      <div className="lg:h-screen bg-white relative">
+        <BackButton />
         <div className="lg:flex lg:flex-row flex flex-col-reverse lg:h-full md:flex-col-reverse ">
-          <div className="bg-base-mid lg:basis-1/3 md:p-10 p-6 md:h-screen    overflow-y-auto  ">
-            <p className="md:text-3xl text-2xl font-semi-bold">
+          <div className="bg-base-mid lg:basis-1/3 md:p-10 p-6 md:h-screen overflow-y-auto  ">
+            <p className="md:text-3xl text-2xl lg:pl-8 font-semi-bold">
               Ingredients ({recipe.ingredients.length})
             </p>
             {recipe.ingredients.map((item, index) => (
               <div
                 key={index}
-                className="flex border-b border-gray-300 gap-3 pt-8"
+                className="flex border-b lg:pl-8 border-gray-300 gap-3 pt-8"
               >
                 <p className="md:text-xl text-md  font-bold">{item.quantity}</p>
                 <div className="flex items-center text-sm lg:text-lg">

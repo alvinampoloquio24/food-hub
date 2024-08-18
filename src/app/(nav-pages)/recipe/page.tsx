@@ -2,22 +2,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { RiContactsBookUploadFill, RiTimerFill } from "react-icons/ri";
+import React, { useEffect, useState } from "react";
+import { RiTimerFill } from "react-icons/ri";
 import { BiDish } from "react-icons/bi";
-import { GoHomeFill } from "react-icons/go";
-import { MdMenuBook } from "react-icons/md";
-import { BiLogoBlogger } from "react-icons/bi";
-import { RiContactsBook3Fill } from "react-icons/ri";
-import { TbInfoSquareRoundedFilled } from "react-icons/tb";
 import { FaRegFilePdf } from "react-icons/fa6";
 import Poster from "../../../api/poster";
 import { CiShare1 } from "react-icons/ci";
 import Link from "next/link";
 import generatePDF from "@/utils/generatePDF";
 import { TiArrowUpThick } from "react-icons/ti";
-import { DiVim } from "react-icons/di";
-import { ClimbingBoxLoader, HashLoader, MoonLoader } from "react-spinners";
 import Lottie from "react-lottie";
 import animationData from "@/lottie/noResult.json"; // Your Lottie JSON file
 import Loading from "@/lottie/loading.json";
@@ -25,9 +18,7 @@ import { MdClear } from "react-icons/md";
 import Navagation from "@/app/components/Navagation";
 import { FaUpload } from "react-icons/fa6";
 import { useUserStore } from "@/zustand/user";
-import Modal from "@/app/props/modalUploadRecipe";
-import { MdOutlineNavigateNext } from "react-icons/md";
-import { GrCaretNext, GrCaretPrevious } from "react-icons/gr";
+import ModalUpload from "@/app/props/modalUploadRecipe";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BsFillCloudUploadFill } from "react-icons/bs";
@@ -58,133 +49,24 @@ export default function recipe() {
     title: string;
     description: string;
   };
-
-  interface Slide {
-    currentSlide: number;
-    totalSlides: number;
+  interface RecipeFormData {
+    name: string;
+    description: string;
+    calories: string;
+    type: string;
+    time: string;
+    selectedImage: File | null;
+    ingredients: Ingredient[];
+    directions: Direction[];
   }
   const [poster, setPoster] = React.useState<Poster[] | null>([]);
   const [isGenerating, setIsGenerating] = React.useState(false);
   const [search, setSearch] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [isclient, setIsClient] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
   const { user } = useUserStore();
+  const [showModalUpload, setShowModalUpload] = useState(false);
 
-  const [formData, setFormData] = useState<{
-    name: string;
-    description: string;
-    calories: string;
-    type: string;
-    time: string;
-    ingredients: Ingredient[];
-    directions: Direction[];
-    selectedImage: File | null;
-  }>({
-    name: "",
-    description: "",
-    calories: "",
-    type: "",
-    time: "",
-    ingredients: [{ name: "", quantity: "", unit: "" }],
-    directions: [{ title: "", description: "" }],
-    selectedImage: null,
-  });
-
-  const handleFormInputChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = event.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // Handler for image input
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-
-    if (!files || files.length === 0) {
-      toast.error("Image is required.");
-      return;
-    }
-
-    setFormData((prev) => ({
-      ...prev,
-      selectedImage: files[0],
-    }));
-  };
-
-  // Handlers for ingredients
-  const handleIngredientChange = (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, value } = event.target;
-
-    setFormData((prev) => {
-      const newIngredients = [...prev.ingredients];
-      newIngredients[index] = {
-        ...newIngredients[index],
-        [name]: value,
-      };
-      return {
-        ...prev,
-        ingredients: newIngredients,
-      };
-    });
-  };
-
-  // Handlers for directions
-  const handleDirectionChange = (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, value } = event.target;
-
-    setFormData((prev) => {
-      const newDirections = [...prev.directions];
-      newDirections[index] = {
-        ...newDirections[index],
-        [name]: value,
-      };
-      return {
-        ...prev,
-        directions: newDirections,
-      };
-    });
-  };
-
-  const handleAddIngredient = () => {
-    setFormData((prev) => ({
-      ...prev,
-      ingredients: [...prev.ingredients, { name: "", quantity: "", unit: "" }],
-    }));
-  };
-
-  const handleRemoveIngredient = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      ingredients: prev.ingredients.filter((_, i) => i !== index),
-    }));
-  };
-
-  const handleAddDirection = () => {
-    setFormData((prev) => ({
-      ...prev,
-      directions: [...prev.directions, { title: "", description: "" }],
-    }));
-  };
-
-  const handleRemoveDirection = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      directions: prev.directions.filter((_, i) => i !== index),
-    }));
-  };
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -239,10 +121,7 @@ export default function recipe() {
     setIsGenerating(false);
   };
   //handle summit ------------------------------------------
-  const handleSubmit = (event: FormEvent) => {
-    console.log();
-    event.preventDefault();
-
+  const handleSubmit = (formData: RecipeFormData) => {
     const requiredFields = [
       "name",
       "description",
@@ -275,12 +154,12 @@ export default function recipe() {
         return;
       }
     }
-    uploadRecipe();
+    uploadRecipe(formData);
   };
 
-  const uploadRecipe = async () => {
+  const uploadRecipe = async (formData: RecipeFormData) => {
     try {
-      setShowModal(false);
+      setShowModalUpload(false);
       const toastId = toast.loading("Posting...");
 
       const recipe = await Poster.uploadRecipe(formData);
@@ -314,241 +193,14 @@ export default function recipe() {
     getPoster();
   }, [search]);
 
-  const slides = [
-    // Slide 1: Basic Info
-    <div key="basic-info">
-      <h2 className="md:text-2xl text-lg font-bold text-center mb-6">
-        Basic Recipe Information
-      </h2>
-      <div className="flex flex-col gap-4 md:text-lg text-sm">
-        <div className="flex flex-col">
-          <p>Name</p>
-          <input
-            type="text"
-            name="name"
-            required
-            onChange={handleFormInputChange}
-            placeholder="Recipe name"
-            value={formData.name}
-            className="border p-2"
-          />
-        </div>
-        <div className="flex flex-col">
-          <p>Attach picture</p>
-          <input
-            type="file"
-            required
-            className="border p-2"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-        </div>
-        <div className="flex gap-4 flex-col lg:flex-row">
-          <div className="flex flex-col">
-            <p>Cook time</p>
-            <input
-              type="number"
-              name="time"
-              required
-              onChange={handleFormInputChange}
-              placeholder="In minutes"
-              value={formData.time}
-              className="border p-2"
-            />
-          </div>
-          <div className="flex flex-col">
-            <p>Type</p>
-            <input
-              type="text"
-              name="type"
-              required
-              onChange={handleFormInputChange}
-              placeholder="Type"
-              value={formData.type}
-              className="border p-2"
-            />
-          </div>
-          <div className="flex flex-col">
-            <p>Calories</p>
-            <input
-              type="number"
-              name="calories"
-              required
-              onChange={handleFormInputChange}
-              placeholder="Calories"
-              value={formData.calories}
-              className="border p-2"
-            />
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <p>Description</p>
-          <textarea
-            className="border p-2"
-            name="description"
-            required
-            onChange={handleFormInputChange}
-            value={formData.description}
-            placeholder="Enter your description..."
-            rows={3}
-          ></textarea>
-        </div>
-      </div>
-    </div>,
-
-    // Slide 2: Ingredients
-    <div key="ingredients">
-      <h2 className="md:text-2xl text-lg font-bold text-center mb-6">
-        Ingredients
-      </h2>
-      <div className="flex flex-col gap-2 pb-8">
-        {formData.ingredients.map((ingredient, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-12 w-full gap-2 justify-center md:text-lg text-sm"
-          >
-            <div className="flex flex-col justify-center col-span-5">
-              <p>Name</p>
-              <input
-                type="text"
-                required
-                className="border p-2"
-                name="name"
-                value={ingredient.name}
-                onChange={(event) => handleIngredientChange(index, event)}
-              />
-            </div>
-            <div className="flex flex-col justify-center col-span-3">
-              <p>Quantity</p>
-              <input
-                type="text"
-                required
-                className="border p-2"
-                name="quantity"
-                value={ingredient.quantity}
-                onChange={(event) => handleIngredientChange(index, event)}
-              />
-            </div>
-            <div className="flex flex-col justify-center col-span-3">
-              <p>Unit</p>
-              <input
-                type="text"
-                className="border p-2"
-                name="unit"
-                required
-                value={ingredient.unit}
-                onChange={(event) => handleIngredientChange(index, event)}
-              />
-            </div>
-            <div className="flex flex-col justify-center col-span-1">
-              <p className="md:flex hidden">Remove</p>
-              <button
-                type="button"
-                className="p-2 rounded md:border"
-                onClick={() => handleRemoveIngredient(index)}
-              >
-                X
-              </button>
-            </div>
-          </div>
-        ))}
-        <div className="flex gap-4 items-center mt-4">
-          <button
-            type="button"
-            className="p-1 px-3 rounded border"
-            onClick={handleAddIngredient}
-          >
-            + Add Ingredient
-          </button>
-        </div>
-      </div>
-    </div>,
-
-    // Slide 3: Directions
-    <div key="directions">
-      <h2 className="md:text-2xl text-sm font-bold text-center mb-6">
-        Directions
-      </h2>
-      <div className="flex flex-col gap-2">
-        {formData.directions.map((direction, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-12 w-full gap-2 justify-center md:text-lg text-sm"
-          >
-            <div className="flex flex-col justify-center col-span-4">
-              <p>Title</p>
-              <input
-                type="text"
-                required
-                className="border p-2"
-                name="title"
-                value={direction.title}
-                onChange={(event) => handleDirectionChange(index, event)}
-              />
-            </div>
-            <div className="flex flex-col justify-center col-span-7">
-              <p>Description</p>
-              <input
-                required
-                type="text"
-                className="border p-2"
-                name="description"
-                value={direction.description}
-                onChange={(event) => handleDirectionChange(index, event)}
-              />
-            </div>
-            <div className="flex flex-col justify-between col-span-1">
-              <p className="hidden md:flex-none">Remove</p>
-              <button
-                type="button"
-                className="p-2 rounded md:border"
-                onClick={() => handleRemoveDirection(index)}
-              >
-                X
-              </button>
-            </div>
-          </div>
-        ))}
-        <div className="flex gap-4 items-center mb-4">
-          <button
-            type="button"
-            className="p-1 px-3 rounded border"
-            onClick={handleAddDirection}
-          >
-            + Add Direction
-          </button>
-        </div>
-      </div>
-    </div>,
-  ];
-
-  const SlideIndicator = (slide: Slide) => {
-    return (
-      <div className="flex justify-center space-x-2 mt-4">
-        {Array.from({ length: slide.totalSlides }, (_, index) => (
-          <div
-            key={index}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ease-in-out ${
-              index === slide.currentSlide
-                ? "bg-base-dark scale-125"
-                : "bg-gray-300 scale-100"
-            }`}
-          ></div>
-        ))}
-      </div>
-    );
-  };
-
   return (
     <>
       <ToastContainer />
       <>
         <Navagation />
         <section className="bg-white h-screen lg:grid flex flex-col grid-cols-12 overflow-hidden">
-          <div className="lg:bg-base-mid bg-white shadow col-span-3  flex lg:flex-col items-center  lg:items-start space-x-3  lg:h-full  lg:p-8 md:px-8 px-1  text-gray-700">
-            <p className="text-3xl font-bold lg:flex hidden ">Recipe</p>
-
-            <div className="md:py-4 py-2 relative w-11/12">
+          <div className="lg:bg-base-mid bg-white shadow col-span-3  flex lg:flex-col items-center  lg:items-start space-x-3 lg:space-x-0  lg:h-full  lg:p-8 md:px-8 px-1  text-gray-700">
+            <div className="md:py-4 py-2 relative w-11/12 lg:w-full">
               <input
                 type="text"
                 className="w-full rounded h-10 pl-2 pr-20 md:text-lg text-xs  lg:shadow-none lg:border-none shadow border-2 border-orange-100"
@@ -587,9 +239,7 @@ export default function recipe() {
               <>
                 {user ? (
                   <div
-                    onClick={() => {
-                      setShowModal(true);
-                    }}
+                    onClick={() => setShowModalUpload(true)}
                     className="bg-base-mid h-10 w-10 lg:hidden flex items-center flex-col justify-center rounded"
                   >
                     {" "}
@@ -645,7 +295,7 @@ export default function recipe() {
                     <p>Post your own recipe</p>
                     <button
                       onClick={() => {
-                        setShowModal(true);
+                        setShowModalUpload(true);
                       }}
                       className=" lg:shadow lg:p-6 md:p-3 flex gap-4 lg:w-full border border-gray-400  justify-center items-center transition duration-200 ease-in-out hover:bg-orange-50 "
                     >
@@ -812,54 +462,11 @@ export default function recipe() {
           </div>
         </section>
 
-        <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-          <form
-            onSubmit={handleSubmit}
-            noValidate
-            className="h-90p flex flex-col justify-between"
-          >
-            <div className="flex flex-col w-full gap-6 mt-4">
-              {slides[currentSlide]}
-            </div>
-            <div>
-              {" "}
-              <div className="flex gap-3 mt-6">
-                {currentSlide > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => setCurrentSlide(currentSlide - 1)}
-                    className="p-2 px-3 bg-gray-200 rounded gap-2 flex items-center transition duration-200 ease-in-out hover:scale-110"
-                  >
-                    <GrCaretPrevious />
-                    Previous
-                  </button>
-                )}
-                {currentSlide < slides.length - 1 && (
-                  <button
-                    type="button"
-                    onClick={() => setCurrentSlide(currentSlide + 1)}
-                    className="p-2 px-3 hover:shadow-lg bg-base-dark text-white flex gap-2 items-center rounded transition duration-200 ease-in-out hover:scale-110"
-                  >
-                    Next <GrCaretNext />
-                  </button>
-                )}
-                {currentSlide === slides.length - 1 && (
-                  <button
-                    type="submit"
-                    className="p-2 flex items-center px-3 gap-2 bg-green-500 text-white rounded transition duration-200 ease-in-out hover:scale-110"
-                  >
-                    Upload
-                    <FaUpload />
-                  </button>
-                )}
-              </div>
-              <SlideIndicator
-                currentSlide={currentSlide}
-                totalSlides={slides.length}
-              />
-            </div>
-          </form>
-        </Modal>
+        <ModalUpload
+          isOpen={showModalUpload}
+          onClose={() => setShowModalUpload(false)}
+          onSubmit={handleSubmit}
+        />
       </>
     </>
   );

@@ -218,40 +218,59 @@ export default function Nav() {
             <p></p>
           </div>
           <div className="text-xs md:text-sm">
-            {isClient && user && (
-              <div
-                onClick={toggleContainer}
-                className="flex space-x-3 text-md  p-3 items-center"
-              >
-                <img
-                  src={user.profile}
-                  alt=""
-                  className="object-cover h-8 w-8 rounded-full"
-                />
-                <p className="font-semibold">{user.name}</p>
+            {isClient && user ? (
+              <>
+                <div
+                  onClick={toggleContainer}
+                  className="flex space-x-3 text-md  p-3 items-center"
+                >
+                  <img
+                    src={user.profile}
+                    alt=""
+                    className="object-cover h-8 w-8 rounded-full"
+                  />
+                  <p className="font-semibold">{user.name}</p>
+                </div>
+                <div className="md:p-4 p-3 flex gap-2  md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
+                  <LiaEditSolid className="text-2xl items-center" />
+                  Edit Profile
+                </div>
+                <Link href={"/recipe/me"}>
+                  <div className="md:p-4 p-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
+                    <PiBowlFoodLight className="text-2xl items-center" />
+                    My Recipe
+                  </div>
+                </Link>
+                <div className="md:p-4 p-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
+                  <AiOutlineSetting className="text-2xl items-center" />
+                  Manage Account
+                </div>
+                <div
+                  onClick={() => {
+                    logout();
+                  }}
+                  className="md:p-4 p-3  border-t  mt-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer"
+                >
+                  <SlLogout className="text-lg items-center" />
+                  Logout
+                </div>
+              </>
+            ) : (
+              <div className="flex space-x-2 text-md justify-center items-center mt-4">
+                <button
+                  onClick={() => router.push("account/login")}
+                  className="rounded bg-base-dark text-white px-3 p-1 cursor-pointer"
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => router.push("account/create-account")}
+                  className="rounded bg-gray-300 rouded px-3 p-1 cursor-pointer"
+                >
+                  Register
+                </button>
               </div>
             )}
-            <div className="md:p-4 p-3 flex gap-2  md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
-              <LiaEditSolid className="text-2xl items-center" />
-              Edit Profile
-            </div>
-            <div className="md:p-4 p-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
-              <PiBowlFoodLight className="text-2xl items-center" />
-              My Recipe
-            </div>
-            <div className="md:p-4 p-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
-              <AiOutlineSetting className="text-2xl items-center" />
-              Manage Account
-            </div>
-            <div
-              onClick={() => {
-                logout();
-              }}
-              className="md:p-4 p-3  border-t  mt-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer"
-            >
-              <SlLogout className="text-lg items-center" />
-              Logout
-            </div>
           </div>
         </div>
       </div>
