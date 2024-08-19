@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { AiFillSetting, AiOutlineSetting } from "react-icons/ai";
-import { PiBowlFood, PiBowlFoodFill, PiBowlFoodLight } from "react-icons/pi";
+import { PiBowlFood, PiBowlFoodFill } from "react-icons/pi";
 import { SlLogout } from "react-icons/sl";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/authProvider";
@@ -18,12 +18,17 @@ import {
   MdOutlineStyle,
   MdStyle,
 } from "react-icons/md";
-export default function ProfileNaviagtion() {
+
+export default function ProfileNavigation() {
   const { user, isLoggedIn } = useAuth();
   const [selected, setSelected] = useState("");
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setSelected(pathname);
+  }, [pathname]);
 
   const logout = () => {
     setLoading(true);
@@ -37,66 +42,57 @@ export default function ProfileNaviagtion() {
       setLoading(false);
     }
   };
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+
   const getLinkClassName = (path: string) => {
     const baseClasses =
-      "md:p-4 p-3 flex gap-2  md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer";
+      "md:p-4 p-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer";
 
     return pathname.startsWith(path)
-      ? `${baseClasses} text-base-dark font-bold  hover:-translate-x-0 hover:bg-base-mid `
+      ? `${baseClasses} text-base-dark font-bold hover:-translate-x-0 hover:bg-base-mid`
       : baseClasses;
   };
 
-  // Use useEffect to set the selected path when pathname changes
-  useEffect(() => {
-    if (pathname) {
-      setSelected(pathname);
-    }
-  }, [pathname, selected]);
+  if (loading) {
+    return <p>Loading...</p>;
+  }
   return (
-    <div className="col-span-2 bg-base-mid  h-screen overflow-hidden  ">
-      <BackButton />{" "}
-      <div className="py-16 ">
+    <div className="col-span-2 bg-base-mid h-screen overflow-hidden">
+      <BackButton />
+      <div className="py-16">
         {user && (
-          <div className="flex space-x-3 text-md   p-3 items-center mb-6">
+          <div className="flex space-x-3 text-md p-3 items-center mb-6">
             <img
               src={user.profile}
               alt=""
-              className="object-cover h-8 w-8 rounded-full "
+              className="object-cover h-8 w-8 rounded-full"
             />
             <p className="font-semibold text-lg">{user.name}</p>
           </div>
         )}
-        <ul className="flex flex-col ">
-          {" "}
-          <Link href={"/profile"}>
+        <ul className="flex flex-col">
+          <Link href="/profile">
             <li className={getLinkClassName("/profile")}>
-              {selected == "/profile" ? (
+              {selected === "/profile" ? (
                 <RiAccountCircleFill className="text-2xl items-center" />
               ) : (
-                <>
-                  <RiAccountCircleLine className="text-2xl items-center" />
-                </>
+                <RiAccountCircleLine className="text-2xl items-center" />
               )}
               <p>Profile</p>
             </li>
           </Link>
-          <Link href={"/my-recipe"}>
+          <Link href="/my-recipe">
             <li className={getLinkClassName("/my-recipe")}>
-              {selected == "/my-recipe" ? (
+              {selected === "/my-recipe" ? (
                 <PiBowlFoodFill className="text-2xl items-center" />
               ) : (
-                <PiBowlFood className="text-2xl items-center " />
+                <PiBowlFood className="text-2xl items-center" />
               )}
               My Recipe
             </li>
           </Link>
-          <Link href={"/manage-account"}>
-            {" "}
+          <Link href="/manage-account">
             <li className={getLinkClassName("/manage-account")}>
-              {selected == "/manage-account" ? (
+              {selected === "/manage-account" ? (
                 <MdManageAccounts className="text-2xl items-center" />
               ) : (
                 <MdOutlineManageAccounts className="text-2xl items-center" />
@@ -104,10 +100,9 @@ export default function ProfileNaviagtion() {
               Manage Account
             </li>
           </Link>
-          <Link href={"/theme"}>
-            {" "}
+          <Link href="/theme">
             <li className={getLinkClassName("/theme")}>
-              {selected == "/theme" ? (
+              {selected === "/theme" ? (
                 <MdStyle className="text-2xl items-center" />
               ) : (
                 <MdOutlineStyle className="text-2xl items-center" />
@@ -116,10 +111,8 @@ export default function ProfileNaviagtion() {
             </li>
           </Link>
           <li
-            onClick={() => {
-              logout();
-            }}
-            className="md:p-4 p-3  border-t mt-6 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer"
+            onClick={logout}
+            className="md:p-4 p-3 border-t mt-6 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer"
           >
             <RiLogoutBoxLine className="text-lg items-center" />
             Logout
