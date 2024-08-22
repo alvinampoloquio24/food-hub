@@ -51,7 +51,7 @@ export default function EditProfile() {
         />
 
         <ProfileNav />
-        <div className="col-span-10 flex md:p-12 p-4 flex-col justify-center ">
+        <div className="col-span-10 flex md:p-12 p-4 flex-col justify-center bg-white ">
           <p className="md:text-2xl font-bold">Manage Account</p>
           <ul className="flex flex-col py-6 text-md font gap-2 ">
             <li className="flex flex-col ">
@@ -90,7 +90,8 @@ export default function EditProfile() {
             </li>
           </ul>
         </div>
-        <div className=" top-0 w-full items-center lg:hidden flex fixed bg-white gap-3 shadow   p-3 ">
+        {/* only in mobile */}
+        <div className=" top-0 w-full items-center md:hidden flex fixed bg-white gap-3 shadow   h-[8vh] ">
           <IoArrowBack
             className="text-xl "
             onClick={() => {

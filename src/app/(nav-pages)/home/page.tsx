@@ -238,7 +238,7 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className=" bg-base md:h-screen md:items-center lg:h-screen  flex flex-col xl:px-20 px-6 py-6 lg:gap-8 md:justify-center">
+      <div className=" bg-base md:h-screen md:items-center lg:h-screen bg-white flex flex-col xl:px-20 px-6 py-6 lg:gap-8 md:justify-center">
         <p className="text-lg md:text-2xl text-base-dark font-semibold py-2 text-center xl:text-4xl">
           Checkout out @foodhub on Instagram
         </p>
