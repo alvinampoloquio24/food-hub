@@ -43,7 +43,7 @@ export default function Nav() {
     setIsOpen(!isOpen);
     setVisible(!visible);
   };
-
+  // try//
   const handleScroll = () => {
     if (!menuClicked) {
       const currentScrollPos = window.pageYOffset;
