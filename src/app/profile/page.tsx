@@ -325,8 +325,11 @@ export default function EditProfile() {
   // Updated useEffect
   useEffect(() => {
     refreshUser();
-    setIsClient(true);
-    getPoster();
+    if (typeof window !== "undefined") {
+      setIsClient(true);
+      getPoster();
+    }
+
     const closeAllDropdowns = (e: MouseEvent) => {
       // Check if click is outside of dropdown and toggle button
       const target = e.target as HTMLElement;
@@ -335,9 +338,7 @@ export default function EditProfile() {
       }
       setOpenDropdowns({});
     };
-
     document.body.addEventListener("click", closeAllDropdowns);
-
     return () => document.body.removeEventListener("click", closeAllDropdowns);
   }, []);
 
@@ -620,7 +621,7 @@ export default function EditProfile() {
               </div>
             </div>
             {/* only in mobile */}
-            <div className=" top-0 w-full items-center md:hidden flex fixed bg-white gap-3 shadow   p-3 ">
+            <div className=" top-0 w-full items-center md:hidden flex fixed bg-white gap-3 shadow   h-[8vh] ">
               <IoArrowBack
                 className="text-xl "
                 onClick={() => {

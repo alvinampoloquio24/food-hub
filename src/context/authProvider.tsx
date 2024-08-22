@@ -26,17 +26,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<String | null>("");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
   const checkLoginStatus = async () => {
     setLoading(true);
     try {
+      const token = localStorage.getItem("token");
       if (!token) {
         setIsLoggedIn(false);
         setUser(null);
-        localStorage.removeItem("token");
       } else {
         const response = await fetch(`${api}/getUser`, {
           method: "GET",
@@ -44,10 +43,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             Authorization: `Bearer ${token}`,
           },
         });
-
         if (response.ok) {
           const userData = await response.json();
           setUser(userData);
+          localStorage.setItem("token", token);
           localStorage.setItem("user", JSON.stringify(userData));
 
           setIsLoggedIn(true);
@@ -61,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("Failed to check login status:", error);
       setIsLoggedIn(false);
       setUser(null);
-      localStorage.removeItem("token");
+      localStorage.removeItem("token"); // Clear token on failure
     } finally {
       setLoading(false); // Ensure loading is set to false after all cases
     }
@@ -72,10 +71,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("token");
-      setToken(token);
-    }
     checkLoginStatus(); // Run once on mount to fetch initial user data
   }, []);
 

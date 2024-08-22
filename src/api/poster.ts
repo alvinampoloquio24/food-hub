@@ -257,10 +257,10 @@ const getPoster = {
       let responseData = await response.json();
       if (!response.ok) {
         responseData.error = true;
+      } else {
+        localStorage.setItem("token", responseData.token);
+        localStorage.setItem("user", JSON.stringify(responseData.user));
       }
-
-      localStorage.setItem("token", responseData.token);
-      localStorage.setItem("user", JSON.stringify(responseData.user));
 
       return {
         response: responseData,
@@ -397,18 +397,15 @@ const getPoster = {
     }
   },
   getUser: async () => {
-    const token = localStorage.getItem("token");
     try {
-      const response = await fetch(
-        `${api}/getUser`,
+      const token = localStorage.getItem("token");
 
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`, // Add this line
-          },
-        }
-      );
+      const response = await fetch(`${api}/getUser`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`, // Add this line
+        },
+      });
       if (response.ok) {
         const responseData = await response.json();
         const sendTo = {
