@@ -63,7 +63,7 @@ export default function recipe() {
   const [search, setSearch] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [isclient, setIsClient] = useState(false);
-  const user: any = JSON.parse(localStorage.getItem("user") || "null");
+  const [user, setUser] = useState<any>(null);
   const [showModalUpload, setShowModalUpload] = useState(false);
 
   const defaultOptions = {
@@ -185,7 +185,12 @@ export default function recipe() {
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+      setUser(storedUser);
+    }
+  }, []);
   useEffect(() => {
     setIsClient(true);
     handleSeach(search);

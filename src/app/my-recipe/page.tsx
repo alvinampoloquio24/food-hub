@@ -4,14 +4,11 @@
 import React, { useEffect, useState } from "react";
 import ProfileNav from "../components/sad";
 import { useAuth } from "@/context/authProvider";
-import { MdEditSquare } from "react-icons/md";
-import { IoIosAddCircle } from "react-icons/io";
 import { FiRss } from "react-icons/fi";
 import { LuUtensilsCrossed } from "react-icons/lu";
 import Poster from "@/api/poster";
 import { BiDish } from "react-icons/bi";
 import { RiTimerFill } from "react-icons/ri";
-import EditProfileModal from "../props/ModalEditProfile";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
@@ -74,8 +71,7 @@ export default function EditProfile() {
   const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>(
     {}
   );
-  const { refreshUser } = useAuth();
-  const user: any = JSON.parse(localStorage.getItem("user") || "null");
+  const [user, setUser] = useState<any>(null);
   const [poster, setPoster] = React.useState<Poster[] | null>([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -295,6 +291,8 @@ export default function EditProfile() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+      setUser(storedUser);
     }
     getPoster();
   }, []);

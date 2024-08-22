@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProfileNav from "../components/sad";
 import { HiMiniRss } from "react-icons/hi2";
 import { IoArrowBack, IoSaveOutline, IoTrashOutline } from "react-icons/io5";
@@ -13,10 +13,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
 
 export default function EditProfile() {
-  const user: any = JSON.parse(localStorage.getItem("user") || "null");
   const [DeleteModal, setDeleteModal] = useState(false);
   const router = useRouter();
-
+  const [user, setUser] = useState<any>(null);
   const handleDeleteAccount = (_id: string) => {
     setDeleteModal(false);
     deleteAccount(_id);
@@ -33,6 +32,12 @@ export default function EditProfile() {
       toast.error("Something went worong");
     }
   };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+      setUser(storedUser);
+    }
+  }, []);
   return (
     <>
       <ToastContainer />
