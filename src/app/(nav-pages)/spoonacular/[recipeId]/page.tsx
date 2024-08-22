@@ -94,44 +94,44 @@ export default function page({
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-gray-100 p-8 rounded-lg shadow-md">
-            <h1 className="text-4xl font-bold mb-6">
+          <div className="lg:col-span-2 bg-gray-100 md:p-8 p-4 rounded-lg shadow-md">
+            <h1 className="md:text-3xl text-xl font-bold mb-6">
               {recipe?.title || "Chicken"}
             </h1>
-            <div className="flex flex-wrap justify-between mb-8">
+            <div className="flex flex-wrap justify-between items-center  mb-8 md:text-lg text-xs">
               <div className="flex items-center gap-3 mb-4 lg:mb-0">
-                <IoTimer className="text-2xl text-orange-500" />
+                <IoTimer className=" text-orange-500 text-lg md:text-2xl" />
                 <div>
-                  <p className="font-bold text-sm text-gray-600">Cook Time</p>
-                  <p className="text-lg">{recipe?.readyInMinutes}m</p>
+                  <p className="font-bold text-gray-600">Cook Time</p>
+                  <p className="">{recipe?.readyInMinutes}m</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 mb-4 lg:mb-0">
-                <BiSolidDish className="text-2xl text-green-500" />
+                <BiSolidDish className=" text-green-500 text-lg md:text-2xl " />
                 <div>
                   <p className="font-bold text-sm text-gray-600">Type</p>
-                  <p className="text-lg">
+                  <p className="">
                     {(recipe?.dishTypes as string[])?.[0] || "No dish type"}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <BiWorld className="text-2xl text-blue-500" />
+              <div className="flex items-center mb-4 gap-3">
+                <BiWorld className=" text-blue-500 text-lg  md:text-2xl" />
                 <div>
-                  <p className="font-bold text-sm text-gray-600">Cuisine</p>
-                  <p className="text-lg">
+                  <p className="font-bold  text-gray-600">Cuisine</p>
+                  <p className="">
                     {(recipe?.cuisines as string[])?.[0] || "No cuisine"}
                   </p>
                 </div>
               </div>
             </div>
-            <h2 className="text-2xl font-bold mb-6">
+            <h2 className="md:text-2xl text-xl font-bold mb-6">
               Ingredients ({recipe?.extendedIngredients.length})
             </h2>
-            <div className="space-y-4">
+            <div className="space-y-4 md:text-xl text-xs">
               {recipe?.extendedIngredients.map((ingredient, index) => (
                 <div key={index} className="flex items-start gap-4">
-                  <span className="flex-shrink-0 w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
+                  <span className="flex-shrink-0 md:w-8 md:h-8 h-6 w-6 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
                     {index + 1}
                   </span>
                   <div>
@@ -144,16 +144,18 @@ export default function page({
               ))}
             </div>
           </div>
-          <div className="bg-white p-8 rounded-lg shadow-md">
-            <h2 className="text-3xl font-bold mb-6">Directions</h2>
+          <div className="bg-white md:p-8 p-4 rounded-lg shadow-md">
+            <h2 className="md:text-3xl text-xl font-bold mb-6">Directions</h2>
             <div
-              className="prose prose-lg max-w-none"
+              className="prose prose-lg max-w-none md:text-lg text-xs"
               dangerouslySetInnerHTML={{ __html: instructions }}
             />
           </div>
         </div>
 
-        <p className="text-2xl font-bold py-4">Related Recipe</p>
+        <p className="md:text-2xl text-xl font-bold mt-6 py-4">
+          Related Recipe
+        </p>
         <div className="flex overflow-x-auto gap-3 pb-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
           {!recipeLocal
             ? null
@@ -161,22 +163,24 @@ export default function page({
                 // eslint-disable-next-line react/jsx-key
                 <Link href={`/spoonacular/${recipe.id}`}>
                   <div
-                    className="flex-shrink-0 flex flex-col gap-3  bg-white shadow-lg w-60  transition-transform duration-200 transform hover:bg-orange-200 hover:scale-105"
+                    className="flex-shrink-0 flex flex-col gap-2  bg-white shadow-lg md:w-60 w-48  transition-transform duration-200 transform hover:bg-orange-200 hover:scale-105"
                     key={index}
                   >
                     <img
                       src={recipe.image}
                       alt={recipe.title || "Recipe image"}
-                      className="object-cover w-full h-40"
+                      className="object-cover w-full md:h-40 h-32"
                     />
-                    <div className="flex flex-col p-2 justify-between  h-24">
-                      <p className="font-bold text-sm line-clamp-2">
+                    <div className="flex flex-col p-2 justify-between gap-1 h-20 md:h-24">
+                      <p className="font-bold md:text-sm text-xs line-clamp-2">
                         {recipe.title}
                       </p>
-                      <div className="flex gap-2 ">
+                      <div className="flex gap-2 items-center ">
                         {" "}
-                        <FcLike className="text-xl lg:text-2xl" />
-                        <p>{recipe.likes} loves</p>
+                        <FcLike className="text-sm lg:text-2xl" />
+                        <p className="text-sm md:text-lg">
+                          {recipe.likes} loves
+                        </p>
                       </div>
                     </div>
                   </div>

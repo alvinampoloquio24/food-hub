@@ -92,7 +92,6 @@ export default function CreateAccountPage() {
     createUser(formData);
   };
   useEffect(() => {
-    console.log(loading);
     setIsDisable(!isInputComplete());
   }, [handleInputChange]);
   return (

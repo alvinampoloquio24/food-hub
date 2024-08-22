@@ -178,7 +178,7 @@ export default function GenerateRecipe() {
                 <Lottie options={defaultOptions} height={300} width={300} />
               </div>
             ) : !loading ? (
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 md:gap-6 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 md:gap-6 gap-4 lg:px-8 xl:px-0">
                 {generatedRecipe &&
                   generatedRecipe.map((recipe, index) => (
                     <Link key={recipe.id} href={`/spoonacular/${recipe.id}`}>
@@ -190,7 +190,7 @@ export default function GenerateRecipe() {
                             className="absolute inset-0 w-full md:h-56 h-28 object-cover rounded-lg"
                           />
                         </div>
-                        <h2 className="md:text-lg lg:text-xl text-xs font-bold md:my-4 -my-2 px-4 lg:px-6 line-clamp-2 flex-shrink-0">
+                        <h2 className="md:text-lg xl:text-xl text-xs font-bold md:my-4 -my-2 px-4 lg:px-6 line-clamp-2 flex-shrink-0">
                           {recipe.title}
                         </h2>
 

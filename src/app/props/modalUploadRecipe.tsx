@@ -423,7 +423,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
                 <button
                   type="button"
                   onClick={() => setCurrentSlide(currentSlide - 1)}
-                  className="p-2 px-3 bg-gray-200 rounded gap-2 flex items-center transition duration-200 ease-in-out hover:bg-gray-300"
+                  className="md:p-2 md:px-3 p-2 px-2 md:text-lg text-xs bg-gray-200 rounded gap-2 flex items-center transition duration-200 ease-in-out hover:bg-gray-300"
                 >
                   <GrCaretPrevious />
                   Previous
@@ -433,25 +433,25 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
                 <button
                   type="button"
                   onClick={() => setCurrentSlide(currentSlide + 1)}
-                  className="p-2 px-3 hover:shadow-lg bg-base-dark text-white flex gap-2 items-center rounded transition duration-200 ease-in-out hover:bg-orange-600"
+                  className="md:p-2 md:px-3 p-2 px-2 md:text-lg text-xs hover:shadow-lg bg-base-dark text-white flex gap-2 items-center rounded transition duration-200 ease-in-out hover:bg-orange-600"
                 >
                   Next <GrCaretNext />
                 </button>
               )}
               {currentSlide === slides.length - 1 && (
-                <div className="flex justify-between w-full">
+                <div className="flex justify-between w-full ">
                   <button
                     type="submit"
-                    className="p-2 flex items-center px-3 gap-2 bg-blue-500 text-white rounded transition duration-200 ease-in-out hover:bg-blue-600"
+                    className="md:p-2 md:px-3 p-2 px-2 md:text-lg text-xs flex items-center  gap-2 bg-blue-500 text-white rounded transition duration-200 ease-in-out hover:bg-blue-600"
                   >
-                    Upload
-                    <FaUpload />
+                    Save
+                    <FaSave />
                   </button>
                   <button
                     onClick={() => {
                       setCurrentSlide(0), onClose();
                     }}
-                    className="p-2 flex items-center px-3 gap-2 bg-red-500 text-white rounded transition duration-200 ease-in-out hover:bg-red-600"
+                    className="md:p-2 md:px-3 p-2 px-2 md:text-lg text-xs flex items-center  gap-2 bg-red-500 text-white rounded transition duration-200 ease-in-out hover:bg-red-600"
                   >
                     Discard
                     <ImCancelCircle />

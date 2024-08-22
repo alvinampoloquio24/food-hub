@@ -359,10 +359,10 @@ export default function EditProfile() {
         }}
       />
       {isClient && (
-        <div className="h-screen grid lg:grid-cols-12 ">
+        <div className="h-screen grid md:grid-cols-12  ">
           <ProfileNav />
           {/* Fixed ProfileNav */}
-          <div className="col-span-10 flex flex-col overflow-auto relative bg-white  ">
+          <div className="lg:col-span-10 md:col-span-11 flex flex-col overflow-auto relative bg-white  ">
             <div className=" flex flex-col w-full h-1/3 ">
               <img
                 src={user?.coverPhoto}
@@ -509,7 +509,7 @@ export default function EditProfile() {
 
                         <div className="md:grid grid-cols-12 ">
                           <div className=" col-span-7">
-                            <p className="md:text-2xl text-lg font-bold text-base-dark">
+                            <p className="md:text-2xl xl:text-3xl text-lg font-bold text-base-dark">
                               {poster.name}
                             </p>
                             <div className="flex flex-col md:pt-5 lg:flex-row lg:justify-between col-span-6">
@@ -521,8 +521,8 @@ export default function EditProfile() {
                                     alt=""
                                     className="rounded-full object-cover md:h-8 md:w-8 h-6 w-6 "
                                   />
-                                  <div className="flex flex-col text-xs items-center justify-center">
-                                    <p className="text-xs font-bold">
+                                  <div className="flex flex-col text-x2s items-center justify-center">
+                                    <p className="text-x2s font-bold">
                                       {poster.user.name}
                                     </p>
                                     <p>Jan 2 2024</p>
@@ -530,21 +530,21 @@ export default function EditProfile() {
                                 </div>
                                 <div className="lg:flex gap-1 lg:gap-3 hidden  items-center border-l-2  justify-center">
                                   <FaFire className="text-lg md:text-md" />
-                                  <div className="flex flex-col text-xs   items-center justify-center">
+                                  <div className="flex flex-col text-x2s   items-center justify-center">
                                     <p className="font-bold">CALORIES</p>
                                     <p>{poster.cal}</p>
                                   </div>
                                 </div>
                                 <div className="flex  gap-1 lg:gap-3  items-center border-l-2 justify-center">
                                   <RiTimerFill className="text-lg md:text-md" />
-                                  <div className="flex flex-col text-xs  items-center justify-center">
+                                  <div className="flex flex-col text-x2s  items-center justify-center">
                                     <p className="font-bold">COOK TIME</p>
                                     <p>{poster.time}</p>
                                   </div>
                                 </div>
                                 <div className="flex gap-1 lg:gap-3 items-center border-l-2 justify-center">
                                   <BiDish className="text-lg md:text-sm" />
-                                  <div className="flex flex-col text-xs  items-center justify-center">
+                                  <div className="flex flex-col text-x2s  items-center justify-center">
                                     <p className="font-bold uppercase">
                                       {poster.dishType}
                                     </p>
@@ -621,7 +621,7 @@ export default function EditProfile() {
               </div>
             </div>
             {/* only in mobile */}
-            <div className=" top-0 w-full items-center md:hidden flex fixed bg-white gap-3 shadow   h-[8vh] ">
+            <div className=" top-0 w-full items-center md:hidden flex fixed bg-white gap-3 shadow p-3  h-[8vh] ">
               <IoArrowBack
                 className="text-xl "
                 onClick={() => {

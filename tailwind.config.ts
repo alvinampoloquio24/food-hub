@@ -28,6 +28,7 @@ const config: Config = {
       },
       fontSize: {
         xxs: "0.50rem", // This is equivalent to 10px
+        x2s: "0.55rem", // This is equivalent to 10px
       },
     },
   },

@@ -27,7 +27,7 @@ const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg h-[50vh] md:text-2xl text-sm max-w-lg lg::w-full w-4/5 flex flex-col justify-around">
+      <div className="bg-white p-6 rounded-lg shadow-lg h-[50vh] md:text-lg   text-sm max-w-lg lg:w-full w-4/5 flex flex-col justify-around">
         <h2 className="text-xl font-semibold mb-4">Confirm Deletion </h2>
         <p className="text-gray-700 mb-4">
           Are you sure you want to delete <strong>{name}</strong>? This action

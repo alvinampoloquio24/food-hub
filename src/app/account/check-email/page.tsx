@@ -25,16 +25,16 @@ export default function CheckEmail({ email }: any) {
       <div className="bg-white rounded-lg shadow-xl p-8 max-w-2xl w-full mx-4 relative">
         <div className="flex flex-col items-center gap-6">
           <Lottie options={defaultOptions} height={200} width={200} />
-          <h2 className="text-3xl font-bold text-base-dark text-center">
+          <h2 className="md:text-3xl text-xl font-bold text-base-dark text-center">
             Email Confirmation
           </h2>
-          <p className="text-lg text-center text-gray-600 pb-6 border-b border-gray-200">
+          <p className="md:text-lg text-sm text-center text-gray-600 pb-6 border-b border-gray-200">
             Weve sent an email to{" "}
             <span className="font-semibold text-base-dark">{email}</span> to
             verify your email address. To finalize your registration, please
             check your inbox and click on the link provided in the message.
           </p>
-          <p className="text-center text-sm">
+          <p className="text-center md:text-sm text-xs">
             If you did not receive any email,{" "}
             <button className="text-blue-500 underline">
               resend confirmation email

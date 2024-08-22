@@ -44,10 +44,10 @@ export default function ProfileNavigation() {
 
   const getLinkClassName = (path: string) => {
     const baseClasses =
-      "md:p-4 p-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer";
+      "md:p-4 p-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:translate-x-1 cursor-pointer";
 
     return pathname.startsWith(path)
-      ? `${baseClasses} text-base-dark font-bold hover:-translate-x-0 hover:bg-base-mid`
+      ? `${baseClasses} text-base-dark font-bold md:border-r-4 md:border-base-dark lg:border-none hover:-translate-x-0 hover:bg-base-mid`
       : baseClasses;
   };
 
@@ -64,7 +64,7 @@ export default function ProfileNavigation() {
     return <p>Loading...</p>;
   }
   return (
-    <div className="col-span-2 bg-base-mid h-screen overflow-hidden lg:flex flex-col hidden  ">
+    <div className="lg:col-span-2 md:col-span-1  bg-base-mid h-screen overflow-hidden md:flex flex-col hidden  ">
       <BackButton />
       <div className="py-16">
         {user && (
@@ -74,7 +74,9 @@ export default function ProfileNavigation() {
               alt=""
               className="object-cover h-8 w-8 rounded-full"
             />
-            <p className="font-semibold text-lg">{user.name}</p>
+            <p className="font-semibold xl:text-lg md:text-sm lg:flex hidden ">
+              {user.name}
+            </p>
           </div>
         )}
         <ul className="flex flex-col">
@@ -85,7 +87,7 @@ export default function ProfileNavigation() {
               ) : (
                 <RiAccountCircleLine className="text-2xl items-center" />
               )}
-              <p>Profile</p>
+              <p className=" xl:text-md md:text-sm lg:flex hidden ">Profile</p>
             </li>
           </Link>
           <Link href="/my-recipe">
@@ -95,7 +97,11 @@ export default function ProfileNavigation() {
               ) : (
                 <PiBowlFood className="text-2xl items-center" />
               )}
-              My Recipe
+
+              <p className=" xl:text-md md:text-sm lg:flex hidden ">
+                {" "}
+                My Recipe
+              </p>
             </li>
           </Link>
           <Link href="/manage-account">
@@ -105,7 +111,10 @@ export default function ProfileNavigation() {
               ) : (
                 <MdOutlineManageAccounts className="text-2xl items-center" />
               )}
-              Manage Account
+              <p className=" xl:text-md md:text-sm lg:flex hidden ">
+                {" "}
+                Manage account
+              </p>
             </li>
           </Link>
           <Link href="/theme">
@@ -115,7 +124,7 @@ export default function ProfileNavigation() {
               ) : (
                 <MdOutlineStyle className="text-2xl items-center" />
               )}
-              Theme
+              <p className=" xl:text-md md:text-sm lg:flex hidden "> Theme</p>
             </li>
           </Link>
           <li
@@ -123,7 +132,7 @@ export default function ProfileNavigation() {
             className="md:p-4 p-3 border-t mt-6 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer"
           >
             <RiLogoutBoxLine className="text-lg items-center" />
-            Logout
+            <p className=" xl:text-md md:text-sm lg:flex hidden "> Logout</p>
           </li>
         </ul>
       </div>
