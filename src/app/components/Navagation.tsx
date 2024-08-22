@@ -57,7 +57,7 @@ export default function Nav() {
     setLoading(true);
     try {
       localStorage.removeItem("token");
-      localStorage.removeItem("user-storage");
+      localStorage.removeItem("user");
       router.push("/account/login");
     } catch (error) {
       return error;
