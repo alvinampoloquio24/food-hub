@@ -26,13 +26,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<String | null>("");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
   const checkLoginStatus = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
       if (!token) {
         setIsLoggedIn(false);
         setUser(null);
@@ -72,6 +72,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("token");
+      setToken(token);
+    }
     checkLoginStatus(); // Run once on mount to fetch initial user data
   }, []);
 
