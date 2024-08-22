@@ -47,7 +47,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         if (response.ok) {
           const userData = await response.json();
-          setUser(userData); // Successfully fetched user data
+          setUser(userData);
+          localStorage.setItem("user", JSON.stringify(userData));
+
           setIsLoggedIn(true);
         } else {
           setIsLoggedIn(false);

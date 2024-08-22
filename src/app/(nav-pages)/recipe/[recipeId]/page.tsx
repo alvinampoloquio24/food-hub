@@ -3,15 +3,8 @@
 "use client";
 import React, { useEffect } from "react";
 import Poster from "../../../../api/poster";
-import { PiVideoFill } from "react-icons/pi";
 import RecipeProps from "@/app/props/recipe";
 import VideoPlayer from "../../../props/videoPlayer";
-import { FaHeart, FaTwitter } from "react-icons/fa";
-import { RiTimerFill } from "react-icons/ri";
-import { BiSolidDish } from "react-icons/bi";
-import { FaSquareFacebook, FaSquareInstagram } from "react-icons/fa6";
-import Link from "next/link";
-import { IoArrowBack } from "react-icons/io5";
 
 export default function Page({
   params,

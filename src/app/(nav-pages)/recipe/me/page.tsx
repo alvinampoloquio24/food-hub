@@ -20,7 +20,7 @@ import {
   MdOutlineSystemUpdateAlt,
 } from "react-icons/md";
 import { FaUpload } from "react-icons/fa6";
-import { useUserStore } from "@/zustand/user";
+
 import ModalUpload from "@/app/props/modalUploadRecipe";
 import ModalEditRecipe from "@/app/props/modalEditRecipe";
 import { GrView } from "react-icons/gr";
@@ -89,7 +89,7 @@ function Recipe() {
   const [isclient, setIsClient] = useState(false);
   const [showModalUpload, setShowModalUpload] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
-  const { user } = useUserStore();
+  const user: any = localStorage.getItem("user");
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedEditRecipe, setSelectedEditRecipe] = useState<{
     img: string;
@@ -216,36 +216,6 @@ function Recipe() {
       setLoading(false);
     }
   };
-  const EditRecipe = async (formData: EditRecipe) => {
-    try {
-      setShowModalEdit(false);
-      console.log(showModalUpload);
-      const toastId = toast.loading("Updating...");
-
-      const recipe = await Poster.EditRecipe(formData);
-      if (!recipe.status) {
-        toast.update(toastId, {
-          render: ` Failed to Edit ${recipe.response.message}`,
-          type: "error",
-          isLoading: false,
-          autoClose: 5000,
-        });
-      } else {
-        toast.update(toastId, {
-          render: "Edit successfully",
-          type: "success",
-          isLoading: false,
-          autoClose: 5000,
-        });
-        // Call getPoster() here, after a successful post
-        await getPoster();
-      }
-    } catch (error) {
-      toast.error("Something went wrong!");
-    } finally {
-      setLoading(false);
-    }
-  };
   const handleSubmit = (formData: RecipeFormData) => {
     const requiredFields = [
       "name",
@@ -281,6 +251,37 @@ function Recipe() {
     }
     uploadRecipe(formData);
   };
+  const EditRecipe = async (formData: EditRecipe) => {
+    try {
+      setShowModalEdit(false);
+      console.log(showModalUpload);
+      const toastId = toast.loading("Updating...");
+
+      const recipe = await Poster.EditRecipe(formData);
+      if (!recipe.status) {
+        toast.update(toastId, {
+          render: ` Failed to Edit ${recipe.response.message}`,
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
+      } else {
+        toast.update(toastId, {
+          render: "Edit successfully",
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+        });
+        // Call getPoster() here, after a successful post
+        await getPoster();
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmitEditRecipe = (formData: EditRecipe) => {
     console.log(formData.cal);
     const requiredFields = [
@@ -471,8 +472,7 @@ function Recipe() {
                           className="relative group"
                           onClick={() => {
                             setSelectedEditRecipe(poster),
-                              setShowModalEdit(true),
-                              console.log(selectedEditRecipe, "+++++");
+                              setShowModalEdit(true);
                           }}
                         >
                           <MdOutlineSystemUpdateAlt className="hover:text-yellow-600 transition-all ease-in-out" />

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LuVegan } from "react-icons/lu";
 import { GiMeat } from "react-icons/gi";
 import { FaIceCream } from "react-icons/fa";
@@ -15,7 +15,7 @@ import World from "@/lottie/worldwide.json";
 import Lottie from "react-lottie";
 
 import Link from "next/link";
-import { useStore } from "@/zustand/storeRecipe";
+
 import Navagation from "@/app/components/Navagation";
 
 export default function GenerateRecipe() {
@@ -46,9 +46,9 @@ export default function GenerateRecipe() {
   }
   const [generatedRecipe, setGeneratedRecipe] = React.useState<Recipe[]>([]);
   const [search, setSearch] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
-  const recipes = useStore((state) => state.recipes);
-  const setRecipes = useStore((state) => state.setRecipes);
+  const [loading, setLoading] = React.useState(true);
+
+  const [recipeLocal, setRecipesLocal] = useState(null);
 
   const defaultOptions2 = {
     loop: true,
@@ -69,11 +69,9 @@ export default function GenerateRecipe() {
   const getRecipe = async (search: string) => {
     try {
       setLoading(true);
-
       const data = await Poster.getGeneratedRecipe(search);
       console.log("get recipes api execute");
       setGeneratedRecipe(data.response);
-      setRecipes(data.response);
     } catch (error) {
       throw error;
     } finally {
@@ -81,14 +79,20 @@ export default function GenerateRecipe() {
     }
   };
   const loadRecipeFromStorage = () => {
-    console.log(recipes);
-    if (recipes.length) {
-      setGeneratedRecipe(recipes);
+    if (recipeLocal) {
+      setGeneratedRecipe(recipeLocal);
     }
   };
   useEffect(() => {
-    loadRecipeFromStorage();
-  }, [search, recipes, setRecipes]);
+    if (typeof window !== "undefined") {
+      const storedRecipes = JSON.parse(
+        localStorage.getItem("recipe-spoonacular") || "null"
+      );
+      setRecipesLocal(storedRecipes);
+      loadRecipeFromStorage();
+      setLoading(false);
+    }
+  }, [search, loading]);
   return (
     <>
       <div className="bg-white">
@@ -177,47 +181,41 @@ export default function GenerateRecipe() {
               <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 md:gap-6 gap-4">
                 {generatedRecipe &&
                   generatedRecipe.map((recipe, index) => (
-                    <>
-                      {" "}
-                      <Link href={`/spoonacular/${recipe.id}`}>
-                        <div
-                          key={index}
-                          className="flex flex-col w-full max-w-sm md:h-96 h-48 md:pb-6 pb-2 rounded-2xl shadow transition-all duration-300 hover:shadow-lg hover:bg-orange-50"
-                        >
-                          <div className="flex-grow relative">
-                            <img
-                              src={recipe.image}
-                              alt={recipe.title}
-                              className="absolute inset-0 w-full md:h-56 h-28 object-cover rounded-lg"
-                            />
-                          </div>
-                          <h2 className="md:text-lg lg:text-xl text-xs font-bold md:my-4 -my-2 px-4 lg:px-6 line-clamp-2 flex-shrink-0">
-                            {recipe.title}
-                          </h2>
-
-                          <div className="flex items-center justify-between px-4 lg:px-6 text-sm mt-4 flex-shrink-0">
-                            <div className="flex items-center gap-2">
-                              <FcLike className="text-xl lg:text-2xl" />
-                              <span className="text-xs md:text-lg">
-                                {recipe.likes} loves
-                              </span>
-                            </div>
-
-                            <button className="bg-base-dark hidden text-white p-2 lg:p-3 rounded-lg md:flex items-center gap-2 text-sm">
-                              View Recipe
-                              <FaArrowRight />
-                            </button>
-                            <p className="text-blue-600 hover:underline text-xs flex md:hidden">
-                              View
-                            </p>
-                          </div>
+                    <Link key={recipe.id} href={`/spoonacular/${recipe.id}`}>
+                      <div className="flex flex-col w-full max-w-sm md:h-96 h-48 md:pb-6 pb-2 rounded-2xl shadow transition-all duration-300 hover:shadow-lg hover:bg-orange-50">
+                        <div className="flex-grow relative">
+                          <img
+                            src={recipe.image}
+                            alt={recipe.title}
+                            className="absolute inset-0 w-full md:h-56 h-28 object-cover rounded-lg"
+                          />
                         </div>
-                      </Link>
-                    </>
+                        <h2 className="md:text-lg lg:text-xl text-xs font-bold md:my-4 -my-2 px-4 lg:px-6 line-clamp-2 flex-shrink-0">
+                          {recipe.title}
+                        </h2>
+
+                        <div className="flex items-center justify-between px-4 lg:px-6 text-sm mt-4 flex-shrink-0">
+                          <div className="flex items-center gap-2">
+                            <FcLike className="text-xl lg:text-2xl" />
+                            <span className="text-xs md:text-lg">
+                              {recipe.likes} loves
+                            </span>
+                          </div>
+
+                          <button className="bg-base-dark hidden text-white p-2 lg:p-3 rounded-lg md:flex items-center gap-2 text-sm">
+                            View Recipe
+                            <FaArrowRight />
+                          </button>
+                          <p className="text-blue-600 hover:underline text-xs flex md:hidden">
+                            View
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
                   ))}
               </div>
             ) : (
-              <div className="flex flex-col items-center  h-screen w-full">
+              <div className="flex flex-col items-center h-screen w-full">
                 <Lottie options={defaultOptions2} height={300} width={300} />
               </div>
             )}

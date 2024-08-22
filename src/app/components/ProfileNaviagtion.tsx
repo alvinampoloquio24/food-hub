@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineSetting } from "react-icons/ai";
 import { PiBowlFoodLight } from "react-icons/pi";
 import { SlLogout } from "react-icons/sl";
@@ -9,7 +9,7 @@ import { useAuth } from "../../context/authProvider";
 import BackButton from "../props/backButton";
 import { RiAccountCircleFill, RiAccountCircleLine } from "react-icons/ri";
 export default function ProfileNaviagtion() {
-  const { user, isLoggedIn } = useAuth();
+  const [user, setUser] = useState<any>(null);
   const [selected, setSelected] = useState("");
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
@@ -27,9 +27,7 @@ export default function ProfileNaviagtion() {
       setLoading(false);
     }
   };
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+
   const getLinkClassName = (path: string) => {
     switch (path) {
       case "/profile":
@@ -43,6 +41,15 @@ export default function ProfileNaviagtion() {
       ? `${baseClasses} text-base-dark font-bold border-r-2 hover:-translate-x-0 hover:bg-base-mid `
       : baseClasses;
   };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+      setUser(storedUser);
+    }
+  }, []);
+  if (loading) {
+    return <p>Loading...</p>;
+  }
   return (
     <div className="col-span-2 bg-base-mid ">
       <BackButton />{" "}

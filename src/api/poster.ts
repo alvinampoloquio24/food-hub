@@ -120,7 +120,7 @@ const getPoster = {
       });
       if (response.ok) {
         const responseData = await response.json();
-        console.log(responseData);
+
         const sendTo = {
           response: responseData,
           status: true,
@@ -148,8 +148,9 @@ const getPoster = {
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
-
       const responseData = await response.json();
+      localStorage.setItem("recipe-spoonacular", JSON.stringify(responseData));
+      console.log(responseData, "asdsad");
       return {
         response: responseData,
         status: true,
@@ -258,8 +259,9 @@ const getPoster = {
         responseData.error = true;
       }
 
-      console.log(responseData, "respose dattttta");
       localStorage.setItem("token", responseData.token);
+      localStorage.setItem("user", JSON.stringify(responseData.user));
+
       return {
         response: responseData,
         status: true,
@@ -460,15 +462,10 @@ const getPoster = {
       const data = new FormData();
       data.append("name", formData.name);
 
-      // Debugging log
-      console.log("Profile:", formData.profile);
-      console.log("Cover Photo:", formData.coverPhoto);
-
       // Add profile photo only if it's a new file
       if (formData.profile && formData.profile instanceof File) {
         data.append("profile", formData.profile); // Must match what the backend expects
       }
-
       // Add cover photo only if it's a new file
       if (formData.coverPhoto && formData.coverPhoto instanceof File) {
         data.append("coverPhoto", formData.coverPhoto); // Must match what the backend expects
@@ -507,6 +504,41 @@ const getPoster = {
         status: false,
         error:
           error instanceof Error ? error.message : "An unknown error occurred",
+      };
+    }
+  },
+  deleteUser: async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`${api}/deleteUser`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        const sendTo = {
+          response: responseData,
+          status: true,
+        };
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        return sendTo;
+      } else {
+        // Return an error message or a custom response if the deletion fails
+        const errorData = await response.json();
+        return {
+          response: errorData,
+          status: false,
+          message: errorData.message,
+        };
+      }
+    } catch (error) {
+      return {
+        status: false,
+        message: "Something went wrong during the deletion.",
       };
     }
   },

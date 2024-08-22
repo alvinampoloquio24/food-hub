@@ -7,13 +7,8 @@ import DOMPurify from "dompurify";
 import { IoTimer } from "react-icons/io5";
 import { BiSolidDish } from "react-icons/bi";
 import { BiWorld } from "react-icons/bi";
-import { MdOutlineKeyboardBackspace } from "react-icons/md";
-import { useRouter } from "next/router";
 import BackButton from "@/app/props/backButton";
-import { IoIosArrowDown } from "react-icons/io";
-import { RiFireFill } from "react-icons/ri";
-import { TbRosetteDiscountCheckFilled } from "react-icons/tb";
-import { useStore } from "@/zustand/storeRecipe";
+
 import { FcLike } from "react-icons/fc";
 import Link from "next/link";
 
@@ -39,12 +34,20 @@ export default function page({
     name: string;
     unit: number;
   }
-
+  type Recomend = {
+    map(arg0: (recipe: any, index: any) => React.JSX.Element): React.ReactNode;
+    id: string;
+    image: string;
+    title: string;
+    likes: number;
+  };
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [instructions, setInstructions] = useState("");
   const [summary, setsummary] = useState("");
-  const recipes = useStore((state) => state.recipes);
-
+  const [recipeLocal, setRecipesLocal] = useState<Recomend | undefined>(
+    undefined
+  );
+  const [loading, setLoading] = React.useState(true);
   const sanitize = (params: string) => {
     const sanitizedInstructions = DOMPurify.sanitize(params);
     setInstructions(sanitizedInstructions);
@@ -70,8 +73,19 @@ export default function page({
       getRecipe();
     }
   }, [params.recipeId]);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedRecipes = JSON.parse(
+        localStorage.getItem("recipe-spoonacular") || "null"
+      );
+      setRecipesLocal(storedRecipes);
+      setLoading(false);
+    }
+  }, [loading]);
   return (
     <>
+      {" "}
+      <BackButton />
       <div className="bg-white max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <img
           src={recipe?.image}
@@ -138,14 +152,12 @@ export default function page({
             />
           </div>
         </div>
-        <div className="mt-8">
-          <BackButton />
-        </div>
+
         <p className="text-2xl font-bold py-4">Related Recipe</p>
         <div className="flex overflow-x-auto gap-3 pb-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-          {!recipes
+          {!recipeLocal
             ? null
-            : recipes.map((recipe, index) => (
+            : recipeLocal.map((recipe, index) => (
                 // eslint-disable-next-line react/jsx-key
                 <Link href={`/spoonacular/${recipe.id}`}>
                   <div

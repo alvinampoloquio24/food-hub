@@ -17,7 +17,6 @@ import Loading from "@/lottie/loading.json";
 import { MdClear } from "react-icons/md";
 import Navagation from "@/app/components/Navagation";
 import { FaUpload } from "react-icons/fa6";
-import { useUserStore } from "@/zustand/user";
 import ModalUpload from "@/app/props/modalUploadRecipe";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -64,7 +63,7 @@ export default function recipe() {
   const [search, setSearch] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [isclient, setIsClient] = useState(false);
-  const { user } = useUserStore();
+  const user: any = JSON.parse(localStorage.getItem("user") || "null");
   const [showModalUpload, setShowModalUpload] = useState(false);
 
   const defaultOptions = {

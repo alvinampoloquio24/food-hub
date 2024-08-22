@@ -31,19 +31,6 @@ const Modal: React.FC<ModalProps> = ({ user, isOpen, onClose, onSubmit }) => {
     null
   );
 
-  useEffect(() => {
-    if (user) {
-      setFormData({
-        _id: user._id,
-        name: user.name,
-        profile: user.profile,
-        coverPhoto: user.coverPhoto,
-      });
-    }
-  }, [user]);
-
-  if (!isOpen) return null;
-
   const handleFormInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prev) => ({
@@ -62,12 +49,14 @@ const Modal: React.FC<ModalProps> = ({ user, isOpen, onClose, onSubmit }) => {
       const imageUrl = URL.createObjectURL(file);
 
       if (field === "profile") {
+        console.log("profile");
         setImagePreviewProfile(imageUrl);
         setFormData((prev) => ({
           ...prev,
           profile: file, // Store the file for submission
         }));
       } else if (field === "coverPhoto") {
+        console.log("cover");
         setImagePreviewCover(imageUrl);
         setFormData((prev) => ({
           ...prev,
@@ -80,13 +69,43 @@ const Modal: React.FC<ModalProps> = ({ user, isOpen, onClose, onSubmit }) => {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     onSubmit(formData);
+    setImagePreviewCover(null);
+    setImagePreviewProfile(null);
+    setFormData({
+      _id: "",
+      name: "",
+      coverPhoto: null,
+      profile: null,
+    });
   };
 
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        _id: user._id,
+        name: user.name,
+        profile: user.profile,
+        coverPhoto: user.coverPhoto,
+      });
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center">
       <div
         className="absolute inset-0 bg-black opacity-50 backdrop-blur-sm"
-        onClick={onClose}
+        onClick={() => {
+          onClose(),
+            setFormData({
+              _id: "",
+              name: "",
+              coverPhoto: null,
+              profile: null,
+            });
+          setImagePreviewCover(null);
+          setImagePreviewProfile(null);
+        }}
       />
       <div className="relative z-10 bg-white overflow-auto rounded-t-xl lg:w-4/5 md:w-full w-screen h-[95vh] max-w-6xl">
         <form
@@ -101,7 +120,7 @@ const Modal: React.FC<ModalProps> = ({ user, isOpen, onClose, onSubmit }) => {
               alt="Cover"
               className="w-full h-full object-cover group-hover:blur-sm transition-all duration-300"
             />
-            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50">
+            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50">
               <div className="flex gap-2 items-center justify-center text-white">
                 <label htmlFor="coverPhoto" className="flex gap-2 items-center">
                   <CiImageOn className="text-6xl" />
@@ -120,18 +139,18 @@ const Modal: React.FC<ModalProps> = ({ user, isOpen, onClose, onSubmit }) => {
           </div>
 
           {/* Profile section */}
-          <div className="relative flex items-center justify-center -top-28 flex-col gap-3">
+          <div className="relative flex items-center justify-center md:-top-28 -top-16  flex-col gap-3">
             <div className="relative">
               <img
                 src={imagePreviewProfile || formData.profile}
                 alt="Profile"
-                className="object-cover h-44 w-44 rounded-full border-8 border-white"
+                className="object-cover md:h-44 md:w-44 w-24 h-24 rounded-full border-2 border-white"
               />
               <label
                 htmlFor="profile"
                 className="absolute right-2 p-1 bg-white rounded-full top-4 shadow text-3xl cursor-pointer"
               >
-                <BiEdit className="text-2xl" />
+                <BiEdit className="md:text-2xl text-sm" />
                 <input
                   type="file"
                   id="profile"
@@ -159,13 +178,13 @@ const Modal: React.FC<ModalProps> = ({ user, isOpen, onClose, onSubmit }) => {
           <div className="absolute bottom-0 right-1/2 left-1/2 mb-6 flex items-center justify-center gap-5">
             <button
               type="submit"
-              className="px-7 py-3 shadow bg-blue-500 text-white rounded"
+              className="px-7 py-3 shadow bg-blue-500 hover:to-blue-600 transition-all duration-300 text-white rounded"
             >
               Save
             </button>
             <button
               type="button"
-              className="px-7 py-3 shadow rounded bg-base-mid"
+              className="px-7 py-3 shadow rounded bg-base-mid transition-all hover:bg-slate-300"
               onClick={onClose}
             >
               Discard

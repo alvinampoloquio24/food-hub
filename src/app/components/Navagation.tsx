@@ -2,43 +2,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  CiCircleInfo,
-  CiForkAndKnife,
-  CiMenuBurger,
-  CiSun,
-} from "react-icons/ci";
-import { IoArrowBack, IoSettingsOutline } from "react-icons/io5";
-import { FaEdit } from "react-icons/fa";
+import { CiCircleInfo, CiForkAndKnife, CiMenuBurger } from "react-icons/ci";
+import { IoArrowBack, IoPersonOutline } from "react-icons/io5";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useUserStore } from "@/zustand/user";
+
 import { useRouter } from "next/navigation";
 import { GoHome } from "react-icons/go";
-import {
-  PiBookOpen,
-  PiBookOpenUserLight,
-  PiBowlFoodFill,
-  PiBowlFoodLight,
-  PiNotePencilLight,
-} from "react-icons/pi";
-import { LiaEditSolid, LiaUtensilSpoonSolid } from "react-icons/lia";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { BiLogOut } from "react-icons/bi";
+import { PiBookOpenUserLight, PiBowlFoodLight } from "react-icons/pi";
 import { HashLoader } from "react-spinners";
-import { MdManageAccounts } from "react-icons/md";
-import { TfiBook } from "react-icons/tfi";
-import { RiUserSettingsLine } from "react-icons/ri";
 import { SlLogout } from "react-icons/sl";
 import { AiOutlineSetting } from "react-icons/ai";
-
+import { useAuth } from "@/context/authProvider";
 export default function Nav() {
   const [loading, setLoading] = useState(false);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [menuClicked, setMenuClicked] = useState(false);
   const pathname = usePathname();
-  const { user } = useUserStore();
+  const [user, setUser] = useState<any>(null);
+
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
@@ -82,13 +65,17 @@ export default function Nav() {
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+      setUser(storedUser);
+    }
+  }, []);
   useEffect(() => {
     setIsClient(true);
     if (typeof window !== "undefined") {
       setPrevScrollPos(window.pageYOffset);
       window.addEventListener("scroll", handleScroll);
-
       return () => {
         window.removeEventListener("scroll", handleScroll);
       };
@@ -100,7 +87,6 @@ export default function Nav() {
     } else {
       document.body.classList.remove("no-scroll");
     }
-
     // Clean up by removing the class when the component unmounts
     return () => {
       document.body.classList.remove("no-scroll");
@@ -113,11 +99,11 @@ export default function Nav() {
           visible ? "translate-y-0" : "-translate-y-full"
         } justify-between flex  content-center shadow`}
       >
-        <ul className="md:flex items-center justify-center hidden">
+        <ul className="lg:flex items-center justify-center hidden">
           <li className="font-bold text-lg">Food-Hub</li>
         </ul>
 
-        <ul className="md:space-x-8 text-lg flex items-center w-screen md:w-auto">
+        <ul className="md:space-x-8 text-lg flex items-center w-screen md:w-full lg:w-auto">
           <li className={getLinkClassName("/")}>
             <Link href="/">
               <p className="hidden md:flex">Home</p>
@@ -158,7 +144,7 @@ export default function Nav() {
         </ul>
 
         {isClient && (
-          <div className="hidden sm:block">
+          <div className="hidden lg:block">
             {!user ? (
               <div className="flex space-x-2 text-md justify-center items-center">
                 <button
@@ -231,20 +217,24 @@ export default function Nav() {
                   />
                   <p className="font-semibold">{user.name}</p>
                 </div>
-                <div className="md:p-4 p-3 flex gap-2  md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
-                  <LiaEditSolid className="text-2xl items-center" />
-                  Edit Profile
-                </div>
-                <Link href={"/recipe/me"}>
+                <Link href={"/profile"}>
+                  <div className="md:p-4 p-3 flex gap-2  md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
+                    <IoPersonOutline className="text-2xl items-center" />
+                    Profile
+                  </div>
+                </Link>
+                <Link href={"/my-recipe"}>
                   <div className="md:p-4 p-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
                     <PiBowlFoodLight className="text-2xl items-center" />
                     My Recipe
                   </div>
                 </Link>
-                <div className="md:p-4 p-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
-                  <AiOutlineSetting className="text-2xl items-center" />
-                  Manage Account
-                </div>
+                <Link href={"/manage-account"}>
+                  <div className="md:p-4 p-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
+                    <AiOutlineSetting className="text-2xl items-center" />
+                    Manage Account
+                  </div>
+                </Link>
                 <div
                   onClick={() => {
                     logout();

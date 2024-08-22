@@ -84,14 +84,14 @@ const HotRecipe: React.FC = () => {
                   {/* ///trnding--------------- */}
                   <div className=" flex border   border-black  md:p-3 p-2 w-32 md:w-44 rounded-full gap-2 items-center justify-center">
                     <p>
-                      <HiTrendingUp />
+                      <HiTrendingUp className="text-xs md:text-md" />
                     </p>
 
                     <p className="sm:text-md text-xs">Trending</p>
                   </div>
                   {/* name des------ */}
                   <div className="flex flex-col md:gap-6 gap-4">
-                    <div className=" md:text-5xl text-2xl  text-base-dark  font-bold ">
+                    <div className=" md:text-5xl text-xl  text-base-dark  font-bold ">
                       {poster.name ? (
                         <p>{poster.name}</p>
                       ) : (

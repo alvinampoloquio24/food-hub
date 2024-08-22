@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState, FormEvent } from "react";
 import { GrCaretPrevious, GrCaretNext } from "react-icons/gr";
-import { FaUpload } from "react-icons/fa";
+import { FaSave, FaUpload } from "react-icons/fa";
+import { ImCancelCircle } from "react-icons/im";
 
 interface ModalProps {
   isOpen: boolean;
@@ -148,15 +149,27 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     onSubmit(formData);
+    setFormData({
+      name: "",
+      description: "",
+      calories: "",
+      type: "",
+      time: "",
+      ingredients: [{ name: "", quantity: "", unit: "" }],
+      directions: [{ title: "", description: "" }],
+      selectedImage: null,
+    });
+    setImagePreview(null);
+    setCurrentSlide(0);
   };
 
   const slides = [
     // Slide 1: Basic Info
-    <div key="basic-info">
-      <h2 className="md:text-2xl text-lg font-bold text-center mb-6">
+    <div key="basic-info" className="h-full ">
+      <h2 className="md:text-2xl text-lg font-bold text-center mb-6 ">
         Basic Recipe Information
       </h2>
-      <div className="flex flex-col gap-4 md:text-lg text-sm lg:h-96 lg:pr-4  overflow-y-auto overflow-x-hidden custom-scrollbar">
+      <div className="flex flex-col gap-4 h-[75vh] md:text-lg text-sm  lg:pr-4  overflow-y-auto overflow-x-hidden ">
         <div className="flex flex-col">
           <p>Name</p>
           <input
@@ -240,11 +253,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
     </div>,
 
     // Slide 2: Ingredients
-    <div key="ingredients">
+    <div key="ingredients" className="h-full ">
       <h2 className="md:text-2xl text-lg font-bold text-center mb-6">
         Ingredients
       </h2>
-      <div className="flex flex-col gap-2 pb-8">
+      <div className="flex flex-col  gap-2 pb-8 h-[75vh] overflow-y-auto overflow-x-hidden ">
         {formData.ingredients.map((ingredient, index) => (
           <div
             key={index}
@@ -283,8 +296,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
                 onChange={(event) => handleIngredientChange(index, event)}
               />
             </div>
-            <div className="flex flex-col justify-center col-span-1">
-              <p className="md:flex hidden">Remove</p>
+            <div className="flex flex-col justify-between col-span-1">
+              <p className="md:flex hidden"></p>
               <button
                 type="button"
                 className="p-2 rounded md:border"
@@ -308,11 +321,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
     </div>,
 
     // Slide 3: Directions
-    <div key="directions">
-      <h2 className="md:text-2xl text-sm font-bold text-center mb-6">
+    <div key="directions" className="h-full">
+      <h2 className="md:text-2xl text-sm font-bold text-center mb-6 ">
         Directions
       </h2>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col  gap-2 pb-8 h-[75vh] overflow-y-auto overflow-x-hidden custom-scrollbar">
         {formData.directions.map((direction, index) => (
           <div
             key={index}
@@ -341,7 +354,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
               />
             </div>
             <div className="flex flex-col justify-between col-span-1">
-              <p className="hidden md:flex-none">Remove</p>
+              <p className="hidden md:flex"></p>
               <button
                 type="button"
                 className="p-2 rounded md:border"
@@ -389,27 +402,28 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-end justify-center">
       <div
         className="absolute inset-0 bg-black opacity-50 backdrop-blur-sm"
-        onClick={onClose}
+        onClick={() => {
+          setCurrentSlide(0), onClose();
+        }}
       />
-      <div className="relative z-10 bg-white rounded-lg md:p-6 p-4 md:px-12 lg:w-3/5 md:w-11/12 w-screen h-90p max-w-6xl overflow-auto">
+      <div className="relative bg-white  rounded-lg md:p-6 p-4 md:px-12 lg:w-3/5 md:w-11/12 h-screen w-screen max-w-6xl ">
         <form
           onSubmit={handleSubmit}
           noValidate
-          className="h-90p flex flex-col justify-between"
+          className=" h-full flex flex-col justify-between"
         >
-          <div className="flex flex-col w-full gap-6 mt-4">
-            {slides[currentSlide]}
-          </div>
-          <div>
-            <div className="flex gap-3 mt-6">
+          {slides[currentSlide]}
+
+          <div className="">
+            <div className="flex gap-3 ">
               {currentSlide > 0 && (
                 <button
                   type="button"
                   onClick={() => setCurrentSlide(currentSlide - 1)}
-                  className="p-2 px-3 bg-gray-200 rounded gap-2 flex items-center transition duration-200 ease-in-out hover:scale-110"
+                  className="p-2 px-3 bg-gray-200 rounded gap-2 flex items-center transition duration-200 ease-in-out hover:bg-gray-300"
                 >
                   <GrCaretPrevious />
                   Previous
@@ -419,19 +433,30 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
                 <button
                   type="button"
                   onClick={() => setCurrentSlide(currentSlide + 1)}
-                  className="p-2 px-3 hover:shadow-lg bg-base-dark text-white flex gap-2 items-center rounded transition duration-200 ease-in-out hover:scale-110"
+                  className="p-2 px-3 hover:shadow-lg bg-base-dark text-white flex gap-2 items-center rounded transition duration-200 ease-in-out hover:bg-orange-600"
                 >
                   Next <GrCaretNext />
                 </button>
               )}
               {currentSlide === slides.length - 1 && (
-                <button
-                  type="submit"
-                  className="p-2 flex items-center px-3 gap-2 bg-green-500 text-white rounded transition duration-200 ease-in-out hover:scale-110"
-                >
-                  Upload
-                  <FaUpload />
-                </button>
+                <div className="flex justify-between w-full">
+                  <button
+                    type="submit"
+                    className="p-2 flex items-center px-3 gap-2 bg-blue-500 text-white rounded transition duration-200 ease-in-out hover:bg-blue-600"
+                  >
+                    Upload
+                    <FaUpload />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setCurrentSlide(0), onClose();
+                    }}
+                    className="p-2 flex items-center px-3 gap-2 bg-red-500 text-white rounded transition duration-200 ease-in-out hover:bg-red-600"
+                  >
+                    Discard
+                    <ImCancelCircle />
+                  </button>
+                </div>
               )}
             </div>
             <SlideIndicator

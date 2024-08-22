@@ -20,12 +20,11 @@ import {
 } from "react-icons/md";
 
 export default function ProfileNavigation() {
-  const { user, isLoggedIn } = useAuth();
   const [selected, setSelected] = useState("");
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
+  const [user, setUser] = useState<any>(null);
   useEffect(() => {
     setSelected(pathname);
   }, [pathname]);
@@ -34,7 +33,7 @@ export default function ProfileNavigation() {
     setLoading(true);
     try {
       localStorage.removeItem("token");
-      localStorage.removeItem("user-storage");
+      localStorage.removeItem("user");
       router.push("/account/login");
     } catch (error) {
       return error;
@@ -52,11 +51,20 @@ export default function ProfileNavigation() {
       : baseClasses;
   };
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+      if (!storedUser) {
+        router.push("/account/login");
+      }
+      setUser(storedUser);
+    }
+  }, []);
   if (loading) {
     return <p>Loading...</p>;
   }
   return (
-    <div className="col-span-2 bg-base-mid h-screen overflow-hidden">
+    <div className="col-span-2 bg-base-mid h-screen overflow-hidden lg:flex flex-col hidden  ">
       <BackButton />
       <div className="py-16">
         {user && (

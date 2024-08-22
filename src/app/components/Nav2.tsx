@@ -3,7 +3,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useUserStore } from "@/zustand/user";
 import { useRouter } from "next/navigation";
 
 interface User {
@@ -13,7 +12,7 @@ interface User {
 
 export default function Nav() {
   const pathname = usePathname();
-  const { user } = useUserStore() as { user: User | null };
+  const user: any = localStorage.getItem("user");
   const [isClient, setIsClient] = useState<boolean>(false);
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
