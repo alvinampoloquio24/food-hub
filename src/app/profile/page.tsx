@@ -362,7 +362,7 @@ export default function EditProfile() {
         <div className="h-screen grid lg:grid-cols-12 ">
           <ProfileNav />
           {/* Fixed ProfileNav */}
-          <div className="col-span-10 flex flex-col overflow-auto relative  ">
+          <div className="col-span-10 flex flex-col overflow-auto relative bg-white  ">
             <div className=" flex flex-col w-full h-1/3 ">
               <img
                 src={user?.coverPhoto}
