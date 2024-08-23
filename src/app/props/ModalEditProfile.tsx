@@ -107,7 +107,7 @@ const Modal: React.FC<ModalProps> = ({ user, isOpen, onClose, onSubmit }) => {
           setImagePreviewProfile(null);
         }}
       />
-      <div className="relative z-10 bg-white overflow-auto rounded-t-xl lg:w-4/5 md:w-full w-screen h-[95vh] max-w-6xl">
+      <div className="relative z-10 bg-base-white overflow-auto rounded-t-xl lg:w-4/5 md:w-full w-screen h-[95vh] max-w-6xl">
         <form
           onSubmit={handleSubmit}
           noValidate
@@ -148,7 +148,7 @@ const Modal: React.FC<ModalProps> = ({ user, isOpen, onClose, onSubmit }) => {
               />
               <label
                 htmlFor="profile"
-                className="absolute right-2 p-1 bg-white rounded-full top-4 shadow text-3xl cursor-pointer"
+                className="absolute right-2 p-1 bg-base-white rounded-full top-4 shadow text-3xl cursor-pointer"
               >
                 <BiEdit className="md:text-2xl text-sm" />
                 <input

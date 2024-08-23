@@ -59,7 +59,7 @@ export default function blog() {
   return (
     <>
       <Navagation />
-      <main className="bg-white lg:px-64 md:px-12 px-4 ">
+      <main className="bg-base-white lg:px-64 md:px-12 px-4 ">
         <p className="md:text-2xl text-xl font-bold text-center pt-5">
           Blog & Article
         </p>

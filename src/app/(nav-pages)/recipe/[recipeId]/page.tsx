@@ -60,7 +60,7 @@ export default function Page({
     <>
       <RecipeProps recipe={recipe} />
       <div
-        className=" min-h-screen  bg-white md:p-20 p-6 flex md:px-20 lg:px-40 "
+        className=" min-h-screen  bg-base-white md:p-20 p-6 flex md:px-20 lg:px-40 "
         id="directions"
       >
         <div className="md:grid grid-cols-12 flex flex-col gap-4 ">

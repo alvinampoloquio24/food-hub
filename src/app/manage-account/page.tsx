@@ -51,22 +51,22 @@ export default function EditProfile() {
         />
 
         <ProfileNav />
-        <div className="lg:col-span-10 md:col-span-11 flex md:p-12 p-4 flex-col justify-center bg-white ">
+        <div className="lg:col-span-10 md:col-span-11 flex md:p-12 text-text-color p-4 flex-col justify-center bg-base-white ">
           <p className="md:text-2xl font-bold">Manage Account</p>
           <ul className="flex flex-col py-6 text-md font gap-2 ">
             <li className="flex flex-col ">
               <p className="my-2">follow</p>
-              <div className="p-4 bg-white  shadow flex items-center rounded gap-2 hover:bg-base-light transition-all duration-300 cursor-pointer">
+              <div className="p-4 bg-base-white  shadow flex items-center rounded gap-2 hover:bg-base-light transition-all duration-300 cursor-pointer">
                 <HiMiniRss /> <p>Followers</p>
               </div>
             </li>
             <li className="flex flex-col  ">
               <p className="my-2">recipe</p>
               <div className="rounded shadow ">
-                <div className="p-4 bg-white   flex items-center  gap-2 hover:bg-base-light transition-all duration-300 cursor-pointer">
+                <div className="p-4 bg-base-white   flex items-center  gap-2 hover:bg-base-light transition-all duration-300 cursor-pointer">
                   <PiBowlFood /> <p>my recipes</p>
                 </div>
-                <div className="p-4 bg-white   flex items-center  gap-2 hover:bg-base-light transition-all duration-300 cursor-pointer">
+                <div className="p-4 bg-base-white   flex items-center  gap-2 hover:bg-base-light transition-all duration-300 cursor-pointer">
                   <IoSaveOutline /> <p>saved recipes</p>
                 </div>
               </div>
@@ -74,15 +74,15 @@ export default function EditProfile() {
             <li className="flex flex-col  ">
               <p className="my-2">account</p>
               <div className="rounded shadow ">
-                <div className="p-4 bg-white   flex items-center  gap-2 hover:bg-base-light transition-all duration-300 cursor-pointer">
+                <div className="p-4 bg-base-white   flex items-center  gap-2 hover:bg-base-light transition-all duration-300 cursor-pointer">
                   <GoChecklist /> <p>Comlpete your profile </p>
                 </div>
-                <div className="p-4 bg-white  flex items-center  gap-2 hover:bg-base-light transition-all duration-300 cursor-pointer">
+                <div className="p-4 bg-base-white  flex items-center  gap-2 hover:bg-base-light transition-all duration-300 cursor-pointer">
                   <RxUpdate /> <p>Update your account details</p>
                 </div>
                 <div
                   onClick={() => setDeleteModal(true)}
-                  className="p-4 bg-white   flex items-center  gap-2 hover:bg-red-200 transition-all duration-300 cursor-pointer"
+                  className="p-4 bg-base-white   flex items-center  gap-2 hover:bg-red-200 transition-all duration-300 cursor-pointer"
                 >
                   <IoTrashOutline /> <p>Delete your account</p>
                 </div>
@@ -91,7 +91,7 @@ export default function EditProfile() {
           </ul>
         </div>
         {/* only in mobile */}
-        <div className=" top-0 w-full items-center md:hidden flex fixed bg-white gap-3 shadow p-3  h-[8vh] ">
+        <div className=" top-0 w-full items-center md:hidden flex fixed bg-base-white gap-3 shadow p-3  h-[8vh] ">
           <IoArrowBack
             className="text-xl "
             onClick={() => {

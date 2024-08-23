@@ -22,7 +22,7 @@ export default function CheckEmail({ email }: any) {
   // Render the component
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-xl p-8 max-w-2xl w-full mx-4 relative">
+      <div className="bg-base-white rounded-lg shadow-xl p-8 max-w-2xl w-full mx-4 relative">
         <div className="flex flex-col items-center gap-6">
           <Lottie options={defaultOptions} height={200} width={200} />
           <h2 className="md:text-3xl text-xl font-bold text-base-dark text-center">

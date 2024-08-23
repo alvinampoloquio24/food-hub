@@ -13,7 +13,7 @@ export default function VerifyEmail() {
   return (
     <Suspense
       fallback={
-        <div className="h-screen bg-white flex items-center gap-3 justify-center">
+        <div className="h-screen bg-base-white flex items-center gap-3 justify-center">
           <HashLoader color="#ff6b00" />
           <p>Loading...</p>
         </div>
@@ -80,12 +80,12 @@ function VerifyEmailContent() {
   return (
     <div>
       {isVerifying ? (
-        <div className="h-screen bg-white flex items-center gap-3 justify-center">
+        <div className="h-screen bg-base-white flex items-center gap-3 justify-center">
           <HashLoader color="#ff6b00" />
           <p>Verifying...</p>
         </div>
       ) : success ? (
-        <div className="flex h-screen bg-white flex-col items-center justify-center">
+        <div className="flex h-screen bg-base-white flex-col items-center justify-center">
           <Lottie options={defaultOptions} height={200} width={200} />
           <p className="text-xl">
             {message}
@@ -98,7 +98,7 @@ function VerifyEmailContent() {
           </p>
         </div>
       ) : (
-        <div className="flex h-screen bg-white flex-col items-center justify-center">
+        <div className="flex h-screen bg-base-white flex-col items-center justify-center">
           <Lottie options={defaultOptions2} height={200} width={150} />
           <p className="text-xl pt-4">
             <span className="font-semibold text-pink-600">Sorry!</span>{" "}

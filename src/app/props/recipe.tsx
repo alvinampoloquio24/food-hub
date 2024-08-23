@@ -23,7 +23,7 @@ interface RecipeProps {
 export default function RecipeProps({ recipe }: RecipeProps) {
   return (
     <>
-      <div className="lg:h-screen bg-white relative">
+      <div className="lg:h-screen bg-base-white relative">
         <BackButton />
         <div className="lg:flex lg:flex-row flex flex-col-reverse lg:h-full md:flex-col-reverse ">
           <div className="bg-base-mid lg:basis-1/3 md:p-10 p-6 md:h-screen overflow-y-auto  ">
@@ -53,8 +53,8 @@ export default function RecipeProps({ recipe }: RecipeProps) {
               </a>
             </div>
 
-            <div className="bg-white row-span-4 h- w-full grid grid-cols-12">
-              <div className="bg-white col-span-9  p-10 flex justify-center flex-col">
+            <div className="bg-base-white row-span-4 h- w-full grid grid-cols-12">
+              <div className="bg-base-white col-span-9  p-10 flex justify-center flex-col">
                 <div className="flex items-center text-green-700">
                   <TbRosetteDiscountCheckFilled className="text-xl" />
                   <p className="md:text-xl text-sm p-2">Easy</p>

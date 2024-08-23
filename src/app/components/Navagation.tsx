@@ -14,6 +14,7 @@ import { HashLoader } from "react-spinners";
 import { SlLogout } from "react-icons/sl";
 import { AiOutlineSetting } from "react-icons/ai";
 import { useAuth } from "@/context/authProvider";
+import { MdOutlineStyle } from "react-icons/md";
 export default function Nav() {
   const [loading, setLoading] = useState(false);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -95,7 +96,7 @@ export default function Nav() {
   return (
     <>
       <nav
-        className={`bg-white text-black sm:flex sticky items-center justify-between md:px-4   top-0 z-50 transition-transform duration-300 ${
+        className={`bg-base-white text-color sm:flex sticky  text-text-color items-center justify-between md:px-4   top-0 z-50 transition-transform duration-300 ${
           visible ? "translate-y-0" : "-translate-y-full"
         } justify-between flex  content-center shadow`}
       >
@@ -176,7 +177,7 @@ export default function Nav() {
           </div>
         )}
       </nav>
-      <div>
+      <div className="text-text-color bg-base-mid">
         {/* Background overlay */}
         <div
           className={`fixed inset-0 bg-black bg-opacity-5 backdrop-blur-sm transition-opacity duration-300 ${
@@ -187,7 +188,7 @@ export default function Nav() {
 
         {/* Sliding container */}
         <div
-          className={`fixed inset-y-0 right-0 bg-white shadow-lg transform transition-transform duration-300 ${
+          className={`fixed inset-y-0 right-0 bg-base-white shadow-lg transform transition-transform duration-300 ${
             isOpen
               ? "translate-x-0 w-1/2 md:w-1/6"
               : "translate-x-full w-1/2 md:w-1/6"
@@ -235,6 +236,12 @@ export default function Nav() {
                     Manage Account
                   </div>
                 </Link>
+                <Link href={"/theme"}>
+                  <div className="md:p-4 p-3 flex gap-2 md:gap-4 items-center transition-all duration-300 hover:bg-base-light hover:-translate-x-1 cursor-pointer">
+                    <MdOutlineStyle className="text-2xl items-center" />
+                    Themes
+                  </div>
+                </Link>
                 <div
                   onClick={() => {
                     logout();
@@ -266,7 +273,7 @@ export default function Nav() {
       </div>
 
       {loading && (
-        <div className="fixed inset-0 gap-3 flex items-center justify-center bg-white bg-opacity-70 backdrop-blur-lg z-50">
+        <div className="fixed inset-0 gap-3 flex items-center justify-center bg-base-white bg-opacity-70 backdrop-blur-lg z-50">
           <HashLoader color="#fc8000" />
           <p>Loging out...</p>
         </div>

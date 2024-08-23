@@ -107,8 +107,8 @@ export default function CreateAccountPage() {
               quality={100}
               priority
             />
-            <div className="absolute inset-0 bg-white md:bg-opacity-30 bg-opacity-70 flex items-center justify-center">
-              <div className="w-full max-w-md py-8 px-16 md:bg-white rounded-2xl md:shadow-lg">
+            <div className="absolute inset-0 bg-white  md:bg-opacity-30 bg-opacity-70 flex items-center justify-center">
+              <div className="w-full max-w-md py-8 px-16 md:bg-base-white rounded-2xl md:shadow-lg">
                 <h1 className="md:text-3xl text-2xl font-bold text-center mb-8 ">
                   Create Account
                 </h1>

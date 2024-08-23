@@ -89,13 +89,13 @@ export default function Nav() {
   return (
     <>
       <div
-        className="p-4 bg-white  md:hidden fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out origin-top"
+        className="p-4 bg-base-white  md:hidden fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out origin-top"
         style={mobileLogoStyle}
       >
         Logo MOBILE
       </div>
       <nav
-        className={`bg-white text-black flex justify-between md:px-4  px-2 md:text-lg text-xs content-center border-b-2 sticky top-0 z-40 transition-all duration-300 ease-out`}
+        className={`bg-base-white text-color flex justify-between md:px-4  px-2 md:text-lg text-xs content-center border-b-2 sticky top-0 z-40 transition-all duration-300 ease-out`}
         style={{ top: topStyle }}
       >
         <div className="font-bold text-lg md:block hidden md:py-4">LOGO</div>

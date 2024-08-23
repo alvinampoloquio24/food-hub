@@ -10,7 +10,7 @@ export default function Contact() {
   return (
     <>
       <Navagation />
-      <div className="bg-white text-black p-3 flex items-center flex-col gap-5 lg:p-24 lg:gap-20 ">
+      <div className="bg-base-white text-color p-3 flex items-center flex-col gap-5 lg:p-24 lg:gap-20 ">
         <p className="text-sm font-bold md:text-lg lg:text-3xl xl:text-5xl">
           Full Guide to Becoming a Professional Chief
         </p>

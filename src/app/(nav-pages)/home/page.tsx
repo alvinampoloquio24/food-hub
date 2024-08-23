@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <>
       <HotRecipe />
-      <div className=" bg-white flex flex-col  p-6 py-12 xl:p-24 lg:p-16 gap-8 lg:mt-0 ">
+      <div className=" bg-base-white flex flex-col  p-6 py-12 xl:p-24 lg:p-16 gap-8 lg:mt-0 text-text-color">
         <div className=" flex gap-4 md:gap-6  flex-col mb-10 ">
           {" "}
           <p className=" text-3xl font-bold md:text-5xl text-base-dark lg:text-6xl">
@@ -69,7 +69,7 @@ export default function Home() {
             with flavor.
           </p>
         </div>
-        <div className=" flex justify-between items-center">
+        <div className=" text-text-color flex justify-between items-center">
           {" "}
           <p className="text-2xl font-bold ">Categories</p>{" "}
           <button
@@ -79,7 +79,7 @@ export default function Home() {
             {!viewAll ? `View all` : `View less`}
           </button>
         </div>
-        <div className="grid grid-cols-3  lg:grid-cols-6 xl:grid-cols-6  gap-3 lg:gap-8 mt-5">
+        <div className="grid grid-cols-3 text-black  lg:grid-cols-6 xl:grid-cols-6  gap-3 lg:gap-8 mt-5">
           <div className="rounded-lg p-4 lg:h-44 flex flex-col bg-slate-100 lg:p-10 shadow-md gap-2 items-center justify-center">
             <div className="text-5xl">
               <MdOutlineFreeBreakfast />
@@ -152,7 +152,7 @@ export default function Home() {
           )}
         </div>
       </div>
-      <div className=" bg-white flex flex-col items-center">
+      <div className=" bg-base-white flex flex-col items-center text-text-color">
         <p className=" text-2xl font-bold pt-16 text-base-dark md:text-3xl lg:text-5xl">
           Simple and tasty recipes
         </p>
@@ -167,7 +167,7 @@ export default function Home() {
               <Link href={`/recipe/${poster._id}`}>
                 <div
                   key={index}
-                  className=" pb-4 lg:w-80  bg-base flex flex-col gap-1 md:gap-3 justify-between items-center rounded-2xl shadow-md transition-transform duration-200 transform hover:bg-orange-200 hover:scale-105"
+                  className=" pb-4 lg:w-80  bg-base flex flex-col gap-1 md:gap-3 justify-between items-center rounded-2xl shadow-md transition-transform duration-200 transform hover:bg-base-light hover:scale-105"
                 >
                   {poster.img ? (
                     <img
@@ -208,9 +208,9 @@ export default function Home() {
           ))}
         </div>
       </div>
-      <div className="bg-white h-screen flex items-center justify-center pt-5">
+      <div className="bg-base-white h-screen flex items-center justify-center pt-5">
         {" "}
-        <div className="md:grid-cols-2 grid h-5/6 bg-white w-full md:mx-16 md:rounded-2xl ">
+        <div className="md:grid-cols-2 grid h-5/6 bg-base-white w-full md:mx-16 md:rounded-2xl text-text-color ">
           <div className="flex flex-col lg:px-8 px-6 justify-center md:gap-8 gap-3">
             <p className="md:text-4xl text-lg text-base-dark font-bold">
               Unleash your inner chef with FoodHub's recipes
@@ -238,11 +238,11 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className=" bg-base md:h-screen md:items-center lg:h-screen bg-white flex flex-col xl:px-20 px-6 py-6 lg:gap-8 md:justify-center">
+      <div className=" bg-base md:h-screen md:items-center lg:h-screen bg-base-white flex flex-col xl:px-20 px-6 py-6 lg:gap-8 md:justify-center">
         <p className="text-lg md:text-2xl text-base-dark font-semibold py-2 text-center xl:text-4xl">
           Checkout out @foodhub on Instagram
         </p>
-        <p className="text-xs md:text-lg text-center py-2 md:py-3 lg:px-20">
+        <p className="text-xs text-text-color md:text-lg text-center py-2 md:py-3 lg:px-20">
           {" "}
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
           posuere lorem nec facilisis hendrerit. Sed semper euismod ullamcorper.
@@ -383,7 +383,7 @@ export default function Home() {
           <FaInstagram className="text-white text-xl" />
         </button>
       </div>
-      <div className=" flex flex-col p-4 md:justify-center md:gap-5 bg-white">
+      <div className=" flex flex-col text-text-color  p-4 md:justify-center md:gap-5 bg-base-white">
         <div className="lg:px-16 lg:grid lg:grid-cols-2 lg:items-center xl:py-7">
           <p className="text-md font-bold p-4 md:py-6 md:text-3xl lg:text-3xl ">
             Try this delecious recipe to make your day
@@ -431,8 +431,8 @@ export default function Home() {
           ))}
         </div>
       </div>
-      <div className=" flex bg-white justify-center items-center py-5 lg:px-20 lg:py-32">
-        <div className="bg-base p-10 w-full bg-base-mid shadow mx-3 justify-center items-center lg:py-20 xl:py32 flex-col gap-5 flex rounded-3xl ">
+      <div className=" flex bg-base-white justify-center items-center py-5 lg:px-20 lg:py-32">
+        <div className="bg-base text-text-color p-10 w-full bg-base-mid shadow mx-3 justify-center items-center lg:py-20 xl:py32 flex-col gap-5 flex rounded-3xl ">
           <p className="text-lg font-bold text-base-dark py-2 md:text-3xl lg:text-4xl">
             Deliciousness to your inbox
           </p>
@@ -445,7 +445,7 @@ export default function Home() {
             <input
               type="text"
               placeholder="Email"
-              className=" bg-white rounded-lg p-3 md:p-5 md:w-full "
+              className=" bg-base-white rounded-lg p-3 md:p-5 md:w-full "
             />
             <button className="bg-base-dark rounded-xl text-white p-2 md:p-3 absolute right-1">
               Subscribe

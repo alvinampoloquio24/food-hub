@@ -2,8 +2,8 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="flex text-black flex-col items-center md:flex-row border-t-2 md:px-4 xl:px-16">
-      <div className="bg-white py-6 px-3 w-full items-center md:items-start flex flex-col flex-1">
+    <footer className="flex text-color flex-col items-center md:flex-row border-t-2 md:px-4 xl:px-16">
+      <div className="bg-base-white py-6 px-3 w-full items-center md:items-start flex flex-col flex-1">
         <p className=" text-lg font-bold md:text-2xl">LOGO</p>
         <p className="text-sm md:text-sm">
           {" "}

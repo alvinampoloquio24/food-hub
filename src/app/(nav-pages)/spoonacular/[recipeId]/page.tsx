@@ -86,7 +86,7 @@ export default function page({
     <>
       {" "}
       <BackButton />
-      <div className="bg-white max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="bg-base-white max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <img
           src={recipe?.image}
           className="w-full h-80 object-cover rounded-lg shadow-lg mb-8"
@@ -144,7 +144,7 @@ export default function page({
               ))}
             </div>
           </div>
-          <div className="bg-white md:p-8 p-4 rounded-lg shadow-md">
+          <div className="bg-base-white md:p-8 p-4 rounded-lg shadow-md">
             <h2 className="md:text-3xl text-xl font-bold mb-6">Directions</h2>
             <div
               className="prose prose-lg max-w-none md:text-lg text-xs"
@@ -163,7 +163,7 @@ export default function page({
                 // eslint-disable-next-line react/jsx-key
                 <Link href={`/spoonacular/${recipe.id}`}>
                   <div
-                    className="flex-shrink-0 flex flex-col gap-2  bg-white shadow-lg md:w-60 w-48  transition-transform duration-200 transform hover:bg-orange-200 hover:scale-105"
+                    className="flex-shrink-0 flex flex-col gap-2  bg-base-white shadow-lg md:w-60 w-48  transition-transform duration-200 transform hover:bg-orange-200 hover:scale-105"
                     key={index}
                   >
                     <img

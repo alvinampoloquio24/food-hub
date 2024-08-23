@@ -409,7 +409,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
           setCurrentSlide(0), onClose();
         }}
       />
-      <div className="relative bg-white  rounded-lg md:p-6 p-4 md:px-12 lg:w-3/5 md:w-11/12 h-screen w-screen max-w-6xl ">
+      <div className="relative bg-base-white  rounded-lg md:p-6 p-4 md:px-12 lg:w-3/5 md:w-11/12 h-screen w-screen max-w-6xl ">
         <form
           onSubmit={handleSubmit}
           noValidate

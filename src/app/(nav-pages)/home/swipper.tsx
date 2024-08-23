@@ -55,9 +55,9 @@ const HotRecipe: React.FC = () => {
 
   return (
     <>
-      <div className=" lg:pt-6 lg:p-5 p-2 hidden  lg:flex items-center  gap-2 lg:px-20 px-8 bg-white">
+      <div className=" lg:pt-6 lg:p-5 p-2 hidden  lg:flex items-center  gap-2 lg:px-12 px-8 bg-base-white">
         {" "}
-        <p className="lg:text-2xl text-lg font-bold  text-center bg-white">
+        <p className="lg:text-2xl text-lg font-bold text-text-color  text-center bg-base-white">
           Today's Recipe
         </p>{" "}
         <p className="text-orange-500 text-2xl">
@@ -78,9 +78,9 @@ const HotRecipe: React.FC = () => {
       >
         {poster!.map((poster: any, index: any) => (
           <SwiperSlide className="flex " key={index}>
-            <div className=" bg-white h-screen">
+            <div className=" bg-base-white h-screen text-text-color">
               <div key={index} className="lg:h-4/5 h-90p  flex ">
-                <div className="lg:basis-1/2 flex flex-col md:px-12 px-4  justify-around">
+                <div className="lg:basis-1/2 flex flex-col md:px-12 px-4 bg-base-white  justify-around">
                   {/* ///trnding--------------- */}
                   <div className=" flex border   border-black  md:p-3 p-2 w-32 md:w-44 rounded-full gap-2 items-center justify-center">
                     <p>

@@ -355,8 +355,8 @@ function Recipe() {
       />
       <ToastContainer />
       <>
-        <section className="bg-white h-screen lg:grid flex flex-col grid-cols-12 overflow-hidden">
-          <div className="lg:bg-base-mid  bg-white shadow col-span-3  flex lg:flex-col items-center  lg:items-start space-x-3  lg:h-full  lg:p-8 md:px-8 px-1  text-gray-700">
+        <section className="bg-base-white h-screen lg:grid flex flex-col grid-cols-12 overflow-hidden">
+          <div className="lg:bg-base-mid  bg-base-white shadow col-span-3  flex lg:flex-col items-center  lg:items-start space-x-3  lg:h-full  lg:p-8 md:px-8 px-1  text-gray-700">
             <div className="absolute top-0 left-0 ">
               <BackButton />
             </div>
@@ -394,7 +394,7 @@ function Recipe() {
                     onClick={() => {
                       setSearch("");
                     }}
-                    className="absolute text-black right-12 top-1/2 transform -translate-y-1/2   px-3 py-2 rounded transition duration-200 ease-in-out hover:scale-110"
+                    className="absolute text-color right-12 top-1/2 transform -translate-y-1/2   px-3 py-2 rounded transition duration-200 ease-in-out hover:scale-110"
                   >
                     <MdClear />
                   </button>
@@ -427,10 +427,10 @@ function Recipe() {
               </>
             )}
           </div>
-          <div className="bg-white lg:col-span-9 col-span-12 overflow-y-auto  h-auto gap-8 ">
+          <div className="bg-base-white lg:col-span-9 col-span-12 overflow-y-auto  h-auto gap-8 ">
             {/* Main content */}
             {poster?.length === 0 ? (
-              <div className="h-90p bg-white flex justify-center items-center">
+              <div className="h-90p bg-base-white flex justify-center items-center">
                 {" "}
                 {loading ? (
                   <div className="flex flex-col items-center justify-center">
@@ -456,7 +456,7 @@ function Recipe() {
                   <>
                     <div
                       key={index}
-                      className="bg-white border-b  md:p-12 p-4  py-12  pb-12 flex flex-col gap-8 hover:bg-orange-50 transition-all ease-in-out "
+                      className="bg-base-white border-b  md:p-12 p-4  py-12  pb-12 flex flex-col gap-8 hover:bg-orange-50 transition-all ease-in-out "
                     >
                       <div className="flex self-end text-2xl gap-4 text-gray-600">
                         <Link href={`/recipe/${poster._id}`}>
@@ -543,7 +543,7 @@ function Recipe() {
                               {" "}
                               <div className="p-3 bg-base-mid rounded-full hover:bg-orange-200 ">
                                 {" "}
-                                <FaRegFilePdf className=" text-black text-xl " />
+                                <FaRegFilePdf className=" text-color text-xl " />
                               </div>
                               <button
                                 className="hover:text-blue-500 underline"
@@ -568,7 +568,7 @@ function Recipe() {
                               {" "}
                               <div className="p-3 bg-base-mid rounded-full hover:bg-orange-200">
                                 {" "}
-                                <CiShare1 className=" text-black text-xl " />
+                                <CiShare1 className=" text-color text-xl " />
                               </div>
                               <p className="text-sm">Share</p>
                             </div>

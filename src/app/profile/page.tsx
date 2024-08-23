@@ -359,10 +359,10 @@ export default function EditProfile() {
         }}
       />
       {isClient && (
-        <div className="h-screen grid md:grid-cols-12  ">
+        <div className="h-screen grid md:grid-cols-12 text-text-color  ">
           <ProfileNav />
           {/* Fixed ProfileNav */}
-          <div className="lg:col-span-10 md:col-span-11 flex flex-col overflow-auto relative bg-white  ">
+          <div className="lg:col-span-10 md:col-span-11 flex flex-col overflow-auto relative bg-base-white  ">
             <div className=" flex flex-col w-full h-1/3 ">
               <img
                 src={user?.coverPhoto}
@@ -393,10 +393,10 @@ export default function EditProfile() {
                   onClick={() => {
                     setShowModalUpload(true);
                   }}
-                  className=" bg-base-mid lg:px-4 md:px-3 px-2 md:py-3 py-2 text-xs md:text-sm shadow text-gray-700 rounded flex gap-2 items-center transition-all duration-300 hover:bg-slate-200  cursor-pointer"
+                  className=" bg-slate-300  lg:px-4 md:px-3 px-2 md:py-3 py-2 text-xs md:text-sm shadow text-gray-700 rounded flex gap-2 items-center transition-all duration-300 hover:bg-slate-200  cursor-pointer"
                 >
-                  <IoIosAddCircle />
-                  <p>Add recipe</p>
+                  <IoIosAddCircle className="text-black" />
+                  <p className="text-black">Add recipe</p>
                 </button>
                 <button
                   onClick={() => {
@@ -437,14 +437,14 @@ export default function EditProfile() {
                   with our platform. Let us know your preferences, update your
                   details, and make the platform truly yours!
                 </p>
-                <button className="lg:p-3 md:p-2 lg:w-36 w-28 text-xs md:text-lg p-2 rounded flex items-center shadow justify-center gap-2 bg-slate-50 transition-all duration-300 hover:bg-slate-200 cursor-pointer ">
+                <button className="lg:p-3 text-black md:p-2 lg:w-36 w-28 text-xs md:text-lg p-2 rounded flex items-center shadow justify-center gap-2 bg-slate-200 transition-all duration-300 hover:bg-slate-200 cursor-pointer ">
                   Continue
                 </button>
               </div>
 
-              <div className="bg-base-mid flex flex-col gap-1 rounded shadow">
+              <div className="bg-base-white flex flex-col gap-1 rounded shadow">
                 {poster?.length === 0 ? (
-                  <div className="h-90p bg-white flex justify-center items-center">
+                  <div className="h-90p bg-base-white flex justify-center items-center">
                     <p className="p-16 text-2xl">No recipe posted yet.</p>
                   </div>
                 ) : (
@@ -453,7 +453,7 @@ export default function EditProfile() {
                     {poster?.map((poster, index) => (
                       <div
                         key={index}
-                        className="bg-white border-b relative   md:p-12 p-4 md:py-12 py-6  pb-12 flex flex-col gap-8 hover:bg-orange-50 transition-all duration-300 ease-in-out  "
+                        className="bg-base-white relative   md:p-12 p-4 md:py-12 py-6  pb-12 flex flex-col gap-8 hover:bg-base-light transition-all duration-300 ease-in-out  "
                       >
                         <div
                           key={poster._id}
@@ -467,7 +467,7 @@ export default function EditProfile() {
                           </div>
 
                           {openDropdowns[poster._id] && (
-                            <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 dropdown">
+                            <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-base-white ring-1 ring-black ring-opacity-5 dropdown">
                               <div
                                 className="py-1"
                                 aria-orientation="vertical"
@@ -561,7 +561,7 @@ export default function EditProfile() {
                             className=" object-cover md:h-96 h-64 w-full col-span-7"
                             alt=""
                           />
-                          <div className="bg-base-mid col-span-5 h-96  p-4 md:flex hidden flex-col">
+                          <div className="bg-gradient-to-br from-base-mid to-base-normal col-span-5 h-96  p-4 md:flex hidden flex-col">
                             <p className="text-xl font-bold mb-4">
                               Ingredients({poster.ingredients.length})
                             </p>
@@ -621,7 +621,7 @@ export default function EditProfile() {
               </div>
             </div>
             {/* only in mobile */}
-            <div className=" top-0 w-full items-center md:hidden flex fixed bg-white gap-3 shadow p-3  h-[8vh] ">
+            <div className=" top-0 w-full items-center md:hidden flex fixed bg-base-white gap-3 shadow p-3  h-[8vh] ">
               <IoArrowBack
                 className="text-xl "
                 onClick={() => {

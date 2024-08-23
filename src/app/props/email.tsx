@@ -16,7 +16,7 @@ function email() {
           <input
             type="text"
             placeholder="Email"
-            className=" bg-white rounded-lg p-3 md:p-5 md:w-full "
+            className=" bg-base-white rounded-lg p-3 md:p-5 md:w-full "
           />
           <button className="bg-black rounded-xl text-white p-2 md:p-3 absolute right-1">
             Subscribe

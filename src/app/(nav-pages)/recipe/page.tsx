@@ -202,8 +202,8 @@ export default function recipe() {
       <ToastContainer />
       <>
         <Navagation />
-        <section className="bg-white h-screen lg:grid flex flex-col grid-cols-12 overflow-hidden">
-          <div className="lg:bg-base-mid bg-white shadow col-span-3  flex lg:flex-col items-center  lg:items-start space-x-3 lg:space-x-0  lg:h-full  lg:p-8 md:px-8 px-1  text-gray-700">
+        <section className="bg-base-white h-screen lg:grid flex flex-col grid-cols-12 overflow-hidden">
+          <div className="lg:bg-gradient-to-tl from-base-mid to-base-normal bg-base-white shadow col-span-3  flex lg:flex-col items-center  lg:items-start space-x-3 lg:space-x-0  lg:h-full  lg:p-8 md:px-8 px-1  text-gray-700">
             <div className="md:py-4 py-2 relative w-11/12 lg:w-full">
               <input
                 type="text"
@@ -223,7 +223,7 @@ export default function recipe() {
                     onClick={() => {
                       setSearch("");
                     }}
-                    className="absolute text-black right-12 top-1/2 transform -translate-y-1/2   px-3 py-2 rounded transition duration-200 ease-in-out hover:scale-110"
+                    className="absolute text-color right-12 top-1/2 transform -translate-y-1/2   px-3 py-2 rounded transition duration-200 ease-in-out hover:scale-110"
                   >
                     <MdClear />
                   </button>
@@ -259,7 +259,7 @@ export default function recipe() {
                   handleSeach("burger");
                   setSearch("burger");
                 }}
-                className="p-1 bg-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
+                className="p-1 bg-base-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
               >
                 <p>burger</p>
               </button>
@@ -268,7 +268,7 @@ export default function recipe() {
                   handleSeach("pancake");
                   setSearch("pancake");
                 }}
-                className="p-1 bg-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
+                className="p-1 bg-base-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
               >
                 <p>pancake</p>
               </button>
@@ -277,7 +277,7 @@ export default function recipe() {
                   handleSeach("Nashville Hot");
                   setSearch("Nashville Hot");
                 }}
-                className="p-1 bg-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
+                className="p-1 bg-base-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
               >
                 <p>Nashville Hot</p>
               </button>
@@ -286,7 +286,7 @@ export default function recipe() {
                   handleSeach("dessert");
                   setSearch("dessert");
                 }}
-                className="p-1 bg-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
+                className="p-1 bg-base-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
               >
                 <p>dessert</p>
               </button>
@@ -311,11 +311,11 @@ export default function recipe() {
               </>
             )}
           </div>
-          <div className="bg-white lg:col-span-9 col-span-12 overflow-y-auto  h-auto gap-8 ">
+          <div className="bg-base-white lg:col-span-9 col-span-12 overflow-y-auto  h-auto gap-8 ">
             {/* Main content */}
 
             {poster?.length === 0 ? (
-              <div className="h-90p bg-white flex justify-center items-center">
+              <div className="h-90p bg-base-white flex justify-center items-center">
                 {" "}
                 {loading ? (
                   <div className="flex flex-col items-center justify-center">
@@ -338,7 +338,7 @@ export default function recipe() {
                   <Link href={`/recipe/${poster._id}`}>
                     <div
                       key={index}
-                      className="bg-white border-b  md:p-12 p-4 py-12  pb-12 flex flex-col gap-8 hover:bg-orange-50 transition-all duration-300 ease-in-out  "
+                      className="bg-base-white border-b  md:p-12 p-4 py-12  pb-12 flex flex-col gap-8 hover:bg-orange-50 transition-all duration-300 ease-in-out  "
                     >
                       <div className="md:grid grid-cols-12 ">
                         <div className=" col-span-7">
@@ -391,7 +391,7 @@ export default function recipe() {
                             {" "}
                             <div className="p-3 bg-base-mid rounded-full hover:bg-orange-200 ">
                               {" "}
-                              <FaRegFilePdf className=" text-black text-xl " />
+                              <FaRegFilePdf className=" text-color text-xl " />
                             </div>
                             <button
                               className="hover:text-blue-500 underline"
@@ -416,7 +416,7 @@ export default function recipe() {
                             {" "}
                             <div className="p-3 bg-base-mid rounded-full hover:bg-orange-200">
                               {" "}
-                              <CiShare1 className=" text-black text-xl " />
+                              <CiShare1 className=" text-color text-xl " />
                             </div>
                             <p className="text-sm">Share</p>
                           </div>

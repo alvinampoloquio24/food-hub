@@ -51,7 +51,7 @@ export default function ProfileNaviagtion() {
     return <p>Loading...</p>;
   }
   return (
-    <div className="col-span-2 bg-base-mid ">
+    <div className="col-span-2 bg-base-mid text-text-color">
       <BackButton />{" "}
       <div className="py-16 ">
         {user && (

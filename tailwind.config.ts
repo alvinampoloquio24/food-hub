@@ -8,16 +8,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        "base-mid": "var(--color-base-mid)",
+        "base-light": "var(--color-base-light)",
+        "base-dark": "var(--color-base-dark)",
+        "text-color": "var(--color-text-color)",
+        "base-white": "var(--color-base-white)",
+        "base-normal": "var(--color-base-normal)",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
-      colors: {
-        "base-light": "#ffe4c1",
-        "base-dark": "#DC5F00",
-        "text-color": "#06283D",
-        "base-mid": "#EEEEEE",
       },
       height: {
         "90p": "91%",
@@ -27,12 +29,13 @@ const config: Config = {
         "montserrat-alternates": ["var(--font-montserrat-alternates)"],
       },
       fontSize: {
-        xxs: "0.50rem", // This is equivalent to 10px
-        x2s: "0.55rem", // This is equivalent to 10px
+        xxs: "0.50rem",
+        x2s: "0.55rem",
       },
     },
   },
 
   plugins: [],
 };
+
 export default config;
