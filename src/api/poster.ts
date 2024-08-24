@@ -539,6 +539,31 @@ const getPoster = {
       };
     }
   },
+  getRecipes: async (page: number) => {
+    try {
+      const response = await fetch(
+        `${api}/getRecipesPages?page=${page}`,
+
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        const responseData = await response.json();
+        const sendTo = {
+          response: responseData,
+          status: true,
+        };
+        return sendTo;
+      }
+      throw new Error("Something went Wrong! ");
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default getPoster;

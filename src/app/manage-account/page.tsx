@@ -41,7 +41,7 @@ export default function EditProfile() {
   return (
     <>
       <ToastContainer />
-      <div className="h-screen grid md:grid-cols-12">
+      <div className="h-screen md:grid md:grid-cols-12 flex flex-col ">
         <DeleteAccount
           isOpen={DeleteModal}
           name={user?.name}
@@ -51,7 +51,17 @@ export default function EditProfile() {
         />
 
         <ProfileNav />
-        <div className="lg:col-span-10 md:col-span-11 flex md:p-12 text-text-color p-4 flex-col justify-center bg-base-white ">
+        {/* only in mobile */}
+        <div className=" top-0 w-full items-center md:hidden flex relative bg-base-white gap-3 shadow p-3  h-[8vh] ">
+          <IoArrowBack
+            className="text-xl "
+            onClick={() => {
+              router.back();
+            }}
+          />
+          <p className="flex w-full ">{user?.name}</p>
+        </div>
+        <div className="lg:col-span-10 md:col-span-11 flex md:p-12 text-text-color p-4 flex-col relative bg-base-white ">
           <p className="md:text-2xl font-bold">Manage Account</p>
           <ul className="flex flex-col py-6 text-md font gap-2 ">
             <li className="flex flex-col ">
@@ -89,16 +99,6 @@ export default function EditProfile() {
               </div>
             </li>
           </ul>
-        </div>
-        {/* only in mobile */}
-        <div className=" top-0 w-full items-center md:hidden flex fixed bg-base-white gap-3 shadow p-3  h-[8vh] ">
-          <IoArrowBack
-            className="text-xl "
-            onClick={() => {
-              router.back();
-            }}
-          />
-          <p className="flex w-full ">{user?.name}</p>
         </div>
       </div>
     </>

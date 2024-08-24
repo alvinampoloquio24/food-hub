@@ -1,7 +1,9 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import ProfileNav from "../components/sad";
-
+import { IoArrowBack } from "react-icons/io5";
+import { useRouter } from "next/navigation";
+import { BsPatchCheckFill } from "react-icons/bs";
 export default function EditProfile() {
   const [theme, setTheme] = useState<any>(() => {
     if (typeof window !== "undefined") {
@@ -11,6 +13,20 @@ export default function EditProfile() {
   });
   const [viewTheme, setViewTheme] = useState(false);
   const [colors, setColors] = useState<any>(null);
+  const [selected, setSelected] = useState<any>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("selectedTheme") || "light";
+    }
+    return "light";
+  });
+  const [user, setUser] = useState<any>(null);
+  const router = useRouter();
+  const [appliedTheme, setAppliedTheme] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("selectedTheme") || "light";
+    }
+    return "light";
+  });
   const rippleRef = useRef<HTMLButtonElement>(null);
 
   const applyTheme = (colors: any) => {
@@ -70,15 +86,6 @@ export default function EditProfile() {
         "base-white": "#F8EDE3",
         "base-normal": "#FFDBB5",
       };
-    } else if (theme === "maroon") {
-      colors = {
-        "base-mid": "#D9ABAB",
-        "base-light": "#F4D9D0",
-        "base-dark": "#921A40",
-        "text-color": "#000000",
-        "base-white": "#ffffff",
-        "base-normal": "#FF8343",
-      };
     } else if (theme === "ocean") {
       colors = {
         "base-mid": "#A7E6FF",
@@ -91,7 +98,13 @@ export default function EditProfile() {
     }
     setColors(colors);
     setViewTheme(true);
+    setSelected(theme);
   };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setUser(JSON.parse(localStorage.getItem("user") || "null"));
+    }
+  }, []);
 
   useEffect(() => {
     if (theme) {
@@ -100,13 +113,13 @@ export default function EditProfile() {
   }, [theme]);
 
   const handleApplyClick = () => {
+    localStorage.setItem("selectedTheme", selected);
     if (rippleRef.current) {
       rippleRef.current.classList.add("active");
       setTimeout(() => {
         rippleRef.current?.classList.remove("active");
       }, 500);
 
-      // Add scaling animation to the preview container
       const previewContainer = document.querySelector(".preview-container");
       if (previewContainer) {
         previewContainer.classList.add("apply-animation");
@@ -118,6 +131,7 @@ export default function EditProfile() {
       setTimeout(() => {
         setTheme(colors);
         localStorage.setItem("theme", JSON.stringify(colors));
+        setAppliedTheme(selected); // Update the applied theme
         applyTheme(colors);
         setViewTheme(false);
         setColors(null);
@@ -126,12 +140,24 @@ export default function EditProfile() {
   };
 
   return (
-    <div className="h-screen grid md:grid-cols-12">
+    <div className="h-screen md:grid md:grid-cols-12 flex flex-col  ">
+      {/* only in mobile */}
+      <div className=" top-0 w-full items-center md:hidden flex relative bg-base-white gap-3 shadow p-3  h-[8vh] ">
+        <IoArrowBack
+          className="text-xl "
+          onClick={() => {
+            router.back();
+          }}
+        />
+        <p className="flex w-full ">{user?.name}</p>
+      </div>
       <ProfileNav />
-      <div className="lg:col-span-10 flex gap-4 md:col-span-11 flex-col md:p-12 p-6 bg-base-white">
-        <p className="text-2xl font-bold text-text-color ">Theme</p>
-        <button
-          className="bg-white border p-4 text-black flex rounded-lg items-center gap-4"
+      <div className="lg:col-span-10 flex gap-4 md:col-span-11 relative  flex-col md:p-12 p-6 bg-base-white">
+        <p className="md:text-2xl text-lg font-bold text-text-color md:py-4 ">
+          Themes
+        </p>
+        <div
+          className="bg-white border p-4 text-black relative flex rounded-lg items-center gap-4 hover:bg-slate-100 transition-all duration-300 hover:-translate-x-1"
           onClick={() => toggleColor("light")}
         >
           <div className="relative flex">
@@ -153,9 +179,15 @@ export default function EditProfile() {
             ></div>
           </div>
           <p>Default</p>
-        </button>
-        <button
-          className="bg-gray-600 border p-4 text-text-color flex rounded-lg items-center gap-4"
+          {appliedTheme == "light" && (
+            <div className="absolute top-0 flex gap-2 items-center right-0 md:py-2 md:px-6 md:text-lg text-sm  px-3 rounded-bl-lg bg-green-300">
+              <BsPatchCheckFill className="bg-green-300" />
+              <p>selected</p>
+            </div>
+          )}
+        </div>
+        <div
+          className="bg-gray-600 border p-4 text-text-color relative flex rounded-lg items-center gap-4  hover:bg-slate-600 transition-all duration-300 hover:-translate-x-1"
           onClick={() => toggleColor("dark")}
         >
           <div className="relative flex">
@@ -176,10 +208,16 @@ export default function EditProfile() {
               style={{ backgroundColor: "#ff892e" }}
             ></div>
           </div>
-          <p className="text-black">Dark</p>
-        </button>
-        <button
-          className="bg-cyan-300 border p-4 text-text-color flex rounded-lg items-center gap-4"
+          <p className="text-white">Dark</p>
+          {appliedTheme == "dark" && (
+            <div className="absolute top-0 flex gap-2 items-center right-0 md:py-2 md:px-6 md:text-lg text-sm  px-3 rounded-bl-lg bg-green-300">
+              <BsPatchCheckFill className="bg-green-300" />
+              <p>selected</p>
+            </div>
+          )}
+        </div>
+        <div
+          className="bg-cyan-300 border p-4 text-text-color relative flex rounded-lg items-center gap-4  hover:bg-cyan-400 transition-all duration-300 hover:-translate-x-1"
           onClick={() => toggleColor("ocean")}
         >
           <div className="relative flex">
@@ -200,10 +238,16 @@ export default function EditProfile() {
               style={{ backgroundColor: "#f9ece4" }}
             ></div>
           </div>
-          <p>ocean</p>
-        </button>
-        <button
-          className="bg-orange-100 border p-4 text-text-color flex rounded-lg items-center gap-4"
+          <p>Ocean</p>
+          {appliedTheme == "ocean" && (
+            <div className="absolute top-0 flex gap-2 items-center right-0 md:py-2 md:px-6 md:text-lg text-sm  px-3 rounded-bl-lg bg-green-300">
+              <BsPatchCheckFill className=" text-black" />
+              <p className="text-black">selected</p>
+            </div>
+          )}
+        </div>
+        <div
+          className="bg-orange-100 border p-4 text-text-color relative flex rounded-lg items-center gap-4  hover:bg-orange-200 transition-all duration-300 hover:-translate-x-1"
           onClick={() => toggleColor("old-money")}
         >
           <div className="relative flex">
@@ -224,32 +268,14 @@ export default function EditProfile() {
               style={{ backgroundColor: "#F8EDE3" }}
             ></div>
           </div>
-          <p>Old money</p>
-        </button>
-        {/* <button
-          className="bg-gray-500 border p-6"
-          onClick={() => toggleColor("dark")}
-        >
-          Dark
-        </button>
-        <button
-          className="bg-blue-200 border p-6"
-          onClick={() => toggleColor("blue")}
-        >
-          ocean
-        </button>
-        <button
-          className="bg-blue-200 border p-6"
-          onClick={() => toggleColor("maroon")}
-        >
-          maroon
-        </button>
-        <button
-          className="bg-blue-200 border p-6"
-          onClick={() => toggleColor("ocean")}
-        >
-          ocean
-        </button> */}
+          <p className="text-black ">Old money</p>
+          {appliedTheme == "old-money" && (
+            <div className="absolute top-0 flex gap-2 items-center right-0 md:py-2 md:px-6 md:text-lg text-sm  px-3 rounded-bl-lg bg-green-300">
+              <BsPatchCheckFill className=" text-black" />
+              <p className="text-black">selected</p>
+            </div>
+          )}
+        </div>
       </div>
       {viewTheme && (
         <div
@@ -338,7 +364,8 @@ export default function EditProfile() {
               </button>
               <button
                 onClick={() => {
-                  setTheme(false);
+                  setViewTheme(false);
+                  setColors(null);
                 }}
                 className="bg-slate-300 rounded shadow md:p-3 p-2 w-28 text-black transition-all duration-300 hover:bg-slate-400"
               >

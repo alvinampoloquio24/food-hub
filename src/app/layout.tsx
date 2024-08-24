@@ -24,7 +24,7 @@ export default function RootLayout({
     "base-dark": "#DC5F00",
     "text-color": "#06283D",
     "base-white": "#FFFFFF",
-    "base-normal": "#F1DEC6",
+    "base-normal": "#EEEEEE",
   };
   const [theme, setTheme] = useState<any>(defaultColors);
 

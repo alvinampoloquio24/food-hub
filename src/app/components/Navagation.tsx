@@ -104,7 +104,7 @@ export default function Nav() {
           <li className="font-bold text-lg">Food-Hub</li>
         </ul>
 
-        <ul className="md:space-x-8 text-lg flex items-center w-screen md:w-full lg:w-auto">
+        <ul className="md:space-x-8 xl:text-lg lg:text-sm flex items-center w-screen md:w-full lg:w-auto">
           <li className={getLinkClassName("/")}>
             <Link href="/">
               <p className="hidden md:flex">Home</p>

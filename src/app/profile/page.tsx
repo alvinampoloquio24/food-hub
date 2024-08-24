@@ -359,7 +359,17 @@ export default function EditProfile() {
         }}
       />
       {isClient && (
-        <div className="h-screen grid md:grid-cols-12 text-text-color  ">
+        <div className="h-screen md:grid md:grid-cols-12 flex flex-col text-text-color  ">
+          {/* only in mobile */}
+          <div className=" top-0 w-full items-center md:hidden flex relative bg-base-white gap-3 shadow p-3  h-[8vh] ">
+            <IoArrowBack
+              className="text-xl "
+              onClick={() => {
+                router.back();
+              }}
+            />
+            <p className="flex w-full ">{user?.name}</p>
+          </div>
           <ProfileNav />
           {/* Fixed ProfileNav */}
           <div className="lg:col-span-10 md:col-span-11 flex flex-col overflow-auto relative bg-base-white  ">
@@ -619,16 +629,6 @@ export default function EditProfile() {
                   </>
                 )}
               </div>
-            </div>
-            {/* only in mobile */}
-            <div className=" top-0 w-full items-center md:hidden flex fixed bg-base-white gap-3 shadow p-3  h-[8vh] ">
-              <IoArrowBack
-                className="text-xl "
-                onClick={() => {
-                  router.back();
-                }}
-              />
-              <p className="flex w-full ">{user?.name}</p>
             </div>
           </div>
         </div>

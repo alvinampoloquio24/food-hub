@@ -48,7 +48,6 @@ export default function recipe() {
     title: string;
     description: string;
   };
-
   interface RecipeFormData {
     name: string;
     description: string;
@@ -59,12 +58,10 @@ export default function recipe() {
     ingredients: Ingredient[];
     directions: Direction[];
   }
-  const [recipes, setRecipes] = useState<Poster[]>([]);
-  const [page, setPage] = useState<number>(1);
+  const [poster, setPoster] = React.useState<Poster[] | null>([]);
   const [isGenerating, setIsGenerating] = React.useState(false);
   const [search, setSearch] = React.useState("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [loading, setLoading] = React.useState(false);
   const [isclient, setIsClient] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [showModalUpload, setShowModalUpload] = useState(false);
@@ -87,12 +84,14 @@ export default function recipe() {
   };
   const handleSeach = async (params: string) => {
     try {
-      if (!params) {
-        return getRecipes;
-      }
       setLoading(true);
-      const response = await Poster.searchRecipe(params);
-      setRecipes(response.response);
+      let response;
+      if (!params) {
+        getPoster();
+      } else {
+        response = await Poster.searchRecipe(params);
+        setPoster(response.response);
+      }
     } catch (error) {
       throw error;
     } finally {
@@ -100,26 +99,22 @@ export default function recipe() {
     }
   };
 
-  const getRecipes = async () => {
+  const getPoster = async () => {
     try {
       setLoading(true);
-      const response = await Poster.getRecipes(page);
-      const recipes = response.response;
-
-      setRecipes((prevItems) => [...prevItems, ...recipes.items]);
-
-      setHasMore(recipes.hasMore);
+      const data = await Poster.get();
+      setPoster(data.response);
     } catch (error) {
       throw error;
     } finally {
       setLoading(false);
     }
   };
-
   //genrate Pdf
   const handleDownload = async (recipe: any, title: string, img: string) => {
     setIsGenerating(true);
     console.log(recipe);
+
     const doc = await generatePDF(recipe, title, img);
     doc.save(`${title}.pdf`);
     setIsGenerating(false);
@@ -181,9 +176,8 @@ export default function recipe() {
           isLoading: false,
           autoClose: 5000,
         });
-        setPage(1);
-        setRecipes([]);
-        await getRecipes();
+        // Call getPoster() here, after a successful post
+        await getPoster();
       }
     } catch (error) {
       toast.error("Something went wrong!");
@@ -195,32 +189,21 @@ export default function recipe() {
     if (typeof window !== "undefined") {
       const storedUser = JSON.parse(localStorage.getItem("user") || "null");
       setUser(storedUser);
-      setIsClient(true);
     }
   }, []);
   useEffect(() => {
-    getRecipes();
-  }, [page]);
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop !==
-      document.documentElement.offsetHeight
-    )
-      return;
-    if (loading || !hasMore) return;
-    setPage((prevPage) => prevPage + 1);
-  };
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [loading, hasMore]);
+    setIsClient(true);
+    handleSeach(search);
+    getPoster();
+  }, [search]);
+
   return (
     <>
       <ToastContainer />
       <>
         <Navagation />
         <section className="bg-base-white h-screen lg:grid flex flex-col grid-cols-12 overflow-hidden">
-          <div className="lg:bg-gradient-to-tl from-base-mid to-base-normal bg-base-white shadow col-span-3  flex lg:flex-col items-center  lg:items-start space-x-3 lg:space-x-0  lg:h-full lg:p-4  xl:p-8 md:px-8 px-1  text-gray-700">
+          <div className="lg:bg-gradient-to-tl from-base-mid to-base-normal bg-base-white shadow col-span-3  flex lg:flex-col items-center  lg:items-start space-x-3 lg:space-x-0  lg:h-full  lg:p-8 md:px-8 px-1  text-gray-700">
             <div className="md:py-4 py-2 relative w-11/12 lg:w-full">
               <input
                 type="text"
@@ -270,7 +253,7 @@ export default function recipe() {
               </>
             )}
 
-            <div className=" w-full lg:flex hidden flex-wrap gap-2 lg:text-sm xl:text-lg ">
+            <div className=" w-full lg:flex hidden flex-wrap gap-2 ">
               <button
                 onClick={() => {
                   handleSeach("burger");
@@ -312,13 +295,13 @@ export default function recipe() {
             {isclient && (
               <>
                 {user ? (
-                  <div className="lg:flex lg:flex-col xl:text-lg lg:text-sm gap-4 hidden w-full  lg:mt-5 flex-row text-lg lg:items-start items-center justify-between p-1 ">
+                  <div className="lg:flex lg:flex-col gap-4 hidden w-full  lg:mt-5 flex-row text-lg lg:items-start items-center justify-between p-1 ">
                     <p>Post your own recipe</p>
                     <button
                       onClick={() => {
                         setShowModalUpload(true);
                       }}
-                      className=" lg:shadow xl:p-6 lg:p-4 md:p-3 flex gap-4 lg:w-full border border-gray-400  justify-center items-center transition duration-200 ease-in-out hover:bg-orange-50 "
+                      className=" lg:shadow lg:p-6 md:p-3 flex gap-4 lg:w-full border border-gray-400  justify-center items-center transition duration-200 ease-in-out hover:bg-orange-50 "
                     >
                       <FaUpload className="lg:text-xl" />
                       <p>Upload</p>
@@ -331,7 +314,7 @@ export default function recipe() {
           <div className="bg-base-white lg:col-span-9 col-span-12 overflow-y-auto  h-auto gap-8 ">
             {/* Main content */}
 
-            {recipes?.length === 0 ? (
+            {poster?.length === 0 ? (
               <div className="h-90p bg-base-white flex justify-center items-center">
                 {" "}
                 {loading ? (
@@ -351,12 +334,15 @@ export default function recipe() {
             ) : (
               <>
                 {" "}
-                {recipes?.map((poster, index) => (
-                  <Link key={index} href={`/recipe/${poster._id}`}>
-                    <div className="bg-base-white border-b  md:p-12 lg:p-9 xl:p-12 p-4 py-12  pb-12 flex flex-col gap-8 hover:bg-orange-50 transition-all duration-300 ease-in-out  ">
+                {poster?.map((poster, index) => (
+                  <Link href={`/recipe/${poster._id}`}>
+                    <div
+                      key={index}
+                      className="bg-base-white border-b  md:p-12 p-4 py-12  pb-12 flex flex-col gap-8 hover:bg-orange-50 transition-all duration-300 ease-in-out  "
+                    >
                       <div className="md:grid grid-cols-12 ">
                         <div className=" col-span-7">
-                          <p className="md:text-4xl lg:text-3xl xl:text-4xl text-xl font-bold text-base-dark">
+                          <p className="md:text-4xl text-xl font-bold text-base-dark">
                             {poster.name}
                           </p>
                           <div className="flex flex-col md:pt-5 lg:flex-row lg:justify-between col-span-6">
@@ -366,9 +352,9 @@ export default function recipe() {
                                 <img
                                   src={poster.user.profile}
                                   alt=""
-                                  className="rounded-full object-cover xl:h-8 xl:w-8  h-6 w-6 "
+                                  className="rounded-full object-cover md:h-8 md:w-8 h-6 w-6 "
                                 />
-                                <div className="flex flex-col xl:text-xs text-xxs  items-center justify-center">
+                                <div className="flex flex-col text-xs items-center justify-center">
                                   <p className=" font-bold">
                                     {poster.user.name}
                                   </p>
@@ -376,22 +362,22 @@ export default function recipe() {
                                 </div>
                               </div>
                               <div className="lg:flex gap-1 lg:gap-3 hidden  items-center border-l-2  justify-center">
-                                <RiTimerFill className="text-lg md:text-md " />
-                                <div className="flex flex-col xl:text-xs text-xxs    items-center justify-center">
+                                <RiTimerFill className="text-lg md:text-md" />
+                                <div className="flex flex-col text-xs   items-center justify-center">
                                   <p className="font-bold">PREP TIME</p>
                                   <p>15 m</p>
                                 </div>
                               </div>
                               <div className="flex  gap-1 lg:gap-3  items-center border-l-2 justify-center">
                                 <RiTimerFill className="text-lg md:text-md" />
-                                <div className="flex flex-col xl:text-xs text-xxs  items-center justify-center">
+                                <div className="flex flex-col text-xs  items-center justify-center">
                                   <p className="font-bold">COOK TIME</p>
                                   <p>{poster.time}</p>
                                 </div>
                               </div>
                               <div className="flex gap-1 lg:gap-3 items-center border-l-2 justify-center">
                                 <BiDish className="text-lg md:text-sm" />
-                                <div className="flex flex-col xl:text-xs text-xxs   items-center justify-center">
+                                <div className="flex flex-col text-xs  items-center justify-center">
                                   <p className="font-bold uppercase">
                                     {poster.dishType}
                                   </p>
@@ -400,12 +386,12 @@ export default function recipe() {
                             </div>
                           </div>
                         </div>
-                        <div className="col-span-5 md:flex hidden  xl:text-lg text-sm  gap-6 items-center justify-center">
+                        <div className="col-span-5 md:flex hidden gap-6 items-center justify-center">
                           <div className="flex flex-col items-center justify-center gap-2 ">
                             {" "}
-                            <div className="xl:p-3 p-2 bg-base-mid rounded-full hover:bg-orange-200 ">
+                            <div className="p-3 bg-base-mid rounded-full hover:bg-orange-200 ">
                               {" "}
-                              <FaRegFilePdf className=" text-color xl:text-lg text-sm " />
+                              <FaRegFilePdf className=" text-color text-xl " />
                             </div>
                             <button
                               className="hover:text-blue-500 underline"
@@ -428,9 +414,9 @@ export default function recipe() {
                           </div>
                           <div className="flex flex-col items-center justify-center gap-2  ">
                             {" "}
-                            <div className="xl:p-3 p-2 bg-base-mid rounded-full hover:bg-orange-200">
+                            <div className="p-3 bg-base-mid rounded-full hover:bg-orange-200">
                               {" "}
-                              <CiShare1 className=" text-color xl:text-lg text-sm " />
+                              <CiShare1 className=" text-color text-xl " />
                             </div>
                             <p className="text-sm">Share</p>
                           </div>
@@ -443,7 +429,7 @@ export default function recipe() {
                           alt=""
                         />
                         <div className="bg-base-mid col-span-5 h-96  p-4 md:flex hidden flex-col">
-                          <p className="xl:text-xl md:text-lg font-bold mb-4">
+                          <p className="text-xl font-bold mb-4">
                             Ingredients({poster.ingredients.length})
                           </p>
                           <div className="flex-grow overflow-y-auto ">
@@ -457,12 +443,10 @@ export default function recipe() {
                                     {index + 1}
                                   </p>
                                   <div className="flex-grow">
-                                    <p className="font-bold xl:text-sm text-xs">
+                                    <p className="font-bold text-sm">
                                       {data.quantity}
                                     </p>
-                                    <p className="xl:text-sm text-xxs">
-                                      {data.name}
-                                    </p>
+                                    <p className="text-xs">{data.name}</p>
                                   </div>
                                 </div>
                               ))}
@@ -470,9 +454,7 @@ export default function recipe() {
                           </div>
                         </div>
                       </div>
-                      <p className="xl:text-lg md:text-sm text-xs">
-                        {poster.description}
-                      </p>
+                      <p className="md:text-lg text-xs">{poster.description}</p>
                     </div>
                   </Link>
                 ))}
