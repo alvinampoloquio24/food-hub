@@ -105,3 +105,10 @@ body {
   opacity: 0.3;
   transition: 0s;
 }
+.right-column {
+  overflow-y: auto;
+  height: 100%;
+}
+#targetElement {
+  scroll-margin-top: 100px; /* Adjust this value to match the height of the fixed header */
+}

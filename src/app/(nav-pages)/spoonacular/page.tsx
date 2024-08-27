@@ -17,6 +17,7 @@ import Lottie from "react-lottie";
 import Link from "next/link";
 
 import Navagation from "@/app/components/Navagation";
+import { FiSearch } from "react-icons/fi";
 
 export default function GenerateRecipe() {
   interface Ingredient {
@@ -99,8 +100,8 @@ export default function GenerateRecipe() {
         <Navagation />
         <div className="flex flex-col lg:grid lg:grid-cols-12">
           {/* Left sidebar */}
-          <div className="w-full lg:col-span-3 lg:h-screen lg:sticky lg:top-0 lg:bg-gradient-to-tl from-base-mid tp-base-normal lg:overflow-y-auto md:bg-base-white border md:p-4 lg:p-8 md:px-16 px-4 pt-1">
-            <div className="flex flex-col gap-6 lg:gap-10">
+          <div className="w-full lg:col-span-3 flex items-center md:w-full lg:flex-col gap-2 lg:h-screen lg:sticky lg:pt-24  lg:top-0  lg:bg-gradient-to-tl from-base-mid tp-base-normal  md:bg-base-white   lg:p-8  md:px-16 px-4 md:pt-16 pt-12">
+            <div className="flex flex-col gap-6 lg:gap-10  w-full lg:w-auto">
               <div className="hidden lg:flex flex-col">
                 <p className="text-xs">powered by</p>
                 <p className="text-md font-bold text-green-600">
@@ -111,7 +112,7 @@ export default function GenerateRecipe() {
                 SPOONCULAR
               </p>
 
-              <div className="flex gap-3 lg:gap-8   flex-row lg:flex-col items-center lg:w-full ">
+              <div className="flex items-center justify-center  gap-1 lg:gap-8 w-full pt-3  flex-row lg:flex-col lg:w-full ">
                 {" "}
                 <div className="flex lg:flex-col  lg:items-center gap-2 lg:gap-10 lg:w-full ">
                   <img
@@ -139,10 +140,10 @@ export default function GenerateRecipe() {
                     </div>
                   </div>
                 </div>
-                <p className="lg:hidden md:flex">Search</p>
-                <div className="relative w-full lg:w-auto">
+                <FiSearch className="lg:hidden md:flex text-3xl text-gray-600" />
+                <div className=" w-full lg:w-auto relative">
                   <textarea
-                    className="w-full rounded pl-2 pr-16 py-2 text-sm lg:text-lg shadow lg:shadow-none border-2 lg:border-none border-gray-200 resize-none md:h-12 h-10 lg:h-24"
+                    className="w-full flex rounded   pl-2 pr-16 py-2 text-sm lg:text-lg shadow lg:shadow-none border border-gray-200 resize-none  h-10 lg:h-24"
                     placeholder="Enter your description"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -168,7 +169,7 @@ export default function GenerateRecipe() {
           </div>
 
           {/* Main content */}
-          <div className="lg:col-span-9 w-full md:p-16 lg:p-8 p-4 py-6 ">
+          <div className="lg:col-span-9 w-full md:px-16 md:py-6 lg:p-8 lg:pt-24 p-4 py-6 ">
             {generatedRecipe.length === 0 ? (
               <div className="h-screen flex flex-col items-center md:p-16 p-4">
                 <p className="text-sm lg:text-3xl font-bold text-center">

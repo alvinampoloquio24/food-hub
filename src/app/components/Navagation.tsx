@@ -96,7 +96,7 @@ export default function Nav() {
   return (
     <>
       <nav
-        className={`bg-base-white text-color sm:flex sticky  text-text-color items-center justify-between md:px-4   top-0 z-50 transition-transform duration-300 ${
+        className={`bg-base-white text-color sm:flex fixed w-full   text-text-color items-center justify-between md:px-4   top-0 z-50 transition-transform duration-300 ${
           visible ? "translate-y-0" : "-translate-y-full"
         } justify-between flex  content-center shadow`}
       >
@@ -117,18 +117,19 @@ export default function Nav() {
               <PiBowlFoodLight className="flex md:hidden text-2xl" />
             </Link>
           </li>
-          <li className={getLinkClassName("/blog")}>
-            <Link href="/blog">
-              <p className="hidden md:flex">Blog</p>
-              <PiBookOpenUserLight className="flex md:hidden text-2xl" />
-            </Link>
-          </li>
           <li className={getLinkClassName("/spoonacular")}>
             <Link href="/spoonacular">
               <p className="hidden md:flex">Spoonacular</p>
               <CiForkAndKnife className="flex md:hidden text-2xl" />
             </Link>
           </li>
+          <li className={getLinkClassName("/blog")}>
+            <Link href="/blog">
+              <p className="hidden md:flex">Blog</p>
+              <PiBookOpenUserLight className="flex md:hidden text-2xl" />
+            </Link>
+          </li>
+
           <li className={getLinkClassName("/about")}>
             <Link href="/about">
               <p className="hidden md:flex">About</p>

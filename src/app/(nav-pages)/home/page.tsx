@@ -35,8 +35,9 @@ export default function Home() {
     time: string;
     dishType: string;
   }
+
   const [viewAll, setViewAll] = React.useState(false);
-  const [poster, setPoster] = React.useState<Poster[] | null>([]);
+  const [poster, setPoster] = React.useState<Poster[]>([]);
   const openViewAll = () => {
     setViewAll(!viewAll);
   };
@@ -45,7 +46,8 @@ export default function Home() {
     try {
       const response: any = await Poster.get();
 
-      setPoster(response.response);
+      setPoster(response.response.items);
+      console.log(poster);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -56,7 +58,7 @@ export default function Home() {
 
   return (
     <>
-      <HotRecipe />
+      <HotRecipe poster={poster} />
       <div className=" bg-base-white flex flex-col  p-6 py-12 xl:p-24 lg:p-16 gap-8 lg:mt-0 text-text-color">
         <div className=" flex gap-4 md:gap-6  flex-col mb-10 ">
           {" "}
@@ -162,49 +164,47 @@ export default function Home() {
         </p>
         <div className=" grid h-auto grid-cols-2 md:grid-cols-3 p-4 gap-4 lg:gap-16">
           {" "}
-          {poster!.map((poster: any, index: any) => (
-            <>
-              <Link href={`/recipe/${poster._id}`}>
-                <div
-                  key={index}
-                  className=" pb-4 lg:w-80  bg-base flex flex-col gap-1 md:gap-3 justify-between items-center rounded-2xl shadow-md transition-transform duration-200 transform hover:bg-base-light hover:scale-105"
-                >
-                  {poster.img ? (
-                    <img
-                      src={poster.img}
-                      alt=""
-                      className="h-32 md:h-48 lg:h-60 w-full  object-cover rounded-2xl"
-                    />
+          {poster.map((poster, index) => (
+            <Link key={poster._id} href={`/recipe/${poster._id}`}>
+              <div
+                key={index}
+                className=" pb-4 lg:w-80  bg-base flex flex-col gap-1 md:gap-3 justify-between items-center rounded-2xl shadow-md transition-transform duration-200 transform hover:bg-base-light hover:scale-105"
+              >
+                {poster.img ? (
+                  <img
+                    src={poster.img}
+                    alt=""
+                    className="h-32 md:h-48 lg:h-60 w-full  object-cover rounded-2xl"
+                  />
+                ) : (
+                  <div className="h-32 md:h-48 lg:h-60 w-full bg-orange-100 animate-pulse rounded-2xl "></div>
+                )}
+                <div className="md:h-32 h-16 w-full px-4  flex flex-col justify-between">
+                  {poster.name ? (
+                    <p className="  md:text-lg text-xs px-1 lg:max-h-20  line-clamp-2  font-bold lg:px-6">
+                      {poster.name}
+                    </p>
                   ) : (
-                    <div className="h-32 md:h-48 lg:h-60 w-full bg-orange-100 animate-pulse rounded-2xl "></div>
+                    <Skeleton count={2} />
                   )}
-                  <div className="md:h-32 h-16 w-full px-4  flex flex-col justify-between">
-                    {poster.name ? (
-                      <p className="  md:text-lg text-xs px-1 lg:max-h-20  line-clamp-2  font-bold lg:px-6">
-                        {poster.name}
-                      </p>
-                    ) : (
-                      <Skeleton count={2} />
-                    )}
-                    {poster.time || poster.dishType ? (
-                      <div className=" flex justify-around gap-4 p-1 md:p-2 w-full">
-                        <div className=" flex gap-1 justify-center items-center md:text-xl">
-                          <RiTimerFill />{" "}
-                          <p className=" text-xs">{poster.time}</p>
-                        </div>
-
-                        <div className=" flex gap-1 justify-center items-center md:text-xl">
-                          <BiSolidDish />{" "}
-                          <p className=" text-xs ">{poster.dishType}</p>
-                        </div>
+                  {poster.time || poster.dishType ? (
+                    <div className=" flex justify-around gap-4 p-1 md:p-2 w-full">
+                      <div className=" flex gap-1 justify-center items-center md:text-xl">
+                        <RiTimerFill />{" "}
+                        <p className=" text-xs">{poster.time}</p>
                       </div>
-                    ) : (
-                      <Skeleton />
-                    )}
-                  </div>
+
+                      <div className=" flex gap-1 justify-center items-center md:text-xl">
+                        <BiSolidDish />{" "}
+                        <p className=" text-xs ">{poster.dishType}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <Skeleton />
+                  )}
                 </div>
-              </Link>
-            </>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -397,7 +397,7 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-2 px-3 gap-4 md:grid-cols-3 lg:gap-6 lg:px-20 lg:grid-cols-4  ">
           {poster?.map((poster, index) => (
-            <Link href={`/recipe/${poster._id}`}>
+            <Link key={index} href={`/recipe/${poster._id}`}>
               <div
                 key={index}
                 className=" flex flex-col gap-3 py-3 justify-between  rounded-2xl transition-transform duration-200 transform  hover:scale-105"

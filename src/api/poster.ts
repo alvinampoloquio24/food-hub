@@ -31,39 +31,7 @@ const getPoster = {
       throw error;
     }
   },
-  getSelf: async () => {
-    try {
-      const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        `${api}/getSelfRecipes`,
-
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      let sendTo;
-      if (response.ok) {
-        const responseData = await response.json();
-        sendTo = {
-          response: responseData,
-          status: true,
-        };
-        return sendTo;
-      } else {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user-storage");
-        return (sendTo = {
-          error: true,
-        });
-      }
-    } catch (error) {
-      throw error;
-    }
-  },
   getRecipe: async (id: string) => {
     try {
       const response = await fetch(`${api}/findRecipeId/${id}`, {
@@ -541,16 +509,32 @@ const getPoster = {
   },
   getRecipes: async (page: number) => {
     try {
-      const response = await fetch(
-        `${api}/getRecipesPages?page=${page}`,
+      const token = localStorage.getItem("token");
+      let response;
+      if (!token) {
+        response = await fetch(
+          `${api}/getRecipes?page=${page}`,
 
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      } else {
+        response = await fetch(
+          `${api}/getRecipesPages?page=${page}`,
+
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`, // Add this line
+            },
+          }
+        );
+      }
+
       if (response.ok) {
         const responseData = await response.json();
         const sendTo = {
@@ -562,6 +546,144 @@ const getPoster = {
       throw new Error("Something went Wrong! ");
     } catch (error) {
       throw error;
+    }
+  },
+  getTrendRecipes: async (page: number) => {
+    try {
+      const response = await fetch(`${api}/getTrendRecipes`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        const sendTo = {
+          response: responseData,
+          status: true,
+        };
+        return sendTo;
+      }
+      throw new Error("Something went Wrong! ");
+    } catch (error) {
+      throw error;
+    }
+  },
+  getSelf: async (page: number) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        `${api}/getSelfRecipes?page=${page}`,
+
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      let sendTo;
+      if (response.ok) {
+        const responseData = await response.json();
+        sendTo = {
+          response: responseData,
+          status: true,
+        };
+        return sendTo;
+      } else {
+        return (sendTo = {
+          error: true,
+        });
+      }
+    } catch (error) {
+      throw error;
+    }
+  },
+  savedRecipe: async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${api}/savedRecipe/${id}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      let sendTo;
+      if (response.ok) {
+        const responseData = await response.json();
+        sendTo = {
+          response: responseData,
+          status: true,
+        };
+        return sendTo;
+      } else {
+        return (sendTo = {
+          error: true,
+        });
+      }
+    } catch (error) {
+      throw error;
+    }
+  },
+  getSavedRecipe: async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${api}/getSavedRecipes`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      let sendTo;
+      if (response.ok) {
+        const responseData = await response.json();
+        sendTo = {
+          response: responseData,
+          status: true,
+        };
+        return sendTo;
+      } else {
+        return (sendTo = {
+          error: true,
+        });
+      }
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteSavedRecipe: async (id: string) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`${api}/deleteSavedRecipe/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        const sendTo = {
+          response: responseData,
+          status: true,
+        };
+        return sendTo;
+      } else {
+        // Return an error message or a custom response if the deletion fails
+        const errorData = await response.json();
+        return {
+          response: errorData,
+          status: false,
+          message: errorData.message,
+        };
+      }
+    } catch (error) {
+      return {
+        status: false,
+        message: "Something went wrong during the deletion.",
+      };
     }
   },
 };

@@ -63,8 +63,9 @@ export default function ProfileNavigation() {
   if (loading) {
     return <p>Loading...</p>;
   }
+
   return (
-    <div className="lg:col-span-2 md:col-span-1 text-text-color  bg-gradient-to-br from-base-white to-base-mid h-screen overflow-hidden md:flex flex-col hidden  ">
+    <div className="lg:col-span-2 md:col-span-1 text-text-color   bg-gradient-to-br from-base-white to-base-mid h-screen overflow-hidden md:flex flex-col hidden  ">
       <BackButton />
       <div className="py-16">
         {user && (

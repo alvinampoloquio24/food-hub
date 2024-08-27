@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 const api = process.env.NEXT_PUBLIC_LOCALHOST;
@@ -28,7 +28,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const router = useRouter();
   const checkLoginStatus = async () => {
     setLoading(true);
     try {
@@ -36,6 +36,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (!token) {
         setIsLoggedIn(false);
         setUser(null);
+        router.push("/");
       } else {
         const response = await fetch(`${api}/getUser`, {
           method: "GET",
@@ -53,11 +54,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         } else {
           setIsLoggedIn(false);
           setUser(null);
+          router.push("/");
           localStorage.removeItem("token"); // Clear token on failure
         }
       }
     } catch (error) {
       console.error("Failed to check login status:", error);
+      router.push("/");
       setIsLoggedIn(false);
       setUser(null);
       localStorage.removeItem("token"); // Clear token on failure

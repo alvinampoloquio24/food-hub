@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-unescaped-entities */
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ProfileNav from "../components/sad";
 import { useAuth } from "@/context/authProvider";
 import { MdEditSquare } from "react-icons/md";
@@ -22,6 +22,7 @@ import ModalEditRecipe from "../props/modalEditRecipe";
 import ModalUpload from "../props/modalUploadRecipe";
 import BackButton from "../props/backButton";
 import { IoArrowBack } from "react-icons/io5";
+import HashLoader from "react-spinners/HashLoader";
 
 export default function EditProfile() {
   interface Poster {
@@ -82,7 +83,10 @@ export default function EditProfile() {
   );
 
   const { refreshUser, user } = useAuth();
-  const [poster, setPoster] = React.useState<Poster[] | null>([]);
+  const [page, setPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [loading, setLoading] = useState(false);
+  const [poster, setPoster] = React.useState<Poster[]>([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedPoster, setSelectedPoster] = useState<Poster | null>(null);
@@ -160,6 +164,8 @@ export default function EditProfile() {
           autoClose: 5000,
         });
         // Call getPoster() here, after a successful post
+        setPage(1);
+        setPoster([]);
         await getPoster();
       }
     } catch (error) {
@@ -204,13 +210,24 @@ export default function EditProfile() {
 
     EditRecipe(formData);
   };
+
   const getPoster = async () => {
     try {
-      const data = await Poster.getSelf();
-      setPoster(data.response);
+      setLoading(true);
+      const response = await Poster.getSelf(page);
+      const recipes = response.response;
+
+      if (page == 1) {
+        setPoster(recipes.recipes);
+      } else {
+        setPoster((prevItems) => [...prevItems, ...recipes.recipes]);
+      }
+
+      setHasMore(recipes.hasMore);
     } catch (error) {
       throw error;
     } finally {
+      setLoading(false);
     }
   };
   const editedUser: EditUser = {
@@ -242,6 +259,8 @@ export default function EditProfile() {
           autoClose: 5000,
         });
         // Call getPoster() here, after a successful post
+        setPoster([]);
+        setPage(1);
         await getPoster();
       }
     } catch (error) {
@@ -257,7 +276,6 @@ export default function EditProfile() {
       "time",
       "selectedImage",
     ];
-    console.log("asdsad");
 
     for (const field of requiredFields) {
       if (!formData[field as keyof typeof formData]) {
@@ -321,15 +339,9 @@ export default function EditProfile() {
       [id]: !prev[id],
     }));
   };
-
+  const contentRef = useRef(null);
   // Updated useEffect
   useEffect(() => {
-    refreshUser();
-    if (typeof window !== "undefined") {
-      setIsClient(true);
-      getPoster();
-    }
-
     const closeAllDropdowns = (e: MouseEvent) => {
       // Check if click is outside of dropdown and toggle button
       const target = e.target as HTMLElement;
@@ -338,9 +350,38 @@ export default function EditProfile() {
       }
       setOpenDropdowns({});
     };
+
     document.body.addEventListener("click", closeAllDropdowns);
+
     return () => document.body.removeEventListener("click", closeAllDropdowns);
   }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsClient(true);
+    }
+  }, []);
+  useEffect(() => {
+    if (isClient) {
+      getPoster();
+    }
+  }, [isClient, page]);
+  const handleScroll = useCallback(() => {
+    if (!contentRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = contentRef.current;
+    if (scrollHeight - scrollTop <= clientHeight + 100) {
+      if (!loading && hasMore) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    }
+  }, [loading, hasMore]);
+  useEffect(() => {
+    const currentRef: any = contentRef.current;
+    if (currentRef) {
+      currentRef.addEventListener("scroll", handleScroll);
+      return () => currentRef.removeEventListener("scroll", handleScroll);
+    }
+  }, [handleScroll]);
 
   return (
     <>
@@ -358,8 +399,8 @@ export default function EditProfile() {
           setShowModalUpload(false);
         }}
       />
-      {isClient && (
-        <div className="h-screen md:grid md:grid-cols-12 flex flex-col text-text-color  ">
+      {isClient && user ? (
+        <div className="h-screen md:grid md:grid-cols-12 flex flex-col text-text-color">
           {/* only in mobile */}
           <div className=" top-0 w-full items-center md:hidden flex relative bg-base-white gap-3 shadow p-3  h-[8vh] ">
             <IoArrowBack
@@ -372,7 +413,10 @@ export default function EditProfile() {
           </div>
           <ProfileNav />
           {/* Fixed ProfileNav */}
-          <div className="lg:col-span-10 md:col-span-11 flex flex-col overflow-auto relative bg-base-white  ">
+          <div
+            ref={contentRef}
+            className="lg:col-span-10 md:col-span-11 flex  flex-col overflow-auto relative bg-base-white  "
+          >
             <div className=" flex flex-col w-full h-1/3 ">
               <img
                 src={user?.coverPhoto}
@@ -435,7 +479,7 @@ export default function EditProfile() {
                 </p>
               </div>
             </div>
-            <div className=" lg:px-10 px-2 flex flex-col gap-5">
+            <div className=" lg:px-10 px-2 flex flex-col  gap-5">
               <div className="bg-base-mid flex flex-col gap-6 lg:p-10 md:p-6 p-3 rounded shadow">
                 <p className="lg:text-2xl text-sm md:text-lg font-semibold">
                   Complete your profile
@@ -623,14 +667,26 @@ export default function EditProfile() {
                       onClose={() => setShowModalUpload(false)}
                       onSubmit={handleSubmit}
                     />
-                    <div className="flex items-center justify-center py-4">
-                      <p>End of content</p>
-                    </div>
                   </>
+                )}
+                {loading && (
+                  <div className="flex items-center justify-center py-4">
+                    <p>Loading...</p>
+                  </div>
+                )}
+                {!hasMore && (
+                  <div className="flex items-center justify-center py-4">
+                    <p>No more recipe to load</p>
+                  </div>
                 )}
               </div>
             </div>
           </div>
+        </div>
+      ) : (
+        <div className="h-screen flex items-center justify-center gap-2">
+          <p>Loading...</p>
+          <HashLoader color="#ff5c00" />
         </div>
       )}
     </>
