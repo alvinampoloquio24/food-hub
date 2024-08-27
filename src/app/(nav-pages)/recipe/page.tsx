@@ -329,14 +329,14 @@ export default function recipe() {
   return (
     <>
       <ToastContainer />
-      <div className="bg-white ">
+      <div className="bg-base-white ">
         <Navagation />
         <section className="flex flex-col lg:grid lg:grid-cols-12">
           <div className="w-full lg:col-span-3 flex items-center lg:flex-col gap-2 lg:h-screen lg:sticky lg:pt-16  lg:top-0  lg:bg-gradient-to-tl from-base-mid tp-base-normal  md:bg-base-white border  lg:p-8 md:px-16 px-4 md:pt-16 pt-12">
             <div className="md:py-4 py-2 relative w-11/12 lg:w-full">
               <input
                 type="text"
-                className="w-full rounded h-10 lg:shadow pl-2 pr-20 md:text-lg text-xs   lg:border-none shadow border-2 border-orange-100"
+                className="w-full bg-base-white  rounded h-10 lg:shadow pl-2 pr-20 md:text-lg text-xs   lg:border-none shadow border-2 border-orange-100"
                 placeholder="Search recipe.."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -442,7 +442,7 @@ export default function recipe() {
           </div>
           <div className="lg:col-span-9 w-full md:px-10 md:py-4 lg:p-8 p-4  lg:mt-8 ">
             {/* Main content */}
-            <div className="md:p-4   flex md:gap-3 gap-1 ">
+            <div className="md:p-4 flex p-2 md:gap-3 gap-1 ">
               <button
                 onClick={() => {
                   getActive("home");
@@ -450,7 +450,7 @@ export default function recipe() {
                 className={
                   active == "home"
                     ? " text-base-dark text-sm md:text-lg md:p-2 py-1 px-3  md:px-4 rounded  flex gap-2 items-center"
-                    : `p-2 text-sm md:text-lg md:p-2 py-1  md:px-4   shadow px-3 flex gap-2 items-center `
+                    : `p-2 text-sm md:text-lg md:p-2 py-1 text-text-color  md:px-4   shadow px-3 flex gap-2 items-center `
                 }
               >
                 <FaBowlFood />
@@ -462,8 +462,8 @@ export default function recipe() {
                 }}
                 className={
                   active == "trending"
-                    ? "text-sm md:text-lg md:p-2 py-1 px-3  md:px-4 r text-base-dark  rounded  flex gap-2 items-center"
-                    : `text-sm md:text-lg md:p-2 py-1 px-3  md:px-4 r  rounded shadow   flex gap-2 items-center `
+                    ? "text-sm md:text-lg md:p-2 py-1 px-3  md:px-4  text-base-dark  rounded  flex gap-2 items-center"
+                    : `text-sm md:text-lg md:p-2 py-1 px-3  md:px-4 text-text-color   rounded shadow   flex gap-2 items-center `
                 }
               >
                 <FaFireFlameCurved />
@@ -475,8 +475,8 @@ export default function recipe() {
                 }}
                 className={
                   active == "saved"
-                    ? "text-sm md:text-lg md:p-2 py-1 px-3  md:px-4 r text-base-dark  rounded flex gap-2 items-center"
-                    : `text-sm md:text-lg md:p-2 py-1 px-3  md:px-4 r rounded shadow   flex gap-2 items-center `
+                    ? "text-sm md:text-lg md:p-2 py-1 px-3  md:px-4  text-base-dark  rounded flex gap-2 items-center"
+                    : `text-sm md:text-lg md:p-2 py-1 px-3  md:px-4 text-text-color  rounded shadow   flex gap-2 items-center `
                 }
               >
                 <FaBookmark />

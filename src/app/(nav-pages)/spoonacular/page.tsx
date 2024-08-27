@@ -143,7 +143,7 @@ export default function GenerateRecipe() {
                 <FiSearch className="lg:hidden md:flex text-3xl text-gray-600" />
                 <div className=" w-full lg:w-auto relative">
                   <textarea
-                    className="w-full flex rounded   pl-2 pr-16 py-2 text-sm lg:text-lg shadow lg:shadow-none border border-gray-200 resize-none  h-10 lg:h-24"
+                    className="w-full flex rounded bg-base-white  pl-2 pr-16 py-2 text-sm lg:text-lg shadow lg:shadow-none border border-gray-200 resize-none  h-10 lg:h-24"
                     placeholder="Enter your description"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
