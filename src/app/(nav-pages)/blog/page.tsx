@@ -67,7 +67,7 @@ export default function blog() {
           <div className="md:py-4 py-2 relative">
             <input
               type="text"
-              className="w-full rounded-2xl md:h-16 h-10 pl-6 pr-32 border md:text-lg text-xs lg:shadow-none shadow"
+              className="w-full bg-base-white rounded-2xl md:h-16 h-10 pl-6 pr-32 border md:text-lg text-xs lg:shadow-none shadow"
               placeholder="search blog, article.."
               value={search}
               onChange={(e) => setSearch(e.target.value)}

@@ -332,7 +332,7 @@ export default function recipe() {
       <div className="bg-base-white ">
         <Navagation />
         <section className="flex flex-col lg:grid lg:grid-cols-12">
-          <div className="w-full lg:col-span-3 flex items-center lg:flex-col gap-2 lg:h-screen lg:sticky lg:pt-16  lg:top-0  lg:bg-gradient-to-tl from-base-mid tp-base-normal  md:bg-base-white border  lg:p-8 md:px-16 px-4 md:pt-16 pt-12">
+          <div className="w-full lg:col-span-3 flex items-center lg:flex-col gap-2 lg:h-screen lg:sticky lg:pt-16  lg:top-0  lg:bg-gradient-to-tl from-base-mid tp-base-normal  md:bg-base-white   lg:p-8 md:px-16 px-4 md:pt-16 pt-12">
             <div className="md:py-4 py-2 relative w-11/12 lg:w-full">
               <input
                 type="text"
@@ -440,7 +440,7 @@ export default function recipe() {
               </>
             )}
           </div>
-          <div className="lg:col-span-9 w-full md:px-10 md:py-4 lg:p-8 p-4  lg:mt-8 ">
+          <div className="lg:col-span-9 w-full md:px-10 md:py-4 lg:p-8 p-1  lg:mt-8 ">
             {/* Main content */}
             <div className="md:p-4 flex p-2 md:gap-3 gap-1 ">
               <button
@@ -505,7 +505,7 @@ export default function recipe() {
                 {recipes?.map((poster, index) => (
                   <div
                     key={index}
-                    className="bg-base-white border-b  md:p-12 relative  lg:p-9 xl:p-12 p-5 pt-8 flex flex-col gap-8 hover:bg-orange-50 transition-all duration-300 ease-in-out  "
+                    className="bg-base-white border-b  md:p-12 relative  lg:p-9 xl:p-12 p-3 pt-8 flex flex-col gap-8 hover:bg-orange-50 transition-all duration-300 ease-in-out  "
                   >
                     <div
                       key={poster._id}
@@ -599,7 +599,7 @@ export default function recipe() {
                           onClick={() => {
                             router.push(`/recipe/${poster._id}`);
                           }}
-                          className="md:text-4xl hover:cursor-pointer lg:text-3xl xl:text-4xl text-xl font-bold text-base-dark"
+                          className="md:text-4xl p-2 md:p-0 hover:cursor-pointer lg:text-3xl xl:text-4xl text-xl font-bold text-base-dark"
                         >
                           {poster.name}
                         </p>
