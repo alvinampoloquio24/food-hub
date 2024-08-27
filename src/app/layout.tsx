@@ -69,7 +69,9 @@ export default function RootLayout({
       lang="en"
       className={`${inter} ${diphylleia.variable} ${montserratAlternates.variable}`}
     >
-      <body className={`text-color font-montserrat-alternates bg-base-white`}>
+      <body
+        className={`text-text-color font-montserrat-alternates bg-base-white`}
+      >
         <Head />
         <AuthProvider>
           <SkeletonTheme baseColor="#EEEEEE" highlightColor="#FFCC99">
