@@ -148,7 +148,7 @@ export default function EditProfile() {
   return (
     <>
       {user ? (
-        <div className="h-screen md:grid md:grid-cols-12 flex flex-col  ">
+        <div className="h-screen bg-base-white md:grid md:grid-cols-12 flex flex-col  ">
           {/* only in mobile */}
           <div className=" top-0 w-full items-center md:hidden flex relative bg-base-white gap-3 shadow p-3  h-[8vh] ">
             <IoArrowBack

@@ -591,11 +591,6 @@ export default function EditProfile() {
                       onClose={() => setShowModalEdit(false)}
                       onSubmit={handleSubmitEditRecipe}
                     />
-                    <ModalUpload
-                      isOpen={showModalUpload}
-                      onClose={() => setShowModalUpload(false)}
-                      onSubmit={handleSubmit}
-                    />
                     <div className="flex items-center justify-center py-4">
                       <p>End of content</p>
                     </div>

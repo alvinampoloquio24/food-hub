@@ -33,6 +33,7 @@ export default function EditProfile() {
       toast.error("Something went worong");
     }
   };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedUser = JSON.parse(localStorage.getItem("user") || "null");
@@ -47,7 +48,7 @@ export default function EditProfile() {
     <>
       <ToastContainer />
       {user ? (
-        <div className="h-screen md:grid md:grid-cols-12 flex flex-col ">
+        <div className="h-screen md:grid md:grid-cols-12 flex flex-col bg-base-white">
           <DeleteAccount
             isOpen={DeleteModal}
             name={user?.name}
@@ -82,7 +83,12 @@ export default function EditProfile() {
                   <div className="p-4 bg-base-white   flex items-center  gap-2 hover:bg-base-light transition-all duration-300 cursor-pointer">
                     <PiBowlFood /> <p>my recipes</p>
                   </div>
-                  <div className="p-4 bg-base-white   flex items-center  gap-2 hover:bg-base-light transition-all duration-300 cursor-pointer">
+                  <div
+                    onClick={() => {
+                      router.push(`/recipe?filter=saved`);
+                    }}
+                    className="p-4 bg-base-white   flex items-center  gap-2 hover:bg-base-light transition-all duration-300 cursor-pointer"
+                  >
                     <IoSaveOutline /> <p>saved recipes</p>
                   </div>
                 </div>

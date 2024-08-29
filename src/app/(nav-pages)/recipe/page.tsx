@@ -33,7 +33,8 @@ import { useRouter } from "next/navigation";
 import { PiBowlFoodFill } from "react-icons/pi";
 import { IoSave, IoSaveSharp } from "react-icons/io5";
 import { GoBookmarkSlashFill } from "react-icons/go";
-
+import { useSearchParams } from "next/navigation";
+import getPoster from "../../../api/poster";
 export default function recipe() {
   interface Poster {
     name: string;
@@ -87,17 +88,19 @@ export default function recipe() {
   const [showModalUpload, setShowModalUpload] = useState(false);
   const [save, setSave] = useState<Save>({});
   const router = useRouter();
-  const [active, setActive] = useState("home");
+  const [displayRecipes, setDisplayRecipes] = useState<Poster[]>([]);
+  const [savedRecipes, setSavedRecipes] = useState<Poster[]>([]);
+  const [trendRecipes, setTrendRecipes] = useState<Poster[]>([]);
+  const [stopScroll, setStopScroll] = useState(false);
   const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>(
     {}
   );
   const handleSavedRecipe = (recipeId: string) => {
     setSave((prev) => ({
       ...prev,
-      [recipeId]: true, // Mark this specific recipe as saved
+      [recipeId]: !prev[recipeId], // Toggle the saved state for the specific recipe
     }));
   };
-
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -128,26 +131,7 @@ export default function recipe() {
       setLoading(false);
     }
   };
-
-  const getRecipes = async () => {
-    try {
-      setLoading(true);
-      const response = await Poster.getRecipes(page);
-      const recipes = response.response;
-
-      if (page <= 1) {
-        setRecipes(recipes.items);
-      } else if (page > 1) {
-        setRecipes((prevItems) => [...prevItems, ...recipes.items]);
-      }
-
-      setHasMore(recipes.hasMore);
-    } catch (error) {
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  };
+  const searchParams = useSearchParams();
 
   //genrate Pdf
   const handleDownload = async (recipe: any, title: string, img: string) => {
@@ -165,6 +149,7 @@ export default function recipe() {
         return toast.error("Error Saving recipe!");
       } else {
         handleSavedRecipe(id);
+        setSavedRecipes([]);
         return toast.success("Recipe saved!");
       }
     } catch (error) {
@@ -173,6 +158,7 @@ export default function recipe() {
   };
   //handle summit ------------------------------------------
   const handleSubmit = (formData: RecipeFormData) => {
+    setStopScroll(false);
     const requiredFields = [
       "name",
       "description",
@@ -238,23 +224,71 @@ export default function recipe() {
       setLoading(false);
     }
   };
-
-  const getActive = async (active: string) => {
+  const getRecipes = async () => {
     try {
       setLoading(true);
+      const response = await Poster.getRecipes(page);
+      const recipes = response.response;
+      console.log(page, "page", "gfet");
+      if (page === 1) {
+        console.log("asd");
+        console.log(recipes.items);
+        setDisplayRecipes(recipes.items);
 
-      if (active == "home") {
-        getRecipes();
-        setActive(active);
-      } else if (active == "saved") {
-        const response = await Poster.getSavedRecipe();
-        setActive(active);
-        setRecipes(response.response);
-        setPage(1);
-      } else if (active == "trending") {
-        const response = await Poster.getTrendRecipes(page);
-        setActive(active);
-        setRecipes(response.response.items);
+        setRecipes(recipes.items);
+      } else if (page > 1) {
+        console.log("else ss");
+        setDisplayRecipes((prevItems) => [...prevItems, ...recipes.items]);
+        setRecipes((prevItems) => [...prevItems, ...recipes.items]);
+      }
+
+      setHasMore(recipes.hasMore);
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getSavedRecipes = async () => {
+    try {
+      setLoading(true);
+      const response = await Poster.getSavedRecipe();
+      setSavedRecipes(response.response);
+      setDisplayRecipes(response.response);
+    } catch (error) {
+      toast.error("something went wrong");
+    }
+  };
+  const getTrendRecipes = async () => {
+    try {
+      setLoading(true);
+      const response = await Poster.getTrendRecipes(page);
+      setDisplayRecipes(response.response.items);
+      setTrendRecipes(response.response.items);
+    } catch (error) {
+      toast.error("something went wrong");
+    }
+  };
+  const getFilter = (filter: string | null) => {
+    try {
+      if (filter == "saved") {
+        console.log(savedRecipes.length);
+        if (savedRecipes.length !== 0) {
+          console.log("saved");
+          setDisplayRecipes(savedRecipes);
+        } else {
+          getSavedRecipes();
+        }
+        router.replace(`/recipe?filter=${filter}`);
+      } else if (filter == "trending") {
+        if (trendRecipes.length !== 0) {
+          console.log("saved");
+          setDisplayRecipes(trendRecipes);
+        } else {
+          getTrendRecipes();
+        }
+        router.replace(`/recipe?filter=${filter}`);
       }
     } catch (error) {
       throw error;
@@ -268,6 +302,21 @@ export default function recipe() {
       ...prev,
       [id]: !prev[id],
     }));
+  };
+  const removeSavedRecipe = async (id: string) => {
+    try {
+      const recipe = await Poster.deleteSavedRecipe(id);
+      if (!recipe.status) {
+        toast.error("failed removing recipe");
+      } else {
+        handleSavedRecipe(id);
+        setSavedRecipes(savedRecipes!.filter((poster) => poster._id !== id));
+        setDisplayRecipes(savedRecipes!.filter((poster) => poster._id !== id));
+        toast.success("remove sucessfully ");
+      }
+    } catch (error) {
+      toast.error("failed removing recipe");
+    }
   };
   useEffect(() => {
     const closeAllDropdowns = (e: MouseEvent) => {
@@ -291,40 +340,49 @@ export default function recipe() {
       setIsClient(true);
     }
   }, []);
+
   useEffect(() => {
-    if (active == "home") {
+    if (!searchParams.get("filter")) {
       getRecipes();
-    } else {
-      setPage(1);
+      setDisplayRecipes(recipes);
     }
-  }, [page, active]);
+  }, [page]);
+  useEffect(() => {
+    if (!searchParams.get("filter")) {
+      setDisplayRecipes(recipes);
+    }
+  }, [recipes, save]);
+  useEffect(() => {
+    getFilter(searchParams.get("filter"));
+  }, []);
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop !==
       document.documentElement.offsetHeight
     )
       return;
+
     if (loading || !hasMore) return;
     console.log("Incrementing page"); // Debugging
-    setPage((prevPage) => prevPage + 1);
+    if (!searchParams.get("filter")) {
+      setPage((prevPage) => prevPage + 1);
+    }
   };
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loading, hasMore]);
-  const removeSavedRecipe = async (id: string) => {
-    try {
-      const recipe = await Poster.deleteSavedRecipe(id);
-      if (!recipe.status) {
-        toast.error("failed removing recipe");
-      } else {
-        setRecipes(recipes!.filter((poster) => poster._id !== id));
-        toast.success("remove sucessfully ");
-      }
-    } catch (error) {
-      toast.error("failed removing recipe");
+  useEffect(() => {
+    if (stopScroll) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
     }
-  };
+    // Clean up by removing the class when the component unmounts
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [stopScroll]);
 
   return (
     <>
@@ -372,7 +430,10 @@ export default function recipe() {
               <>
                 {user ? (
                   <div
-                    onClick={() => setShowModalUpload(true)}
+                    onClick={() => {
+                      setShowModalUpload(true);
+                      setStopScroll(true);
+                    }}
                     className="bg-base-mid h-10 w-10 lg:hidden flex items-center flex-col justify-center rounded"
                   >
                     {" "}
@@ -428,6 +489,7 @@ export default function recipe() {
                     <p>Post your own recipe</p>
                     <button
                       onClick={() => {
+                        setStopScroll(true);
                         setShowModalUpload(true);
                       }}
                       className=" lg:shadow xl:p-6 lg:p-4 md:p-3 flex gap-4 lg:w-full border border-gray-400  justify-center items-center transition duration-200 ease-in-out hover:bg-orange-50 "
@@ -445,10 +507,16 @@ export default function recipe() {
             <div className="md:p-4 flex p-2 md:gap-3 gap-1 ">
               <button
                 onClick={() => {
-                  getActive("home");
+                  router.replace("/recipe");
+                  if (recipes.length !== 0) {
+                    setDisplayRecipes(recipes);
+                  } else {
+                    console.log(recipes.length);
+                    getRecipes();
+                  }
                 }}
                 className={
-                  active == "home"
+                  !searchParams.get("filter")
                     ? " text-base-dark text-sm md:text-lg md:p-2 py-1 px-3  md:px-4 rounded  flex gap-2 items-center"
                     : `p-2 text-sm md:text-lg md:p-2 py-1 text-text-color  md:px-4   shadow px-3 flex gap-2 items-center `
                 }
@@ -458,10 +526,10 @@ export default function recipe() {
               </button>
               <button
                 onClick={() => {
-                  getActive("trending");
+                  getFilter("trending");
                 }}
                 className={
-                  active == "trending"
+                  searchParams.get("filter") == "trending"
                     ? "text-sm md:text-lg md:p-2 py-1 px-3  md:px-4  text-base-dark  rounded  flex gap-2 items-center"
                     : `text-sm md:text-lg md:p-2 py-1 px-3  md:px-4 text-text-color   rounded shadow   flex gap-2 items-center `
                 }
@@ -471,10 +539,10 @@ export default function recipe() {
               </button>
               <button
                 onClick={() => {
-                  getActive("saved");
+                  getFilter("saved");
                 }}
                 className={
-                  active == "saved"
+                  searchParams.get("filter") == "saved"
                     ? "text-sm md:text-lg md:p-2 py-1 px-3  md:px-4  text-base-dark  rounded flex gap-2 items-center"
                     : `text-sm md:text-lg md:p-2 py-1 px-3  md:px-4 text-text-color  rounded shadow   flex gap-2 items-center `
                 }
@@ -483,7 +551,7 @@ export default function recipe() {
                 <p>saved</p>
               </button>
             </div>
-            {recipes?.length === 0 ? (
+            {displayRecipes?.length === 0 ? (
               <div className="h-90p bg-base-white flex justify-center items-center">
                 {" "}
                 {loading ? (
@@ -502,7 +570,7 @@ export default function recipe() {
               </div>
             ) : (
               <>
-                {recipes?.map((poster, index) => (
+                {displayRecipes?.map((poster, index) => (
                   <div
                     key={index}
                     className="bg-base-white border-b  md:p-12 relative  lg:p-9 xl:p-12 p-3 pt-8 flex flex-col gap-8 hover:bg-orange-50 transition-all duration-300 ease-in-out  "
@@ -532,7 +600,7 @@ export default function recipe() {
                                 <>
                                   {!poster.isSaved &&
                                   !save[poster._id] &&
-                                  active !== "saved" ? (
+                                  searchParams.get("filter") !== "saved" ? (
                                     <div className="flex  items-center  justify-center gap-2  ">
                                       <FaBookmark className=" text-color text-blue-600 xl:text-2xl text-xl " />
 
@@ -540,12 +608,12 @@ export default function recipe() {
                                         onClick={() => {
                                           savedRecipe(poster._id);
                                         }}
-                                        className="text-sm hover:underline"
+                                        className="text-sm  hover:cursor-pointer"
                                       >
                                         Save
                                       </p>
                                     </div>
-                                  ) : active === "saved" ? (
+                                  ) : searchParams.get("filter") === "saved" ? (
                                     <div className="flex items-center gap-2  ">
                                       <GoBookmarkSlashFill className=" text-color text-pink-600 xl:text-2xl text-xl " />
                                       <p
@@ -558,9 +626,11 @@ export default function recipe() {
                                       </p>
                                     </div>
                                   ) : (
-                                    <div className="flex  items-center gap-2  ">
+                                    <div className="flex  items-center gap-2   ">
                                       <FaCircleCheck className=" text-color text-green-600 xl:text-2xl text-xl " />
-                                      <p className="text-sm">Saved</p>
+                                      <p className="text-sm hover:cursor-pointer">
+                                        Saved
+                                      </p>
                                     </div>
                                   )}
                                 </>
@@ -668,11 +738,12 @@ export default function recipe() {
                             {isGenerating ? "Generating PDF..." : "Download"}
                           </button>
                         </div>
+
                         {user && (
                           <>
                             {!poster.isSaved &&
                             !save[poster._id] &&
-                            active !== "saved" ? (
+                            searchParams.get("filter") !== "saved" ? (
                               <div className="flex flex-col items-center  justify-center gap-2  ">
                                 <FaBookmark className=" text-color text-blue-600 xl:text-2xl text-xl " />
 
@@ -680,12 +751,12 @@ export default function recipe() {
                                   onClick={() => {
                                     savedRecipe(poster._id);
                                   }}
-                                  className="text-sm hover:underline"
+                                  className="text-sm hover:cursor-pointer"
                                 >
                                   Save
                                 </p>
                               </div>
-                            ) : active === "saved" ? (
+                            ) : searchParams.get("filter") === "saved" ? (
                               <div className="flex flex-col items-center justify-center gap-2  ">
                                 <GoBookmarkSlashFill className=" text-color text-pink-600 xl:text-2xl text-xl " />
                                 <p
@@ -700,7 +771,9 @@ export default function recipe() {
                             ) : (
                               <div className="flex flex-col items-center justify-center gap-2  ">
                                 <FaCircleCheck className=" text-color text-green-600 xl:text-2xl text-xl " />
-                                <p className="text-sm">Saved</p>
+                                <p className="text-sm hover:cursor-pointer">
+                                  Saved
+                                </p>
                               </div>
                             )}
                           </>
@@ -769,7 +842,9 @@ export default function recipe() {
 
         <ModalUpload
           isOpen={showModalUpload}
-          onClose={() => setShowModalUpload(false)}
+          onClose={() => {
+            setShowModalUpload(false), setStopScroll(false);
+          }}
           onSubmit={handleSubmit}
         />
       </div>

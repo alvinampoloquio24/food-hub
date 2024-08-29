@@ -662,11 +662,6 @@ export default function EditProfile() {
                       onClose={() => setShowModalEdit(false)}
                       onSubmit={handleSubmitEditRecipe}
                     />
-                    <ModalUpload
-                      isOpen={showModalUpload}
-                      onClose={() => setShowModalUpload(false)}
-                      onSubmit={handleSubmit}
-                    />
                   </>
                 )}
                 {loading && (
