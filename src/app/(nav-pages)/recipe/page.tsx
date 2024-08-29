@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { RiTimerFill } from "react-icons/ri";
 import { BiDish } from "react-icons/bi";
 import {
@@ -10,11 +10,9 @@ import {
   FaBowlFood,
   FaCircleCheck,
   FaFilePdf,
-  FaFire,
   FaFireFlameCurved,
 } from "react-icons/fa6";
 import Poster from "../../../api/poster";
-import Link from "next/link";
 import generatePDF from "@/utils/generatePDF";
 import { TiArrowUpThick } from "react-icons/ti";
 import Lottie from "react-lottie";
@@ -27,15 +25,27 @@ import ModalUpload from "@/app/props/modalUploadRecipe";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BsFillCloudUploadFill } from "react-icons/bs";
-import { FaSave } from "react-icons/fa";
 import { CiMenuKebab } from "react-icons/ci";
 import { useRouter } from "next/navigation";
-import { PiBowlFoodFill } from "react-icons/pi";
-import { IoSave, IoSaveSharp } from "react-icons/io5";
 import { GoBookmarkSlashFill } from "react-icons/go";
 import { useSearchParams } from "next/navigation";
-import getPoster from "../../../api/poster";
-export default function recipe() {
+import { HashLoader } from "react-spinners";
+
+export default function RecipesPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="h-screen bg-base-white flex items-center gap-3 justify-center">
+          <HashLoader color="#ff6b00" />
+          <p>Loading...</p>
+        </div>
+      }
+    >
+      <Recipes />
+    </Suspense>
+  );
+}
+function Recipes() {
   interface Poster {
     name: string;
     _id: string;
