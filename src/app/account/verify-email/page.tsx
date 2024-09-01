@@ -85,7 +85,7 @@ function VerifyEmailContent() {
           <p>Verifying...</p>
         </div>
       ) : success ? (
-        <div className="flex h-screen bg-base-white flex-col items-center justify-center">
+        <div className="flex h-screen bg-base-white flex-col items-center justify-center px-5">
           <Lottie options={defaultOptions} height={200} width={200} />
           <p className="text-xl">
             {message}
@@ -98,7 +98,7 @@ function VerifyEmailContent() {
           </p>
         </div>
       ) : (
-        <div className="flex h-screen bg-base-white flex-col items-center justify-center">
+        <div className="flex h-screen bg-base-white flex-col items-center justify-center px-5">
           <Lottie options={defaultOptions2} height={200} width={150} />
           <p className="text-xl pt-4">
             <span className="font-semibold text-pink-600">Sorry!</span>{" "}
