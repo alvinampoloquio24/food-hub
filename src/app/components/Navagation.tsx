@@ -15,6 +15,7 @@ import { SlLogout } from "react-icons/sl";
 import { AiOutlineSetting } from "react-icons/ai";
 import { useAuth } from "@/context/authProvider";
 import { MdOutlineStyle } from "react-icons/md";
+import { SiIfood } from "react-icons/si";
 export default function Nav() {
   const [loading, setLoading] = useState(false);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -22,7 +23,6 @@ export default function Nav() {
   const [menuClicked, setMenuClicked] = useState(false);
   const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
-
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
@@ -101,7 +101,14 @@ export default function Nav() {
         } justify-between flex  content-center shadow`}
       >
         <ul className="lg:flex items-center justify-center hidden">
-          <li className="font-bold text-lg">Food-Hub</li>
+          <li className="flex  items-center">
+            <img
+              className=" w-12"
+              src="https://i.ibb.co/1MBQSmj/image-fotor-bg-remover-2024090193832.png"
+              alt=""
+            />
+            <p className="text-text-color">Foodhub</p>
+          </li>
         </ul>
 
         <ul className="md:space-x-8 xl:text-lg lg:text-sm flex items-center w-screen md:w-full lg:w-auto">
@@ -195,15 +202,19 @@ export default function Nav() {
               : "translate-x-full w-1/2 md:w-1/6"
           } z-50`}
         >
-          <div className="md:p-4 p-2 flex justify-between items-center ">
+          <div className="md:p-4 p-2 flex  items-center ">
             <IoArrowBack
               onClick={toggleContainer}
               className="text-xl font-semibold"
             />
-            <p className="text-center font-bold md:text-2xl text-lg">
-              Food-Hub
-            </p>
-            <p></p>
+            <div className="flex  items-center">
+              <img
+                className=" w-12"
+                src="https://i.ibb.co/1MBQSmj/image-fotor-bg-remover-2024090193832.png"
+                alt=""
+              />
+              <p className="text-text-color">Foodhub</p>
+            </div>
           </div>
           <div className="text-xs md:text-sm">
             {isClient && user ? (

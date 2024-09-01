@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { ChangeEvent, useState, FormEvent, useEffect } from "react";
 import { GrCaretPrevious, GrCaretNext } from "react-icons/gr";
 import { FaSave, FaUpload } from "react-icons/fa";
@@ -198,7 +199,7 @@ const Modal: React.FC<ModalProps> = ({ recipe, isOpen, onClose, onSubmit }) => {
       <h2 className="md:text-2xl text-lg font-bold text-center mb-6 ">
         Basic Recipe Information
       </h2>
-      <div className="flex flex-col gap-4 h-[75vh] md:text-lg text-sm  lg:pr-4  overflow-y-auto overflow-x-hidden ">
+      <div className="flex flex-col gap-2 h-[60vh]  lg:h-full md:text-lg text-xs  lg:pr-4  overflow-y-auto overflow-x-hidden ">
         <div className="flex flex-col">
           <p>Name</p>
           <input
@@ -322,11 +323,11 @@ const Modal: React.FC<ModalProps> = ({ recipe, isOpen, onClose, onSubmit }) => {
       <h2 className="md:text-2xl text-lg font-bold text-center mb-6">
         Ingredients
       </h2>
-      <div className="flex flex-col  gap-2 pb-8 h-[75vh] overflow-y-auto overflow-x-hidden ">
+      <div className="flex flex-col  gap-2 pb-8 h-[60vh] lg:h-full  text-xs overflow-y-auto overflow-x-hidden ">
         {formData.ingredients.map((ingredient, index) => (
           <div
             key={index}
-            className="grid grid-cols-12 w-full gap-2 justify-center md:text-lg text-sm"
+            className="grid grid-cols-12 w-full gap-2 justify-center md:text-lg text-xs"
           >
             <div className="flex flex-col justify-center col-span-5">
               <p>Name</p>
@@ -373,7 +374,7 @@ const Modal: React.FC<ModalProps> = ({ recipe, isOpen, onClose, onSubmit }) => {
             </div>
           </div>
         ))}
-        <div className="flex gap-4 items-center mt-4">
+        <div className="flex gap-4 items-center mt-4 text-xs md:text-lg">
           <button
             type="button"
             className="p-1 px-3 rounded border"
@@ -390,11 +391,11 @@ const Modal: React.FC<ModalProps> = ({ recipe, isOpen, onClose, onSubmit }) => {
       <h2 className="md:text-2xl text-sm font-bold text-center mb-6 ">
         Directions
       </h2>
-      <div className="flex flex-col  gap-2 pb-8 h-[75vh] overflow-y-auto overflow-x-hidden custom-scrollbar">
+      <div className="flex flex-col  gap-2 pb-8 h-[60vh] lg:h-full  md:h-full text-xs overflow-y-auto overflow-x-hidden ">
         {formData.directions.map((direction, index) => (
           <div
             key={index}
-            className="grid grid-cols-12 w-full gap-2 justify-center md:text-lg text-sm"
+            className="grid grid-cols-12 w-full gap-2 justify-center md:text-lg text-xs"
           >
             <div className="flex flex-col justify-center col-span-4">
               <p>Title</p>
@@ -430,7 +431,7 @@ const Modal: React.FC<ModalProps> = ({ recipe, isOpen, onClose, onSubmit }) => {
             </div>
           </div>
         ))}
-        <div className="flex gap-4 items-center mb-4">
+        <div className="flex gap-4 items-center mt-4 text-xs md:text-lg">
           <button
             type="button"
             className="p-1 px-3 rounded border"
@@ -467,14 +468,18 @@ const Modal: React.FC<ModalProps> = ({ recipe, isOpen, onClose, onSubmit }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center">
+    <div className="fixed inset-0 z-50 flex items-end  justify-center">
       <div
         className="absolute inset-0 bg-black opacity-50 backdrop-blur-sm"
         onClick={() => {
           setCurrentSlide(0), onClose();
         }}
       />
-      <div className="relative bg-base-white  rounded-lg md:p-6 p-4 md:px-12 lg:w-3/5 md:w-11/12 h-screen w-screen max-w-6xl ">
+      <div
+        className={`relative bg-base-white rounded-lg md:p-6 p-4 md:px-12 lg:w-3/5 md:w-11/12 h-[85vh] lg:h-[100vh] w-screen max-w-6xl transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
         <form
           onSubmit={handleSubmit}
           noValidate

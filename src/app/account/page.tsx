@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import Image from "next/image";
 import bg from "../../../public/bg.jpg";
@@ -15,12 +16,12 @@ export default function Page() {
         priority
       />
       <div className="absolute inset-0 bg-white bg-opacity-10 h-full w-screen ">
-        <div className="md:px-24 md:py-8 px-6 py-8 h-full ">
+        <div className="md:px-24 md:py-8 px-3 py-8 h-full ">
           <div className="relative flex items-center justify-center">
             {" "}
             <ul className="flex text-xl items-center justify-between absolute w-full  ">
-              <li className="font-bold lg:text-2xl md:text-xl text-sm text-white">
-                FOOD HUB
+              <li className="flex  items-center">
+                <p className="lg:text-base-white text-base-dark">Foodhub</p>
               </li>
               <li className="flex md:gap-12 gap-2 lg:text-xl md:text-lg text-xs ">
                 <button>What We Provide?</button>

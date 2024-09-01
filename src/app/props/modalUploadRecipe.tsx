@@ -166,10 +166,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
   const slides = [
     // Slide 1: Basic Info
     <div key="basic-info" className="h-full ">
-      <h2 className="md:text-2xl text-lg font-bold text-center mb-6 ">
+      <h2 className="md:text-2xl text-lg text-center font-bold text-send mb-6 ">
         Basic Recipe Information
       </h2>
-      <div className="flex flex-col gap-4 h-[75vh] md:text-lg text-sm  lg:pr-4  overflow-y-auto overflow-x-hidden ">
+      <div className="flex flex-col gap-2 h-[60vh] md:text-lg text-xs  lg:pr-4  overflow-y-auto overflow-x-hidden ">
         <div className="flex flex-col">
           <p>Name</p>
           <input
@@ -257,11 +257,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
       <h2 className="md:text-2xl text-lg font-bold text-center mb-6">
         Ingredients
       </h2>
-      <div className="flex flex-col  gap-2 pb-8 h-[75vh] overflow-y-auto overflow-x-hidden ">
+      <div className="flex flex-col  gap-2 pb-8 h-[60vh] text-xs overflow-y-auto overflow-x-hidden ">
         {formData.ingredients.map((ingredient, index) => (
           <div
             key={index}
-            className="grid grid-cols-12 w-full gap-2 justify-center md:text-lg text-sm"
+            className="grid grid-cols-12 w-full gap-2 justify-center md:text-lg text-xs "
           >
             <div className="flex flex-col justify-center col-span-5">
               <p>Name</p>
@@ -308,7 +308,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
             </div>
           </div>
         ))}
-        <div className="flex gap-4 items-center mt-4">
+        <div className="flex gap-4 items-center ">
           <button
             type="button"
             className="p-1 px-3 rounded border"
@@ -325,11 +325,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
       <h2 className="md:text-2xl text-sm font-bold text-center mb-6 ">
         Directions
       </h2>
-      <div className="flex flex-col  gap-2 pb-8 h-[75vh] overflow-y-auto overflow-x-hidden custom-scrollbar">
+      <div className="flex flex-col  gap-2 pb-8 h-[60vh] text-xs  overflow-y-auto overflow-x-hidden custom-scrollbar">
         {formData.directions.map((direction, index) => (
           <div
             key={index}
-            className="grid grid-cols-12 w-full gap-2 justify-center md:text-lg text-sm"
+            className="grid grid-cols-12 w-full gap-2 justify-center md:text-lg text-xs"
           >
             <div className="flex flex-col justify-center col-span-4">
               <p>Title</p>

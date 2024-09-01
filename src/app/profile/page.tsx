@@ -430,7 +430,7 @@ export default function EditProfile() {
                 <img
                   src={user?.profile} // Fallback in case user.profile is undefined
                   alt="Profile"
-                  className="object-cover lg:h-32 lg:w-32 md:h-28 md:w-28 w-20 h-20  rounded-full lg:border-4 border-2 border-white"
+                  className="object-cover lg:h-32 lg:w-32 md:h-24 md:w-24 w-20 h-20  rounded-full lg:border-4 border-2 border-white"
                 />
                 {/* User name */}
                 <div>
@@ -447,7 +447,7 @@ export default function EditProfile() {
                   onClick={() => {
                     setShowModalUpload(true);
                   }}
-                  className=" bg-slate-300  lg:px-4 md:px-3 px-2 md:py-3 py-2 text-xs md:text-sm shadow text-gray-700 rounded flex gap-2 items-center transition-all duration-300 hover:bg-slate-200  cursor-pointer"
+                  className=" bg-slate-300  lg:px-4 md:px-2 px-2 lg:py-3 py-2 text-xs md:text-sm shadow text-gray-700 rounded flex gap-2 items-center transition-all duration-300 hover:bg-slate-200  cursor-pointer"
                 >
                   <IoIosAddCircle className="text-black" />
                   <p className="text-black">Add recipe</p>
@@ -456,7 +456,7 @@ export default function EditProfile() {
                   onClick={() => {
                     setShowEditModal(true);
                   }}
-                  className=" bg-blue-400  lg:px-4 md:px-3 px-2 md:py-3 py-2 text-xs md:text-sm   shadow text-white rounded flex gap-2 items-center transition-all duration-300 hover:bg-blue-600 cursor-pointer"
+                  className=" bg-blue-400  lg:px-4 md:px-2 px-2  md:py-3 py-2 text-xs md:text-sm   shadow text-white rounded flex gap-2 items-center transition-all duration-300 hover:bg-blue-600 cursor-pointer"
                 >
                   <MdEditSquare />
                   <p> Edit Profile</p>

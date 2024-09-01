@@ -1,40 +1,64 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @next/next/no-img-element */
-
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { FaInstagram } from "react-icons/fa6";
+import { MdOutlineFreeBreakfast } from "react-icons/md";
+import { LuVegan } from "react-icons/lu";
+import { TbMeat } from "react-icons/tb";
+import { MdOutlineLunchDining } from "react-icons/md";
+import { GiChocolateBar } from "react-icons/gi";
+import { MdOutlineDinnerDining } from "react-icons/md";
+import { GiFruitBowl } from "react-icons/gi";
+import { RiDrinks2Fill, RiTimerFill } from "react-icons/ri";
+import { FaFishFins } from "react-icons/fa6";
+import { GiSewedShell } from "react-icons/gi";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { FaRegHeart } from "react-icons/fa6";
-import { BiMessageRounded } from "react-icons/bi";
+import { BiMessageRounded, BiSolidDish } from "react-icons/bi";
 import { PiTelegramLogo } from "react-icons/pi";
 import { IoTimer } from "react-icons/io5";
 import { CgPentagonUp } from "react-icons/cg";
 import { PiBowlFoodFill } from "react-icons/pi";
-import Poster from "../../../api/poster";
-import HotRecipe from "./(props)/swipper";
+import Poster from "../../../../api/poster";
+import HotRecipe from "./swipper";
 import Link from "next/link";
-import Cards from "./(props)/cards";
-import Category from "./(props)/category";
-import { Suspense } from "react";
-const fetchData = async () => {
-  try {
-    const response: any = await Poster.get();
+import Skeleton from "react-loading-skeleton";
+import Navagation from "@/app/components/Navagation";
 
-    return response.response.items;
-  } catch (error) {
-    console.error("Error fetching data:", error);
+export default function Home() {
+  interface Poster {
+    img: string;
+    name: string;
+    _id: string;
+    time: string;
+    dishType: string;
   }
-};
-export default async function Home() {
-  const poster = await fetchData();
+
+  const [viewAll, setViewAll] = React.useState(false);
+  const [poster, setPoster] = React.useState<Poster[]>([]);
+  const openViewAll = () => {
+    setViewAll(!viewAll);
+  };
+
+  const fetchData = async () => {
+    try {
+      const response: any = await Poster.get();
+
+      setPoster(response.response.items);
+      console.log(poster);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
-        {" "}
-        <HotRecipe poster={poster} />
-      </Suspense>
+      <HotRecipe poster={poster} />
       <div className=" bg-base-white flex flex-col  p-6 py-12 xl:p-24 lg:p-16 gap-8 lg:mt-0 text-text-color">
         <div className=" flex gap-4 md:gap-6  flex-col mb-10 ">
           {" "}
@@ -46,7 +70,88 @@ export default async function Home() {
             palate. Discover delectable dishes crafted with care and bursting
             with flavor.
           </p>
-          <Category />
+        </div>
+        <div className=" text-text-color flex justify-between items-center">
+          {" "}
+          <p className="text-2xl font-bold ">Categories</p>{" "}
+          <button
+            onClick={openViewAll}
+            className=" py-4 w-32 rounded-lg bg-slate-200"
+          >
+            {!viewAll ? `View all` : `View less`}
+          </button>
+        </div>
+        <div className="grid grid-cols-3 text-black  lg:grid-cols-6 xl:grid-cols-6  gap-3 lg:gap-8 mt-5">
+          <div className="rounded-lg p-4 lg:h-44 flex flex-col bg-slate-100 lg:p-10 shadow-md gap-2 items-center justify-center">
+            <div className="text-5xl">
+              <MdOutlineFreeBreakfast />
+            </div>
+            <p>BreakFast</p>
+          </div>
+          <div className="rounded-lg p-4 lg:h-44 flex flex-col bg-green-200 shadow-md gap-2 items-center justify-center">
+            <div className="text-5xl">
+              <LuVegan />
+            </div>
+            <p>Vegan</p>
+          </div>
+          <div className="rounded-lg p-4 lg:h-44 flex flex-col bg-pink-200 shadow-md gap-2 items-center justify-center">
+            <div className="text-5xl">
+              <TbMeat />
+            </div>
+            <p>Meat</p>
+          </div>
+          <div className="rounded-lg p-4 flex lg:h-44 flex-col bg-yellow-200 shadow-md gap-2 items-center justify-center">
+            <div className="text-5xl">
+              <MdOutlineFreeBreakfast />
+            </div>
+            <p>Dessert</p>
+          </div>
+          <div className="rounded-lg p-4 flex lg:h-44 flex-col bg-orange-200 shadow-md gap-2 items-center justify-center">
+            <div className="text-5xl">
+              <MdOutlineLunchDining />
+            </div>
+            <p>Launch</p>
+          </div>
+          <div className="rounded-lg p-4 flex lg:h-44 flex-col bg-orange-300 shadow-md gap-2 items-center justify-center">
+            <div className="text-5xl">
+              <GiChocolateBar />
+            </div>
+            <p>Chocolate</p>
+          </div>
+          {viewAll && (
+            <>
+              <div className="rounded-lg p-4 flex lg:h-44 flex-col bg-base lg:p-10 shadow-md gap-2 items-center justify-center">
+                <div className="text-5xl">
+                  <MdOutlineDinnerDining />
+                </div>
+                <p>Dinner</p>
+              </div>
+              <div className="rounded-lg p-4 flex lg:h-44 flex-col bg-lime-200 shadow-md gap-2 items-center justify-center">
+                <div className="text-5xl">
+                  <GiFruitBowl />
+                </div>
+                <p>Fruits</p>
+              </div>
+              <div className="rounded-lg p-4 flex flex-col lg:h-44 bg-purple-200 shadow-md gap-2 items-center justify-center">
+                <div className="text-5xl">
+                  <RiDrinks2Fill />
+                </div>
+                <p>Drinks</p>
+              </div>
+              <div className="rounded-lg p-4 flex flex-col lg:h-44 bg-blue-200 shadow-md gap-2 items-center justify-center">
+                <div className="text-5xl">
+                  <FaFishFins />
+                </div>
+                <p>Fish</p>
+              </div>
+              <div className="rounded-lg p-4 lg:h-44 flex flex-col bg-teal-300 shadow-md gap-2 items-center justify-center">
+                <div className="text-5xl">
+                  <GiSewedShell />
+                </div>
+                <p>Shells</p>
+              </div>
+            </>
+          )}
         </div>
       </div>
       <div className=" bg-base-white flex flex-col items-center text-text-color">
@@ -57,15 +162,52 @@ export default async function Home() {
           Discover easy-to-make recipes that don't compromise on flavor. Enjoy
           cooking delicious meals with minimal effort and maximum taste.
         </p>
-
         <div className=" grid h-auto grid-cols-2 md:grid-cols-3 p-4 gap-4 lg:gap-16">
           {" "}
-          <Suspense fallback={<div>Loading...</div>}>
-            <Cards poster={poster} />
-          </Suspense>
+          {poster.map((poster, index) => (
+            <Link key={poster._id} href={`/recipe/${poster._id}`}>
+              <div
+                key={index}
+                className=" pb-4 lg:w-80  bg-base flex flex-col gap-1 md:gap-3 justify-between items-center rounded-2xl shadow-md transition-transform duration-200 transform hover:bg-base-light hover:scale-105"
+              >
+                {poster.img ? (
+                  <img
+                    src={poster.img}
+                    alt=""
+                    className="h-32 md:h-48 lg:h-60 w-full  object-cover rounded-2xl"
+                  />
+                ) : (
+                  <div className="h-32 md:h-48 lg:h-60 w-full bg-orange-100 animate-pulse rounded-2xl "></div>
+                )}
+                <div className="md:h-32 h-16 w-full px-4  flex flex-col justify-between">
+                  {poster.name ? (
+                    <p className="  md:text-lg text-xs px-1 lg:max-h-20  line-clamp-2  font-bold lg:px-6">
+                      {poster.name}
+                    </p>
+                  ) : (
+                    <Skeleton count={2} />
+                  )}
+                  {poster.time || poster.dishType ? (
+                    <div className=" flex justify-around gap-4 p-1 md:p-2 w-full">
+                      <div className=" flex gap-1 justify-center items-center md:text-xl">
+                        <RiTimerFill />{" "}
+                        <p className=" text-xs">{poster.time}</p>
+                      </div>
+
+                      <div className=" flex gap-1 justify-center items-center md:text-xl">
+                        <BiSolidDish />{" "}
+                        <p className=" text-xs ">{poster.dishType}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <Skeleton />
+                  )}
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
-
       <div className="bg-base-white h-screen flex items-center justify-center pt-5">
         {" "}
         <div className="md:grid-cols-2 grid h-5/6 bg-base-white w-full md:mx-16 md:rounded-2xl text-text-color ">
@@ -254,7 +396,7 @@ export default async function Home() {
           </p>
         </div>
         <div className="grid grid-cols-2 px-3 gap-4 md:grid-cols-3 lg:gap-6 lg:px-20 lg:grid-cols-4  ">
-          {poster?.map((poster: any, index: any) => (
+          {poster?.map((poster, index) => (
             <Link key={index} href={`/recipe/${poster._id}`}>
               <div
                 key={index}

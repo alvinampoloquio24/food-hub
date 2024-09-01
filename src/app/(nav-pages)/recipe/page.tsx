@@ -101,6 +101,7 @@ function Recipes() {
   const [displayRecipes, setDisplayRecipes] = useState<Poster[]>([]);
   const [savedRecipes, setSavedRecipes] = useState<Poster[]>([]);
   const [trendRecipes, setTrendRecipes] = useState<Poster[]>([]);
+
   const [stopScroll, setStopScroll] = useState(false);
   const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>(
     {}
@@ -134,7 +135,8 @@ function Recipes() {
       }
       setLoading(true);
       const response = await Poster.searchRecipe(params);
-      setRecipes(response.response);
+      router.replace(`/recipe?filter=${params}`);
+      setDisplayRecipes(response.response);
     } catch (error) {
       throw error;
     } finally {
@@ -350,7 +352,6 @@ function Recipes() {
       setIsClient(true);
     }
   }, []);
-
   useEffect(() => {
     if (!searchParams.get("filter")) {
       getRecipes();
@@ -363,8 +364,15 @@ function Recipes() {
     }
   }, [recipes, save]);
   useEffect(() => {
+    if (search == "") {
+      router.replace(`/recipe`);
+      setDisplayRecipes(recipes);
+    }
+  }, [search]);
+  useEffect(() => {
     getFilter(searchParams.get("filter"));
   }, []);
+
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop !==
@@ -404,7 +412,7 @@ function Recipes() {
             <div className="md:py-4 py-2 relative w-11/12 lg:w-full">
               <input
                 type="text"
-                className="w-full bg-base-white  rounded h-10 lg:shadow pl-2 pr-20 md:text-lg text-xs   lg:border-none shadow border-2 border-orange-100"
+                className="w-full bg-base-white    rounded h-10 lg:shadow pl-2 pr-20 md:text-lg text-xs     border-2 border-base-light"
                 placeholder="Search recipe.."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -456,30 +464,21 @@ function Recipes() {
             <div className=" w-full lg:flex hidden flex-wrap gap-2 lg:text-sm xl:text-lg ">
               <button
                 onClick={() => {
-                  handleSeach("burger");
-                  setSearch("burger");
+                  handleSeach("vegan");
+                  setSearch("vegan");
                 }}
                 className="p-1 bg-base-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
               >
-                <p>burger</p>
+                <p>Vegan</p>
               </button>
               <button
                 onClick={() => {
-                  handleSeach("pancake");
-                  setSearch("pancake");
+                  handleSeach("filipino");
+                  setSearch("filipino");
                 }}
                 className="p-1 bg-base-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
               >
-                <p>pancake</p>
-              </button>
-              <button
-                onClick={() => {
-                  handleSeach("Nashville Hot");
-                  setSearch("Nashville Hot");
-                }}
-                className="p-1 bg-base-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
-              >
-                <p>Nashville Hot</p>
+                <p>Pinoy recipes</p>
               </button>
               <button
                 onClick={() => {
@@ -488,7 +487,16 @@ function Recipes() {
                 }}
                 className="p-1 bg-base-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
               >
-                <p>dessert</p>
+                <p>Dessert</p>
+              </button>
+              <button
+                onClick={() => {
+                  handleSeach("chiken");
+                  setSearch("chiken");
+                }}
+                className="p-1 bg-base-white shadow rounded transition-all duration-300  hover:bg-orange-50 "
+              >
+                <p>Chicken</p>
               </button>
             </div>
 
@@ -514,6 +522,16 @@ function Recipes() {
           </div>
           <div className="lg:col-span-9 w-full md:px-10 md:py-4 lg:p-8 p-1  lg:mt-8 ">
             {/* Main content */}
+            {/* <div className="py-8 bg-base-white border-b flex gap-2">
+              <img
+                // src={user.profile}
+                className="w-10 h-10 object-cover rounded-full"
+                alt=""
+              />
+              <button className="rounded border w-full flex  items-center px-4">
+                <p>post recipe..</p>
+              </button>
+            </div> */}
             <div className="md:p-4 flex p-2 md:gap-3 gap-1 ">
               <button
                 onClick={() => {
