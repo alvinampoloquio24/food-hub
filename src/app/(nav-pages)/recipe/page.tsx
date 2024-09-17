@@ -565,19 +565,21 @@ function Recipes() {
                 <FaFireFlameCurved />
                 <p>Hot</p>
               </button>
-              <button
-                onClick={() => {
-                  getFilter("saved");
-                }}
-                className={
-                  searchParams.get("filter") == "saved"
-                    ? "text-sm md:text-lg md:p-2 py-1 px-3  md:px-4  text-base-dark  rounded flex gap-2 items-center"
-                    : `text-sm md:text-lg md:p-2 py-1 px-3  md:px-4 text-text-color  rounded shadow   flex gap-2 items-center `
-                }
-              >
-                <FaBookmark />
-                <p>saved</p>
-              </button>
+              {user ? (
+                <button
+                  onClick={() => {
+                    getFilter("saved");
+                  }}
+                  className={
+                    searchParams.get("filter") == "saved"
+                      ? "text-sm md:text-lg md:p-2 py-1 px-3  md:px-4  text-base-dark  rounded flex gap-2 items-center"
+                      : `text-sm md:text-lg md:p-2 py-1 px-3  md:px-4 text-text-color  rounded shadow   flex gap-2 items-center `
+                  }
+                >
+                  <FaBookmark />
+                  <p>saved</p>
+                </button>
+              ) : null}
             </div>
             {displayRecipes?.length === 0 ? (
               <div className="h-90p bg-base-white flex justify-center items-center">
